@@ -1,0 +1,127 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Scorecard</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-6" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-6">
+			<h4 id="h4bold">Scorecard ID: {{ .Scorecard_Id }}</h4> 
+		</div>
+		<div class="col-xs-6">
+			<h4 id="h4bold">Event ID: {{ .Event_Id }}</h4> 
+		</div>		
+  </div>		
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4bold">Element: {{ .Element }} {{ .Search_area }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4bold">Point Value: {{ .Maxpoint }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4boldright">Time Limit: {{ .Maxtime_m }}:{{ .Maxtime_s }}</h4> 
+		</div>  
+	</div>
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area: {{ .Search_area }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area Hides: {{ .Hides_max }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Hides found: {{ .Hides_found }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Hides missed: {{ .Hides_missed }}</h4> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Finish call: {{ .Finish_call }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">False alert/fringe: {{ .False_alert_fringe }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Timed out: {{ .Timed_out }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Dismissed: {{ .Dismissed }}</h4> 
+		</div>    
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Excused: {{ .Excused }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Absent: {{ .Absent }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4">Eliminated during search: {{ .Eliminated_during_search }}</h4> 
+		</div>    
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h4 id="h4">Other faults descr: {{ .Other_faults_descr }}</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4">Other faults count:  {{ .Other_faults_count }}</h4>
+		</div>
+	</div>  
+	<div class="row"> 
+		<div class="col-xs-12">
+			<h4 id="h4">Comments: {{ .Comments }}</h4>
+		</div>
+	</div>
+	<div id="bdr"></div>
+	<div class="row" id="center">
+		<div class="col-xs-3">
+			<h4 id="h4bold">Time</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Points</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Pronounced</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Faults</h4> 
+		</div>
+	</div>
+	<div class="row" id="center">
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .Time_elapsed_m }}:{{ .Time_elapsed_s }}:{{ .Time_elapsed_ms }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .Total_points }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .Pronounced }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .Total_faults }}</h4> 
+		</div>
+	</div>
+	<div id="bdr"></div>
+	<h4>Judge signature: {{ .Judge_signature }}</h4>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><a href="/scorecards/edit/{{ .Id }}">Update Scorecard</a> | <a href="/scorecards">Back to Scorecards</a> | <a href="/events">Back to Events</a></p></li>
+{{ end }}

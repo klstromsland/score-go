@@ -1,0 +1,14 @@
+	<div class="row">
+		<div class="col-xs-1">
+			<h4 id="h4">Teams</h4>
+		</div>
+		<div class="col-xs-3">
+			<h5 id="h5right">
+				<select name="Entrant_Id" value="{{ .Entrant_Id }}">
+					{{ range . }}
+          <option name="{{ .entrants.Entrant_Id }}" value="{{ .entrants.Entrant_Id }}">{{ .entrants.Entrant_Id }}</option>
+          {{ end }}
+				</select>
+			</h5>				
+		</div>	  
+	</div>

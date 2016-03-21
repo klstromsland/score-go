@@ -1,0 +1,279 @@
+{{ define "form" }}
+	<div class="row">
+		<div class="col-xs-1">
+			<h4 id="h4">Name: </h4>
+		</div>
+		<div class="col-xs-3">
+			<p class="ftext"><input type="text" name="Name" value="{{ .Name }}"></p>	
+		</div>
+		<div class="col-xs-1">
+			<h4 id="h4">Location: </h4>
+		</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Location" value="{{ .Location }}"></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-1">
+			<h4 id="h4">Division</h4>
+		</div>
+		<div class="col-xs-3">
+			<h5 id="h5right">
+				<select name="Division" value="{{ .Division }}">
+					<option name="NW1" value="NW1">NW1</option>
+					<option name="NW2" value="NW2">NW2</option>
+					<option name="NW3" value="NW3">NW3</option>
+					<option name="Element Specialty" value="Element Specialty">Element Specialty</option>
+					<option name="Elite" value="Elite">Elite</option>
+				</select>
+			</h5>				
+		</div>	  
+		<div class="col-xs-1">
+			<h4 id="h4">Event ID</h4>
+		</div>	
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Event_Id" value="{{ .Event_Id }}"></p>
+		</div>
+	</div>
+	<h4 id="h4bold">Element Search Areas and Hides</h4>
+  <div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Element</h5>
+	  </div>
+	  <div class = "col-xs-2">
+	    <h5 id="bold">Interior</h5>
+	  </div>
+		<div class = "col-xs-2">
+	    <h5 id="bold">Exterior</h5>
+	  </div>
+	  <div class = "col-xs-2">
+	    <h5 id="bold">Container</h5>
+	  </div>		
+	  <div class = "col-xs-2">
+	    <h5 id="bold">Vehicle</h5>
+	  </div>		
+	  <div class = "col-xs-2">
+	    <h5 id="bold">Elite</h5>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Search Areas</h5>
+	  </div>	
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Int_search_areas" value="{{ .Int_search_areas }}">
+					<option name="0" value="0">0</option>
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+				</select></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Ext_search_areas" value="{{ .Ext_search_areas }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+				</select></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Cont_search_areas" value="{{ .Cont_search_areas }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+				</select></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Veh_search_areas" value="{{ .Veh_search_areas }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+				</select></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Elite_search_areas" value="{{ .Elite_search_areas }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+				</select></p>
+    </div>		
+  </div>	
+  <div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Hides</h5>
+	  </div>
+	  <div class = "col-xs-2">	
+	    <p class="fnum">
+				<select name="Int_hides" value="{{ .Int_hides }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+					<option name="10" value="10">11</option>
+					<option name="10" value="10">12</option>
+					<option name="10" value="10">13</option>
+					<option name="10" value="10">14</option>	
+					<option name="10" value="10">15</option>
+					<option name="10" value="10">16</option>					
+				</select></p>		
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Ext_hides" value="{{ .Ext_hides }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+					<option name="10" value="10">11</option>
+					<option name="10" value="10">12</option>
+					<option name="10" value="10">13</option>
+					<option name="10" value="10">14</option>	
+					<option name="10" value="10">15</option>
+					<option name="10" value="10">16</option>					
+				</select></p>			
+      </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Cont_hides" value="{{ .Cont_hides }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+					<option name="10" value="10">11</option>
+					<option name="10" value="10">12</option>
+					<option name="10" value="10">13</option>
+					<option name="10" value="10">14</option>	
+					<option name="10" value="10">15</option>
+					<option name="10" value="10">16</option>					
+				</select></p>			
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Veh_hides" value="{{ .Veh_hides }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+					<option name="10" value="10">11</option>
+					<option name="10" value="10">12</option>
+					<option name="10" value="10">13</option>
+					<option name="10" value="10">14</option>	
+					<option name="10" value="10">15</option>
+					<option name="10" value="10">16</option>					
+				</select></p>			
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum">
+				<select name="Elite_hides" value="{{ .Elite_hides }}">
+					<option name="0" value="0">0</option>				
+					<option name="1" value="1">1</option>
+					<option name="2" value="2">2</option>
+					<option name="3" value="3">3</option>
+					<option name="4" value="4">4</option>
+					<option name="5" value="5">5</option>
+					<option name="6" value="6">6</option>
+					<option name="7" value="7">7</option>
+					<option name="8" value="8">8</option>
+					<option name="9" value="9">9</option>
+					<option name="10" value="10">10</option>
+					<option name="10" value="10">11</option>
+					<option name="10" value="10">12</option>
+					<option name="10" value="10">13</option>
+					<option name="10" value="10">14</option>	
+					<option name="10" value="10">15</option>
+					<option name="10" value="10">16</option>					
+				</select></p>			
+	  </div>
+  </div>	
+	<div class="row">
+		<div class="col-xs-2">
+			<h4 id="h4">All Teams</h4>
+		</div>
+		<div class="col-xs-3">
+			<h5 id="h5right">
+				<select name="EntrantSelected_Id" value="{{ .EntrantSelected_Id }}" multiple>
+					{{ range $index, $allvalue := .EntrantAll_Id }}
+						 <option value="{{ $allvalue }}">{{ $allvalue }}</option>
+					{{ end }}
+					<option value=""> </option>
+				</select>
+			</h5>				
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Event Teams</h4>
+		</div>	  
+		<div class="col-xs-3">
+			<h5 id="h5right">
+				<select name="EntrantSelected_Id" value="{{ .EntrantSelected_Id }}" multiple>
+					{{ range $index, $selvalue := .EntrantSelected_Id }}
+						 <option value="{{ $selvalue }}" disabled >{{ $selvalue }}</option>
+					{{ end }}
+					<option value="" disabled> </option>
+				</select>
+			</h5>				
+		</div>			
+	</div>								
+	<div class="row">
+		<div class="col-xs-4">
+			<div class="actions">
+				<p><input type="submit" value="Submit"></p>
+			</div>
+		</div>
+	</div>
+</form>
+{{ end }}

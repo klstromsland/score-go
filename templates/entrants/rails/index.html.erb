@@ -1,0 +1,67 @@
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-4" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Teams</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-4" id="center">
+				<p id="notice"><%= notice %></p>
+			</div>
+			<div class="col-xs-4" id="right">			
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div class="row">
+		<div class="col-xs-1">
+			<h4 id="h4bold">First Name</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Last Name</h4>
+		</div>
+		<div class="col-xs-1">
+			<h4 id="h4boldcenter">ID#</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">K9 Name</h4>
+		</div>
+		<div class="col-xs-1">
+			<h4 id="h4boldcenter">K9ID#</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Breed</h4>
+		</div>
+	</div>
+	<% @entrants.order("last_name").each do |entrant| %>
+	<div class="row">
+		<div class="col-xs-1">
+			<p><%= entrant.first_name %></p>
+		</div>
+		<div class="col-xs-2">
+			<p><%= entrant.last_name %></p>
+		</div>
+		<div class="col-xs-1">
+			<p id="center"><%= entrant.idnumber %></p>
+		</div>
+		<div class="col-xs-2">
+			<p><%= entrant.dog_name %></p>
+		</div>
+		<div class="col-xs-1">
+			<p id="center"><%= entrant.dogidnumber %></p>
+		</div>
+		<div class="col-xs-2">
+			<p><%= entrant.breed %></p>
+		</div>
+		<div class="col-xs-3">
+			<p class="linksm"><%= link_to "Show", entrant %> | <%= link_to "Edit", edit_entrant_path(entrant) %> | <%= link_to "Remove", entrant, method: :delete, data: { confirm: "Are you sure?" } %></p>
+		</div>
+	</div>	
+<% end %>
+</div>
+<div class="nav" id="navpad">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><%= link_to "Back to Events", events_path %> | <%= link_to "New Team", new_entrant_path %></p></li>

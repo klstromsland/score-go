@@ -1,0 +1,873 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require timer_style
+ *= require bootstrap.min.css
+ */
+
+html, body {
+  background-color:#00217f;
+  font-family: 'Roboto', sans-serif;
+  max-width:1200px;
+  left:50px;
+  margin:auto 50px -250px 50px;
+  padding:auto;
+}
+
+footer {
+  background-color:#00217f;
+  font-family: 'Roboto', sans-serif;
+  max-width:1200px;
+  margin:auto;
+  padding:auto;
+}
+
+
+p {
+  font-size:12px;
+  letter-spacing:0px;
+  white-space:nowrap;
+  margin:0;
+  padding:0;
+}
+
+h5 {
+  font-size:14px;
+  letter-spacing:0px;
+  white-space:nowrap;
+  margin:0;
+  padding:0;
+}
+
+li {
+  list-style:none;
+  font-size:12px;
+  letter-spacing: 0px;
+  white-space:nowrap;
+} 
+
+ul {
+  list-style:none;
+} 
+
+.img{
+  height:100px;
+  width:140px;
+  margin:0;
+  padding:0;
+}
+
+.img_star{
+  height:70px;
+  width:60px;
+  margin:0;
+  padding:0;
+}
+
+.nav{
+  background-color:#00217f;
+  margin:auto;
+  padding:0;
+}
+
+.nav ul{
+  margin:20px -15px auto -15px;
+  padding:0;
+}
+
+.nav a{
+  font-size:20px;
+  font-weight:semibold;
+  color:#fff;
+  text-decoration:none;
+  margin:0;
+  padding:0;
+}
+
+.nav a:hover{
+  font-size:20px;
+  color:greenyellow;
+  background-color:#00217f;
+  text-decoration:none;
+  margin:0;
+  padding:0;
+}
+
+.nav li{
+  color:#fff;
+  list-style:none; 
+  margin:0;
+  padding:0;
+}
+
+.container-fluid{
+  background-color:#00217f;
+  padding:10px 0 0 0;
+  margin:auto;
+}
+
+.button{
+  font-size:16px;
+  font-weight:bold;
+  padding:5px;
+  margin:5px auto 15px auto;
+}
+
+.row{
+  margin:0;
+  padding:0;
+}
+
+.col-xs-1 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-2 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-3 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-4 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-5 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-6 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-8 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.col-xs-12 {
+  margin:0;
+  padding:14px 0 0 0;
+}
+
+.actions{
+  margin:14px 0 14px 0;
+  padding:0;
+}
+
+.linktop{
+  margin:10px 0 0 0;
+  padding:0;
+}
+
+.linktop a{
+  font-size:18px;
+  font-weight:bold;  
+  background-color:#c5cbdb;	
+  color:#00217f;
+  margin:0;
+  padding:4px 4px 4px 4px;
+}
+
+.link {
+  margin:0 0 10px 0;
+  padding:0;
+}
+
+.link a{
+  font-size:18px;
+  font-weight:bold;
+  background-color:#c5cbdb;	
+  color:#00217f;
+  padding:4px 4px 4px 4px;
+}
+
+.linktopsm{
+  margin:10px 0 0 0;
+  padding:0;
+}
+
+.linktopsm a{
+  font-size:14px;
+  font-weight:bold;  
+  background-color:#c5cbdb;	
+  color:#00217f;
+  margin:0;
+  padding:4px 4px 4px 4px;
+}
+
+.linksm {
+  margin:0 0 10px 0;
+  padding:0;
+}
+
+.linksm a{
+  font-size:12px;
+  background-color:#c5cbdb;	
+  color:#00217f;
+  padding:4px 4px 4px 4px;
+}
+
+.linktopgreen{
+  margin:15px 0 0 0;
+  padding:10px 0 0 0;
+}
+
+.linktopgreen a{
+  background-color:greenyellow;	
+  color:#00217f;
+  margin:0;
+  padding:4px 4px 4px 4px;
+}
+
+.linktopgreen a:hover{
+  background-color:greenyellow;	
+  color:#4b5cf4;
+  margin:0;
+  padding:4px 4px 4px 4px;
+}
+
+.linkgreen {
+  margin:0 0 10px 0;
+  padding:0;
+}
+
+.linkgreen a{
+  background-color:greenyellow;	
+  color:#00217f;
+  padding:4px 4px 4px 4px;
+}
+
+.linkgreen a:hover{
+  background-color:greenyellow;	
+  color:#4b5cf4;
+  padding:4px 4px 4px 4px;
+}
+
+.evshow{
+  margin:20px 0 0 0;
+  padding:0;
+  font-weight:bold;
+}
+
+.evshowb{
+  margin:0;
+  padding:0;
+  font-weight:bold;
+}
+
+.flabel{
+  margin:0;
+  padding:2px 0 0 0;
+}  
+
+.flabelsc{
+  margin:0;
+  padding:14px 0 0 0;
+  font-weight:bold;
+}  
+
+.slabelsc{
+  margin:0;
+  padding:10px 0 0 0;
+}  
+
+.ftime input[type="text"] {
+  width:40px;
+  text-align:center;
+}
+
+.ftimehighlight input[type="text"] {
+  width:60px;
+  text-align:center;
+  border:4px solid #bf3d5b;
+}
+
+.ftime input[type="text"]:hover{
+  background-color:#eefcd1;
+}
+
+.ftimehighlight input[type="text"]:hover{
+  background-color:#eefcd1;
+}
+
+.ftime h4{
+  font-weight:bold;
+}
+
+.fnum input[type="number"] {
+  width:60px;
+  text-align:center;
+}
+
+.fnumhighlight input[type="number"] {
+  width:60px;
+  border:4px solid #bf3d5b;
+  text-align:center;
+}
+
+.fnum input[type="number"]:hover{
+  background-color:#eefcd1;
+}
+
+.fnumhighlight input[type="number"]:hover{
+  background-color:#eefcd1;
+}
+
+.fyn input[type="text"] {
+  width:60px;
+  text-align:center;
+  font-size:14px;
+}
+
+.fyn{
+  margin-top:10px;
+}
+
+.ftext input[type="text"] {
+  width:120px;
+  text-align:left;
+  font-size:14px;
+  margin:0;
+  padding:0;
+}
+
+.ftext input[type="text"]:hover {
+  background-color:#eefcd1; 
+}
+
+.ftextsm input[type="text"] {
+  width:60px;
+}
+
+.ftextsm input[type="text"]:hover {
+  background-color:#eefcd1;
+}
+
+.femail input[type="email"]:hover {
+  background-color:#eefcd1;
+}
+
+.fpassword input[type="password"]:hover {
+  background-color:#eefcd1;
+}
+
+.foption input[type="option"]:hover {
+  background-color:#eefcd1;
+}
+
+.timeread{
+  font-size:16px;
+  color:#00217f;
+  font-weight:bold;
+  background-color:#eefcd1;
+  padding:5px 0 3px 0;
+  margin:10px 20px 0px 0px;
+  border:2px solid white;
+}
+
+#backgroundcolor {
+  background-color:#00217f;
+}
+
+#bdr {
+  border-bottom:1px solid #00217f;
+  height:10px;
+  margin:0;
+}
+
+#bdr_heavy {
+  border-bottom:3px solid #00217f;
+  margin:0;
+}
+
+#bdr_heavy_top {
+  border-bottom:3px solid #00217f;
+  height:10px;
+  margin:0;
+}
+
+#bold{
+  font-weight:bold;
+}
+
+#bottom{
+  padding-bottom: 20px;
+}
+
+#center {
+  text-align:center;
+}
+
+#centerwrap {
+  text-align:center;
+  white-space:normal;
+}
+
+#centerbold{
+  text-align:center;
+  font-weight:bold;
+}
+
+#complete {
+  background-color:#e1e1ed;
+}
+
+#footer{
+  font-size:18px;
+  font-weight:bold;  
+  text-align:left;
+  padding:20px 0 50px 0;
+  margin:0;
+}
+
+#footerli{
+  padding:0;
+  margin:0;
+}
+
+#greenyellow{
+  color:greenyellow;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+#h1 {
+  font-size:36px;
+  font-weight:bold;
+  color:#00217f;
+  margin:14px 0 0 0;
+  padding:0;
+}
+
+#h1right {
+  font-size:36px;
+  font-weight:bold;
+  text-align:right;
+  margin-top:14px;
+  
+}
+
+#h1sw {
+  font-size:36px;
+  font-weight:bold;
+  margin:0;
+  padding:8px 0 0 0;
+}
+
+#h2 {
+  font-size:30px;
+  font-weight:bold;
+  color:#00217f;
+  margin-left:0;
+  padding-left:0;
+}
+
+#h2namehighlight{
+  font-size:30px;
+  font-weight:bold;
+  color:#00217f;
+  background-color:#c5cbdb;
+  margin:0;
+  padding:24px 0px 24px 0px;
+  text-align:center;
+}
+
+#h2right {
+  font-size:30px;
+  font-weight:bold;
+  color:#00217f;
+  text-align:right;
+  margin-right:0px;
+  padding-right:0px;
+}
+
+#h2top {
+  font-size:30px;
+  font-weight:bold;
+  color:#00217f;
+  margin-top:24px;
+}
+
+#h4 {
+  font-size:18px;
+  font-weight:semi-bold;
+  margin:0;
+  padding:0;
+}
+
+#h4right {
+  font-size:18px;
+  font-weight:semi-bold;
+  text-align:right;  
+  margin:0;
+  padding:0;
+}
+
+#h4bold {
+  font-size:18px;
+  font-weight:bold;
+}
+
+#h4boldbottom {
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+#h4boldcenter {
+  font-size:18px;
+  font-weight:bold;
+  text-align:center;
+}
+
+#h4boldright {
+  font-size:18px;
+  font-weight:bold;
+  text-align:right;
+}
+
+#h4boldtop {
+  font-size:18px;
+  font-weight:bold;
+  margin-top:16px;
+}
+
+#h3boldtop {
+  font-weight:bold;
+  margin-top:16px;
+}
+
+#h5 {
+  margin:0;
+  padding:0;
+}
+
+#h5right{
+  margin:0;
+  padding:0;
+  text-align:right;
+}
+
+#marginedit{
+  margin:10px 0 0 0;
+  padding:0;
+}
+
+#header{
+  margin:auto;
+  padding:0 0 10px 0;
+}
+
+#left {
+  text-align:left;
+  padding-left:0;
+  margin-left:0;
+}
+
+#nomargin{
+  margin:0;
+  padding:0;
+}
+
+#nopad {
+  margin:0;
+  padding:0;
+  white-space:nowrap;
+}
+
+#padbottom {
+  padding-bottom:200px;
+  background-color:white;
+}
+
+#paddingright {
+  padding-right:110px;
+}
+
+#posfix {
+  position:fixed;
+  width:1200px;
+  bottom:0;
+  margin:0;
+  padding:0;
+}
+
+#right {
+  text-align:right;
+  padding-right:0;
+  margin-right:0;
+}
+
+#sniffingleftside{
+  margin:20px 0 0 0;
+  padding:0 4px 0 0;
+  text-align:center;
+}
+
+#sniffingrightside{
+  margin:20px 0 0 0;
+  padding:0 0 0 4px;
+  text-align:center;
+}
+
+#sniffingright{
+  margin:20px 0 0 0;
+  padding:0;
+  text-align:right;
+}
+
+#sniffingleft{
+  margin:20px 0 0 0;
+  padding:0;
+  text-align:left;
+}
+
+#stopwatch{
+  background-color:#00217f;
+  text-align:center;
+  border-top:1px solid #00217f;
+  border-bottom:1px solid #00217f;
+  padding:20px 10px 15px 10px;
+  margin:0;
+}
+
+#sw_start{
+  margin:5px 15px 0 0;
+  font-size:16px;
+  font-weight:bold;
+  padding:5px;
+}
+
+#sw_pause{
+  margin:5px 15px 0 0;
+  font-size:16px;
+  font-weight:bold;
+  padding:5px;  
+}
+
+#sw_reset{
+  margin:5px 0 0 0;
+  font-size:16px;
+  font-weight:bold;
+  padding:5px;  
+}
+
+#sw_status{
+  color:greenyellow;
+  font-size:16px;
+  margin:0 15px 0 0;
+}
+
+#topmargin {
+  margin-top:30px;
+}
+
+#tilda {
+  color:greenyellow;
+  font-weight:bold;
+  margin-left:0;
+  padding-left:0;
+}
+
+#white {
+  background-color:white;
+}
+
+#whitetxt {
+  color:white;
+  white-space:nowrap;
+}
+
+#wrap {
+  white-space:normal;
+}
+
+
+@media screen and (max-width: 900px){
+  h5{
+    font-size:12px;
+  }
+
+  .button{
+    font-size:14px;
+    font-weight:bold;
+    padding:5px;
+  }
+
+  .img{
+    height:80px;
+    width:120px;
+    margin:0;
+    padding:0;
+  }
+
+  .img_star{
+    height:70px;
+    width:60px;
+    margin:0;
+    padding:0;
+  }
+
+  #h1 {
+    font-size:30px;
+    font-weight:bold;
+    color:#00217f;
+    white-space:normal;
+  }
+
+  #h1right {
+    font-size:30px;
+    font-weight:bold;
+    text-align:right;
+    padding-bottom:10px;
+    white-space:normal;
+  }
+
+  #h1sw {
+    font-size:30px;
+    font-weight:bold;
+    white-space:normal;
+    margin:0;
+    padding:0;
+  }
+
+  #h2 {
+    font-size:24px;
+    font-weight:bold;
+    color:#00217f;
+    white-space:normal;
+  }
+
+  #h2namehighlight{
+    font-size:24px;
+    font-weight:bold;
+    color:#00217f;
+    background-color:#c5cbdb;
+    margin:0;
+    padding:24px 0px 24px 0px;
+    text-align:center;
+    white-space:normal;
+  }
+
+  #h2right {
+    font-size:24px;
+    font-weight:bold;
+    color:#00217f;
+    text-align:right;
+    margin-right:0px;
+    padding-right:0px;
+    padding-top:0;
+    white-space:normal;
+  }
+
+  #h2top {
+    font-size:24px;
+    font-weight:bold;
+    color:#00217f;
+    margin-top:24px;
+    white-space:normal;
+  }
+  
+  #h4{
+    font-size:14px;
+  }
+
+  #h4 {
+    font-size:14px;
+    font-weight:semi-bold;
+    margin:0;
+    padding:0;
+  }
+
+  #h4right {
+    font-size:14px;
+    font-weight:semi-bold;
+    text-align:right;  
+    margin:0;
+    padding:0;
+  }
+
+  #h4bold {
+    font-size:14px;
+    font-weight:bold;
+  }
+
+  #h4boldbottom {
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:20px;
+  }
+
+  #h4boldcenter {
+    font-size:18px;
+    font-weight:bold;
+    text-align:center;
+  }
+
+  #h4boldright {
+    font-size:18px;
+    font-weight:bold;
+    text-align:right;
+  }
+
+  #h4boldtop {
+    font-size:14px;
+    font-weight:bold;
+    margin-top:16px;
+  }
+  
+  #h5{
+    font-size:12px;
+  }
+
+  #sw_pause{
+    margin:5px 15px 0 0;
+    font-size:12px;
+    font-weight:bold;
+    padding:5px;  
+  }
+
+  #sw_reset{
+    margin:5px 0 0 0;
+    font-size:12px;
+    font-weight:bold;
+    padding:5px;  
+  }
+
+  #sw_status{
+    color:greenyellow;
+    font-size:12px;
+    padding-left:10px
+  }
+  
+  #greenyellow{
+    color:greenyellow;
+    font-weight:bold;
+    white-space:normal;
+  }
+
+  #whitetxt {
+    color:white;
+    white-space:normal;
+  }  
+}

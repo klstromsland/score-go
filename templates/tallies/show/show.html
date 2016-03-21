@@ -1,0 +1,88 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Tally</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-6" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+    <h2 id="h2">@tally.event.title K9 Nose Work Trial Tally</h2>
+    <div id="bdr"></div>
+    <div class="row">
+      <div class="col-xs-3">
+        <h4 id="h4bold">Event Title: @tally.event.title</h4> 
+      </div>
+      <div class="col-xs-3">
+        <h4 id="h4bold">Location: @tally.event.place</h4> 
+      </div>
+      <div class="col-xs-3">
+        <h4 id="h4bold">Date: @tally.event.date</h4> 
+      </div>  
+      <div class="col-xs-3">
+        <h4 id="h4bold">Division: @tally.event.division</h4> 
+      </div>
+    </div>  
+	@tally.event.entrants.each do |entrant|
+		if @tally.entrant_tly_id == entrant.id
+			<div id="bdr"></div>
+			<div class="row">
+				<div class="col-xs-12">
+					<h4 id="h4bold">Team:  entrant.first_name entrant.last_name ( entrant.idnumber ) and entrant.dog_name ( entrant.breed, entrant.dogidnumber )</h4> 
+				</div>
+			</div>
+		end
+	end
+	<div id="bdr"></div>
+	<div class="row" id="center">
+		<div class="col-xs-2">
+			<h4 id="h4bold">Total Time</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Total Points</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Total Faults</h4> 
+		</div>  
+		<div class="col-xs-2">
+			<h4 id="h4bold">Qualifying Score</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Qualifying Scores</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Title</h4> 
+		</div>
+	</div>  
+	<div class="row" id="center">
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.total_time_m:@tally.total_time_s:@tally.total_time_ms</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.total_points</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.total_faults</h4>
+		</div>  
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.qualifying_score</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.qualifying_scores</h4> 
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">@tally.title</h4> 
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><a href="/events/show/{{ .Id }}">Back to Event</a> | <a href="/tallies/update/{{ .Id }}">Update Tally</a></p></li>
+{{ end }}

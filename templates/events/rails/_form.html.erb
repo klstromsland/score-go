@@ -1,0 +1,158 @@
+<%= form_for(@event) do |f| %>
+  <% if @event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+      <ul>
+				<% @event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+				<% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row">
+	  <div class="col-xs-1">
+			<h4 id="h4"><%= f.label :title, "Title: " %></h4>
+	  </div>
+	  <div class="col-xs-2">
+			<p class="ftext"><%= f.text_field :title %></p>	
+	  </div>
+	  <div class="col-xs-2">
+			<h4 id="h4"><%= f.label :place, "Location: " %></h4>
+	  </div>
+	  <div class="col-xs-2">
+			<p class="ftext"><%= f.text_field :place %></p>
+	  </div>
+	  <div class="col-xs-1">
+			<h4 id="h4"><%= f.label :date, "Date: " %></h4>
+	  </div>
+	  <div class="col-xs-4">
+			<h5 id="h5right"><%= f.date_select :date %></h5>
+	  </div>
+  </div>
+  <div class="row">
+	  <div class="col-xs-1">
+			<h4 id="h4"><%= f.label :status, "Status: " %></h4>
+	  </div>	
+	  <div class="col-xs-2">
+			<h5  id="h5"><%= f.select :status, ["active", "closed"] %></h5>
+	  </div>
+    <div class="col-xs-2">
+	    <h4 id="h4"><%= f.label :host, "Host: " %></h4>
+	  </div>
+	  <div class="col-xs-2">
+	    <p class="ftext"><%= f.text_field :host %></p>
+	  </div>
+    <div class="col-xs-1">
+	    <h4 id="h4"><%= f.label :division, "Division: " %></h4>
+	  </div>
+	  <div class="col-xs-4">
+	    <h5 id="h5right"><%= f.select :division, ["NW1", "NW2", "NW3", "Element Specialty", "Elite"] %></h5>
+	  </div>	  
+  </div>
+	<div id="bdr"></div>
+	<h4 id="h4bold">Element Search Areas and Hides</h4>
+  <div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Element</h5>
+	  </div>	
+	  <div class = "col-xs-2">
+	    <h5 id="bold"><%= f.label :int_search_areas, "Interior" %></h5>
+	  </div>
+		<div class = "col-xs-2">
+	    <h5 id="bold"><%= f.label :ext_search_areas, "Exterior" %></h5>
+	  </div>
+	  <div class = "col-xs-2">
+	    <h5 id="bold"><%= f.label :cont_search_areas, "Container" %></h5>
+	  </div>		
+	  <div class = "col-xs-2">
+	    <h5 id="bold"><%= f.label :veh_search_areas, "Vehicle" %></h5>
+	  </div>		
+	  <div class = "col-xs-2">
+	    <h5 id="bold"><%= f.label :elite_search_areas, "Elite" %></h5>
+	  </div>
+	</div>
+	<% if @event.entrants != nil && @event.users != nil && @event.id != nil %>		
+		<% @entrants = @event.entrants %>
+		<% @users = @event.users %>
+		<% @event.update_event(@event.id, @entrants, @users) %>
+	<% end %>
+	<div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Search Areas</h5>
+	  </div>	
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :int_search_areas,  in: 0...10, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :ext_search_areas,  in: 0...6, step: 1 %></p>
+    </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :cont_search_areas,  in: 0...6, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :veh_search_areas,  in: 0...6, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :elite_search_areas,  in: 0...6, step: 1 %></p>
+	  </div>
+  </div>	
+  <div class="row">
+	  <div class = "col-xs-2">
+		  <h5 id="bold">Hides</h5>
+	  </div>
+	  <div class = "col-xs-2">	
+	    <p class="fnum"><%= f.number_field :int_hides,  in: 0...16, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :ext_hides,  in: 0...16, step: 1 %></p>
+      </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :cont_hides,  in: 0...16, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :veh_hides,  in: 0...16, step: 1 %></p>
+	  </div>
+	  <div class = "col-xs-2">
+	    <p class="fnum"><%= f.number_field :elite_hides,  in: 0...16, step: 1 %></p>
+	  </div>
+  </div>
+	<div class="row">
+	  <div class = "col-xs-8">
+	    <div class="actions">
+        <p></p>
+      </div>
+    </div>		
+	  <div class = "col-xs-2">
+	    <div class="actions">
+        <p><%= f.submit "Update Search Area Info", class: "button" %></p>
+      </div>
+    </div>
+	</div>	
+	<div id="bdr"></div>	
+	<div class="row">
+	  <div class = "col-xs-4">
+	    <h4 id="h4"><%= f.label "Officials: " %></h4>
+		</div>
+	  <div class = "col-xs-4">
+	    <h4 id="h4"><%= f.label "Teams: " %></h4>
+	  </div>
+  </div>
+	<div class="row">
+	  <div class = "col-xs-8">
+	    <h5 id="wrap">Updates to officials and teams work best if for each update, officials or teams are either only added or only removed...not added and removed during a single update.</h5>
+		</div>
+  </div>	
+	<div class="row">
+	  <div class = "col-xs-4">
+	    <h5><%= select_tag "user_team", options_from_collection_for_select(User.all.where("status = 'active'").order("role").order("last_name"), "id", "name_role", @event.users.map{ |u| u.id }), :multiple => true, :include_blank => true, size: 20  %></h5>
+    </div>
+	  <div class = "col-xs-4">
+	    <h5><%= select_tag "team", options_from_collection_for_select(Entrant.all.order("last_name"), "id", "team", @event.entrants.map{ |en| en.id }), :multiple => true, :include_blank => true, size: 20 %></h5>
+    </div>
+	  <div class = "col-xs-4">
+	    <div class="actions">
+        <p><%= f.submit class: "button" %></p>
+      </div>
+    </div>
+  </div>
+<% end %>

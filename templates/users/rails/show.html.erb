@@ -1,0 +1,51 @@
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-4" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">User</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-4" id="center">
+				<p id="notice"><%= notice %></p>
+			</div>
+			<div class="col-xs-4" id="right">			
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div class="row">
+		<div class="col-xs-2">
+			<h4 id="h4bold">First Name</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Last Name</h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4bold">Role</h4>
+		</div>
+		<div class="col-xs-1">
+			<h4 id="h4bold">Status</h4>
+		</div>
+	</div> 
+	<div class="row">
+		<div class="col-xs-2">
+			<h5 id="h5"><%= @user.first_name %></h5>
+		</div>
+		<div class="col-xs-2">
+			<h5 id="h5"><%= @user.last_name %></h5>
+		</div>
+		<div class="col-xs-2">
+			<h5 id="h5"><%= @user.role %></h5>
+		</div>
+		<div class="col-xs-2">
+			<h5 id="h5"><%= @user.status %></h5>
+		</div>
+	</div>
+</div>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><%= link_to "Back to Events", events_path %> | <%= link_to "Edit User Info", edit_user_path(@user) %> | <%= link_to "Back to Users", users_path %></p></li>

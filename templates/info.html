@@ -1,0 +1,56 @@
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">				
+			<div class="col-xs-4" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Info</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-4" id="center">
+					<p id="notice"><%= notice %></p>
+			</div>					
+			<div class="col-xs-4" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div class="row">
+	  <div class="col-xs-12">
+			<h4 id="h4bold">Welcome and thank you for stopping by.</h4>
+			<p id="wrap">This webapp was built to provide prospective customers and recruiters with a demo.</p>
+			<p id="wrap">It is based upon the concept of real time running, tabulating, scoring and data storage for canine scentwork trials consistings of various divisions and elements.</p>
+			<h4 id="h4bold">Anticipated webapp run progression:</h4>
+			<p id="wrap">Sign in or Log in (currently not controlled by admin).</p>
+			<p id="wrap">"Create" an event with division, element, search area and hide definitions and add officials and teams.</p>
+			<p id="wrap">"Run" an event (takes you to a page providing links to team scorecards, tallies and summary tabulations).</p>
+			<p id="wrap">Update scorecards and tallies during the course of the trial as overall results are tabulated.</p>
+			<p id="wrap"><strong>Anticipated scorecard and tally entry progression:</strong></p>
+      <p id="wrap">Enter search area hide count and "Tabulate points".</p>
+      <p id="wrap">Enter time limit and "Save points and time limit".</p>
+      <p id="wrap">Check that the timed out checkbox shows "no".</p>
+      <p id="wrap">Time search using "Stopwatch".</p>
+      <p id="wrap">After search, enter hides found, timed out checkbox, finish call, faults, notes and "Tabulate Score".</p>
+      <p id="wrap">Make final revisions, sign and enter "Final Submit".</p>
+      <p id="wrap">Other than the search time, entries can be updated at a later time and can be entered manually instead of using the automatic tabulations.  The search time can be entered manually after timing the search if the search time from other timers is available.  Hides missed is part of the tabulation.</p> 
+      <p id="wrap">After all of the scorecards are complete, "Update" the tally.</p>  
+      <p id="wrap">The tally should automatically tabulate the results so that entering "Update" is a confirmation. Tallies can be updated manually as well through "Edit Tally".</p>
+			<h4 id="h4bold">Known errors and ommisions:</h4>
+      <p id="wrap">The webapp will currently accept duplications of names, id numbers, etc - verification left to user.</p>
+			<p id="wrap">If a team or user is deleted, the user and user info or team and team info will currently be removed from all events.</p>
+			<p id="wrap">Timer is not infallible and should always be backed up be other timers.</p>
+			<p id="wrap">For an event, the webapp does not verify that time limits and hide counts are consistent for scorecards between teams - left to user verification.</p>
+			<p id="wrap">The webapp will alert users if a search area hide count is greater than the element hide count but will not alert the user if the search area or combined search area hide counts are less than the element hide count - verification left to user.</p>
+			<p id="wrap">The webapp will allow the user to enter both a false alert and a found hide for the same hide - verification left to user.</p>
+			<p id="wrap">Completed scorecard and tally shade out is base upon the scorecard judge signature and use of the tally submit/update button.</p>
+			<p id="wrap">The timeout checkbox is not fully controlled and should be checked before scorecard tabulation - left to user verification.</p>
+			<p id="wrap">When updating Event element search areas and hides, sometimes the update button needs to be pressed more than once before the update is fully implemented (I have much to learn).</p>
+			<p id="wrap">There currently are no locks in place other than simulcrums for closing an event and de-activating users.  For example, if while an Event is being run, changes are made to Event element search areas and hides, completed scorecards and tallies may be impacted.</p>
+			<p id="wrap">Error alerts and validation is currently minimal.</p>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><%= link_to "Back to Events", events_path %></p></li>

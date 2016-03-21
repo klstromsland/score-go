@@ -1,0 +1,32 @@
+{{ define "form" }}
+	<div class="row">
+		<div class="col-xs-2">
+			<h4 id="h4">Name: </h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Team ID: </h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Event IDs: </h4>
+		</div>		
+	</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Name" value="{{ .Name }}"></p>	
+		</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Team_Id" value="{{ .Team_Id }}"></p>	
+		</div>
+		<div class="col-xs-2">
+		  {{ range $index, $value := .Event_Id }}
+			<p class="ftext"><input type="text" name="$value" value="{{ $value }}"></p>
+			{{ end }}
+		</div>		
+	<div class="row">
+		<div class="col-xs-4">
+			<div class="actions">
+				<p><input type="submit" value="Submit"></p>
+			</div>
+		</div>
+	</div>
+</form>
+{{ end }}

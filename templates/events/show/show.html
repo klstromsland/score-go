@@ -1,0 +1,74 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">				
+			<div class="col-xs-4" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Event</span><span id="tilda">~</span></h1>
+			</div>					
+			<div class="col-xs-4" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="white">
+	<div class="row">
+	  <div class="col-xs-5">
+			<h4 id="h4bold">{{ .Name }}, {{ .Location }}</h4>
+		</div>
+    <div class="col-xs-5">		
+			<h4 id="h4bold">Division:  {{ .Division }} </h4>
+		</div>
+    <div class="col-xs-2">		
+			<h4 id="h4bold">Event ID:  {{ .Event_Id }} </h4>
+		</div>	
+	</div>
+  <div class="row">
+    <div class="col-xs-1">
+			<ul>
+				<li id="bold">Element</li>
+					<li>Interior</li>
+					<li>Exterior</li>
+					<li>Container</li>
+					<li>Vehicle</li>
+					<li>Elite</li>
+			</ul>
+		</div>
+		<div class="col-xs-2">
+			<ul>
+				<li id="centerbold">Search Areas</li>
+					<li id="center">{{ .Int_search_areas }}</li>
+					<li id="center">{{ .Ext_search_areas }}</li>
+					<li id="center">{{ .Cont_search_areas }}</li>
+					<li id="center">{{ .Veh_search_areas }}</li>
+					<li id="center">{{ .Elite_search_areas }}</li>
+			</ul>
+		</div>
+		<div class="col-xs-2">
+			<ul>
+				<li id="centerbold">Hides</li>
+					<li id="center">{{ .Int_hides }}</li>
+					<li id="center">{{ .Ext_hides }}</li>
+					<li id="center">{{ .Cont_hides }}</li>
+					<li id="center">{{ .Veh_hides }}</li>
+					<li id="center">{{ .Elite_hides }}</li>
+			</ul>
+		</div>
+	</div>	
+	<div class="row">
+    <div class="col-xs-5">		
+			<h4 id="h4bold">Teams:</h4>
+		</div>
+    <div class="col-xs-2">	
+			{{ range $index, $value := .EntrantSelected_Id }}
+				<h4 id="h4bold">{{ $value }}</h4>
+			{{ end }}					
+		</div>
+	</div>	
+</div>	
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><a href="/getEntrants/edit/{{ .Id }}">Edit Event</a> | <a href="/events">Back to Events</a></p></li>
+{{ end }}

@@ -1,0 +1,265 @@
+{{ define "form" }}
+  <script>
+		var timeout_m = {{ .Maxtime_m }}
+		var timeout_s = {{ .Maxtime_s }}
+		var timeout_ms = {{ .Maxtime_ms }}
+		var timeout = (timeout_m * 60000) + (timeout_s * 1000) + (timeout_ms * 10);
+  </script>
+  <div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4bold">Event ID<input type="text" name="Event_Id" value="{{ .Event_Id }}"></h4>
+		</div>
+	  <div class="col-xs-4">		
+			<h4 id="h4bold">Element:  
+				<select name="Element" value="{{ .Element }}">
+					<option name="Container" value="Container">Container</option>
+					<option name="Exterior" value="Exterior">Exterior</option>
+					<option name="Interior" value="Interior">Interior</option>
+					<option name="Vehicle" value="Vehicle">Vehicle</option>
+					<option name="Elite" value="Elite">Elite</option>
+				</select></h4>			
+		</div>		
+  </div>		
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4bold">Total {{ .Element }} Search Areas: {{ .Search_area }}</h4>
+		</div>
+	  <div class="col-xs-4">		
+			<h4 id="h4bold">Scorecard ID<input type="text" name="Scorecard_Id" value="{{ .Scorecard_Id }}"></h4>
+		</div>
+	  <div class="col-xs-4">
+			<h4 id="h4boldright">Total {{ .Element }} Hides: </h4>
+		</div>		
+	</div>
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 class="flabelsc" id="h4bold">Element: {{ .Element }} {{ .Search_area }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 class="fnumhighlight" id="h4bold">Hides/Calls:  
+			<select name="Hides_max" value="{{ .Hides_max }}">
+				<option name="1" value="1">1</option>
+				<option name="2" value="2">2</option>
+				<option name="3" value="3">3</option>
+				<option name="4" value="4">4</option>
+				<option name="5" value="5">5</option>
+				<option name="6" value="6">6</option>
+				<option name="7" value="7">7</option>
+				<option name="8" value="8">8</option>
+				<option name="9" value="9">9</option>
+				<option name="10" value="10">10</option>
+			</select></h4>
+		</div>		
+		<div class="col-xs-4">
+			<div class="actions">
+				<p class="button" id="right"><input type="submit" value="Submit"></p>
+				<h4 id="h4bold"><span style="color:#bf3d5b">check_hide_count</span></h4>
+			</div>
+		</div>
+	</div>	
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 class="fnumhighlight" id="h4">Point Value: <input type="text" name="Maxpoint" value="{{ .Maxpoint }}"></h4>
+		</div>
+		<div class="col-xs-4">
+			<h4 class="ftimehighlight" id="h4"><span style="font-weight:bold">Time Limit: </span><input class="field" id="cd_minutes" type="text" name="Maxtime_m" value="{{ .Maxtime_m }}">:<input class="field" id="cd_seconds" type="text" name="Maxtime_s" value="{{ .Maxtime_s }}"></h4> 
+		</div>
+		<div class="col-xs-4">
+			<div class="actions" id="nomargin">
+				<p class="button" id="right"><input type="submit" value="Submit"></p>
+			</div>
+		</div>		
+	</div>
+	<div id="bdr"></div>
+	<div class="row" id="stopwatch">
+		<div class="col-xs-4" id="nomargin">
+			<h1 id="h1sw"><span id="tilda">~</span><span id="whitetxt">Stopwatch<span id="tilda">~</span></span></h1>
+		</div>
+		<div class="col-xs-4" id="nomargin">
+			<div class="timeread">
+				<span id="sw_m">00</span>:
+				<span id="sw_s">00</span>:
+				<span id="sw_ms">00</span>
+			</div>
+		</div>
+		<div class="col-xs-4" id="nomargin">
+			<p><input type="button" value="Start" id="sw_start" />
+			<input type="button" value="Stop" id="sw_pause" />
+			<!--  <input type="button" value="Stop"  id="sw_stop" />  -->
+			<input type="button" value="Reset" id="sw_reset" /></p>
+			<p id="sw_status">Idle</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">  
+			<h4 class="fnumhighlight">Hides Found: 
+			<select name="Hides_found" value="{{ .Hides_found }}">
+				<option name="1" value="1">1</option>
+				<option name="2" value="2">2</option>
+				<option name="3" value="3">3</option>
+				<option name="4" value="4">4</option>
+				<option name="5" value="5">5</option>
+				<option name="6" value="6">6</option>
+				<option name="7" value="7">7</option>
+				<option name="8" value="8">8</option>
+				<option name="9" value="9">9</option>
+				<option name="10" value="10">10</option>
+			</select></h4>
+		</div>		
+		<div class="col-xs-4"> 
+			<h4 class="fnum">Hides Missed: 
+			<select name="Hides_missed" value="{{ .Hides_missed }}">
+				<option name="1" value="1">1</option>
+				<option name="2" value="2">2</option>
+				<option name="3" value="3">3</option>
+				<option name="4" value="4">4</option>
+				<option name="5" value="5">5</option>
+				<option name="6" value="6">6</option>
+				<option name="7" value="7">7</option>
+				<option name="8" value="8">8</option>
+				<option name="9" value="9">9</option>
+				<option name="10" value="10">10</option>
+			</select></h4>
+		</div>
+		<div class="col-xs-4">
+			<h4 class="fyn" id="right">Finish call: 
+			<select name="Finish_call" value="{{ .Finish_call }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">    
+			<h4 class="fyn">Timed out: 
+			<select name="Timed_out" value="{{ .Timed_out }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+		<div class="col-xs-4">
+			<h4 class="fnum">False alert/fringe: 
+			<select name="False_alert_fringe" value="{{ .False_alert_fringe }}">
+				<option name="1" value="1">1</option>
+				<option name="2" value="2">2</option>
+				<option name="3" value="3">3</option>
+				<option name="4" value="4">4</option>
+				<option name="5" value="5">5</option>
+				<option name="6" value="6">6</option>
+				<option name="7" value="7">7</option>
+				<option name="8" value="8">8</option>
+				<option name="9" value="9">9</option>
+				<option name="10" value="10">10</option>
+			</select></h4>
+		</div>
+		<div class="col-xs-4">
+			<h4 class="fyn" id="right">Dismissed: 
+			<select name="Dismissed" value="{{ .Dismissed }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 class="fyn">Excused: 
+			<select name="Excused" value="{{ .Excused }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+		<div class="col-xs-4">
+			<h4 class="fyn">Absent: 
+			<select name="Absent" value="{{ .Absent }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 class="fyn">Eliminated during search:  
+			<select name="Eliminated_during_search" value="{{ .Eliminated_during_search }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">	
+			<div class="field">
+				<h4>Other faults (describe):  </h4>
+				<textarea rows="8" cols="80" placeholder="Describe faults...">{{ .Other_faults_descr }}</textarea>
+			</div>
+		</div>
+	</div>			
+	<div class="field">
+		<h4 class="fnum">Other faults count:  
+		<select name="Other_faults_count" value="{{ .Other_faults_count }}">
+			<option name="1" value="1">1</option>
+			<option name="2" value="2">2</option>
+			<option name="3" value="3">3</option>
+			<option name="4" value="4">4</option>
+			<option name="5" value="5">5</option>
+			<option name="6" value="6">6</option>
+			<option name="7" value="7">7</option>
+			<option name="8" value="8">8</option>
+			<option name="9" value="9">9</option>
+			<option name="10" value="10">10</option>
+		</select></h4>
+	</div>
+	<div class="field">
+		<h4>Comments: </h4>
+		<textarea rows="8" cols="80" placeholder="Enter comments...">{{ .Comments }}</textarea>
+	</div>
+	<div id="bdr"></div>	
+	<div class="row">
+		<div class="col-xs-4">			
+			<h4 class="fnumhighlight" id="h4">Total Faults:  
+			<select name="Total_faults" value="{{ .Total_faults }}">
+				<option name="1" value="1">1</option>
+				<option name="2" value="2">2</option>
+				<option name="3" value="3">3</option>
+				<option name="4" value="4">4</option>
+				<option name="5" value="5">5</option>
+				<option name="6" value="6">6</option>
+				<option name="7" value="7">7</option>
+				<option name="8" value="8">8</option>
+				<option name="9" value="9">9</option>
+				<option name="10" value="10">10</option>
+			</select></h4>
+		</div>
+		<div class="col-xs-4">			
+			<h4 class="ftimehighlight" id="h4">{{ .Time_elapsed_m }}:{{ .Time_elapsed_s }}:{{ .Time_elapsed_ms }} min:sec:sec/100</h4>
+		</div>		
+		<div class="col-xs-4">
+			<h4 class="fnumhighlight" id="h4right">Total points:  <input type="text" name="Total_points" value="{{ .Total_points }}"></h4>
+		</div>
+	</div>
+	<div class="row" id="paddingbottom">
+		<div class="col-xs-4">
+			<h4 id="h4">Pronounced:  
+			<select name="Pronounced" value="{{ .Pronounced }}">
+				<option name="yes" value="yes">yes</option>
+				<option name="no" value="no">no</option>
+			</select></h4>
+		</div>		
+		<div class="col-xs-2">
+		  <p class="button"><input type="submit" value="Submit"></p>
+		</div>
+		<div class="actions" id="nomargin">
+			<div class="col-xs-4" id="right">
+				<h4 id="h4">Judge Signature:  
+				<select name=".Judge_signature" value="{{ .Judge_signature }}">
+					<option name="yes" value="yes">yes</option>
+					<option name="no" value="no">no</option>
+				</select></h4>
+			</div>
+			<div class="col-xs-2">
+			  <p id="right" class="button"><input type="submit" value="Submit"></p>
+			</div>			
+		</div>
+	</div>
+{{ end }}

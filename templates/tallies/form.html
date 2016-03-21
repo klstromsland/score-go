@@ -1,0 +1,106 @@
+{{ define "form" }}
+	<h2 id="h2">@tally.event.title K9 Nose Work Trial Tally</h2>
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4bold">Event Title: @tally.event.title</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Location: @tally.event.place</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Date: @tally.event.date</h4> 
+		</div>  
+		<div class="col-xs-3">
+			<h4 id="h4bold">Division: @tally.event.division</h4> 
+		</div>
+	</div>
+  <div id="bdr"></div>	
+	@tally.event.entrants.each do |entrant|
+		if @tally.entrant_tly_id == entrant.id
+			<div class="row">
+				<div class="col-xs-10">
+					<h4 id="h4boldtop">Team:  entrant.first_name entrant.last_name ( entrant.idnumber ) and entrant.dog_name ( entrant.breed, entrant.dogidnumber )</h4> 
+				</div>
+			</div>
+			<div id="bdr"></div>
+			<div class="row">
+				<div class="col-xs-2">
+					<h4 id="h4bold">Element</h4>
+				</div>
+				<div class="col-xs-2" id="center">
+					<h4 id="h4bold">Points</h4>
+				</div>
+				<div class="col-xs-2" id="center">
+					<h4 id="h4bold">Time</h4>
+				</div>
+				<div class="col-xs-2" id="center">
+					<h4 id="h4bold">Faults</h4>
+				</div>
+			</div>
+			<div id="bdr"></div>
+			@tally.event.scorecards.each do |scorecard|
+				if scorecard.entrant_scd_id == entrant.id
+					<div class="row">
+						<div class="col-xs-2">
+							<p>scorecard.element</p>
+						</div>
+						<div class="col-xs-2" id="center">
+							<p>scorecard.total_points</p>
+						</div>
+						<div class="col-xs-2" id="center">
+							<p>scorecard.time_elapsed_m:scorecard.time_elapsed_s:scorecard.time_elapsed_ms</p>
+						</div>
+						<div class="col-xs-2" id="center">
+							<p>scorecard.total_faults</p>
+						</div>
+					</div>	
+				end
+			end
+		end
+	end
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-2">
+			<h4 id="h4bold">Titled?</h4>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h4 id="h4bold">Total Points</h4>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h4 id="h4bold">Total Time</h4>
+		</div>	  
+		<div class="col-xs-2" id="center">
+			<h4 id="h4bold">Total Faults</h4>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h4 id="h4bold">Qualifying Score</h4>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h4 id="h4bold">Qualifying Scores</h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-2">
+			<h5>f.select :title, ["Not this time", "Titled"] </h5>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h5 class="fnum">f.number_field :total_points, placeholder: 0</h5>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h5 class="ftime">f.text_field :total_time_m, placeholder: "00":f.text_field :total_time_s, placeholder: "00":f.text_field :total_time_ms, placeholder: "00"</h5>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h5 class="fnum">f.number_field :total_faults, placeholder: 0</h5>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h5 class="fnum">f.number_field :qualifying_score, placeholder: 0</h5>
+		</div>
+		<div class="col-xs-2" id="center">
+			<h5 class="fnum">f.number_field :qualifying_scores, placeholder: 0</h5>
+		</div>
+	</div>	
+	<div class="actions">
+		<p>f.submit class: "button"</p>
+	</div>
+{{ end }}

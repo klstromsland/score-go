@@ -1,0 +1,28 @@
+.timer input {
+    padding:4px;
+}
+
+.timer input[type="text"] {
+    width:50px;
+    text-align:center;
+}    
+
+.timer{
+    font-family:Arial,Verdana;
+    font-size:12px;
+    width:360px;
+    background-color:#c5cbdb;
+    padding:16px;
+    border:solid 1px #00217f;
+    text-align:center;
+    margin:0 0 16px 0;
+}
+
+div span:last-child {
+color:#00217f;
+}
+
+.timer h1 {
+    font-size:14px;
+    margin:0 0 0 0;
+}

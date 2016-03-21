@@ -1,0 +1,160 @@
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-4" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Scorecard</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-4" id="center">
+				<p id="notice"><%= notice %></p>
+			</div>
+			<div class="col-xs-4" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<h1 id="h1"><%= @scorecard.event.title %> Scorecard</h1>
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.event.title %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.event.place %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.event.date %></h4> 
+		</div>  
+		<div class="col-xs-3">
+			<h4 id="h4boldright">Division: <%= @scorecard.event.division %></h4> 
+		</div>
+	</div>
+	<div id="bdr"></div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4bold">Element: <%= @scorecard.element %> <%= @scorecard.search_area %></h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4bold">Point Value: <%= @scorecard.maxpoint %></h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4boldright">Time Limit: <%= @scorecard.maxtime_m %>:<%= @scorecard.maxtime_s %>:<%= @scorecard.maxtime_ms %></h4> 
+		</div>  
+	</div>
+	<div id="bdr"></div>
+	<% @scorecard.event.entrants.each do |entrant| %>
+		<% if @scorecard.entrant_scd_id == entrant.id %>
+			<div class="row">
+				<div class="col-xs-8">
+					<h4 id="h4bold">Handler Name: <%= entrant.first_name %> <%= entrant.last_name %></h4> 
+				</div>
+				<div class="col-xs-4">
+					<h4 id="h4boldright">ID: <%= entrant.idnumber %></h4> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<h4 id="h4bold">K9 Name: <%= entrant.dog_name %></h4> 
+				</div>
+				<div class="col-xs-4">
+					<h4 id="h4bold">K9 Breed: <%= entrant.breed %></h4> 
+				</div>
+				<div class="col-xs-4">
+					<h4 id="h4boldright">K9 ID: <%= entrant.dogidnumber %></h4> 
+				</div>
+			</div>
+			<div id="bdr"></div>
+		<% end %>
+	<% end %>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area: <%= @scorecard.search_area %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area Hides: <%= @scorecard.hides_max %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Hides found: <%= @scorecard.hides_found %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Hides missed: <%= @scorecard.hides_missed %></h4> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Finish call: <%= @scorecard.finish_call %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">False alert/fringe: <%= @scorecard.false_alert_fringe %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Timed out: <%= @scorecard.timed_out %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Dismissed: <%= @scorecard.dismissed %></h4> 
+		</div>    
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Excused: <%= @scorecard.excused %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Absent: <%= @scorecard.absent %></h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4">Eliminated during search: <%= @scorecard.eliminated_during_search %></h4> 
+		</div>    
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h4 id="h4">Other faults descr: <%= @scorecard.other_faults_descr %></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4">Other faults count:  <%= @scorecard.other_faults_count %></h4>
+		</div>
+	</div>  
+	<div class="row"> 
+		<div class="col-xs-12">
+			<h4 id="h4">Comments: <%= @scorecard.comments %></h4>
+		</div>
+	</div>
+	<div id="bdr"></div>
+	<div class="row" id="center">
+		<div class="col-xs-3">
+			<h4 id="h4bold">Time</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Points</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Pronounced</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">Faults</h4> 
+		</div>
+	</div>
+	<div class="row" id="center">
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.time_elapsed_m %>:<%= @scorecard.time_elapsed_s %>:<%= @scorecard.time_elapsed_ms %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.total_points %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.pronounced %></h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold"><%= @scorecard.total_faults %></h4> 
+		</div>
+	</div>
+	<div id="bdr"></div>
+	<h4>Judge signature: <%= @scorecard.judge_signature %></h4>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><%= link_to "Back to Event", event_path( @scorecard.event ) %> | <%= link_to_unless(@scorecard.event.status == "closed", "Edit Scorecard", edit_scorecard_path(@scorecard)) %></p></li>

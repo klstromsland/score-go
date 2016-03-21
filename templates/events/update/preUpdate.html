@@ -1,0 +1,21 @@
+{{ define "prebody" }}
+<div class="nav" id="header">
+	<div class="container-fluid">	
+		<div class="row">
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Update Event</span><span id="tilda">~</span></h1>
+			</div>
+			<div class="col-xs-6" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<form method="POST" action="/events/update/{{ .Id }}">	
+
+  	{{ template "preform" . }}
+		
+{{ end }}
+
+{{ template "prebody" . }}

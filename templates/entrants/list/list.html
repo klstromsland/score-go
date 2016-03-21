@@ -1,0 +1,44 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Teams</span><span id="tilda">~</span></h1>
+			</div>				
+			<div class="col-xs-6" id="right">	
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+  <div class="row" id="topmargin">
+    <div class="col-xs-2">
+      <h4 id="h4bold">Name</h4>
+		</div>
+    <div class="col-xs-2">
+      <h4 id="h4bold">Team ID</h4>
+		</div>		
+  </div>
+  <div id="bdr"></div>
+	{{ range . }}
+	<div class="row">
+		<div class = "col-xs-2">
+			<p>{{ .Name }}</p>
+		</div>
+		<div class = "col-xs-2">
+			<p>{{ .Team_Id }}</p>
+		</div>		
+		<div class="col-xs-2">
+			<p class="linksm" id="right"><a href="/entrants/show/{{ .Id }}">Show</a>|<a href="/entrants/edit/{{ .Id }}">Update</a>|<a href="/entrants/delete/{{ .Id }}">Delete</a></p>
+		</div>			
+	</div>
+	{{ end }}
+</div>
+		<div class="nav">
+			<div class="container-fluid" id="posfix">		
+				<footer id="footer">
+					<ul>
+			<ul id="nopad">
+				<li><p class = "linktopgreen"><a href="/entrants/new">New Team</a> | <a href=#>List Users</a> | <a href="/events">Back to Events</a> | <a href=#>Info</a></p></li>
+{{ end }}
