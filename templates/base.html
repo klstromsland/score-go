@@ -5,18 +5,31 @@
 		{{ define "title" }}ScoreSheet{{ end }}
 		<title>{{ template "title" . }}</title>		
     <link href="/static/stylesheets/timer_style.css" rel="stylesheet"/>
-		<link href="/static/stylesheets/scaffolds.css" rel="stylesheet"/>
 		<link href="/static/stylesheets/application.css" rel="stylesheet"/>
 		<link href="/static/stylesheets/bootstrap.min.css" rel="stylesheet"/>		
-		<script type="text/javascript" src="/static/js/jquery-1.5.2.js"></script>
-		<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-		<script type="text/javascript" src="/static/js/underscore-min.js"></script>
-		<script type="text/javascript" src="/static/js/jquery.timer.js"></script>
+<!--		<script src="/static/jscript/jquery-1.5.2.js"></script> -->
+		<script src="/static/jscript/jquery.min.js"></script>
+<!--		<script src="/static/jscript/underscore-min.js"></script>		 -->
+		<script src="/static/jscript/getTime.js"></script>
+<!--		<script src="/static/jscript/jquery.timer.js"></script> -->
 	</head>	
 	<body>
-		<div class="nav">
+		<div class="nav" id="navpad">
 			<div class="container-fluid">
 				<header>
+			 {{ if ne .SData.Current_user "" }}
+         {{ if ne .SData.Current_status false }}			 
+			<ul>
+				<li id="right">{{ .SData.Current_email }} | <a href="/logout">Log out</a></li>
+			</ul>
+					{{ end }}
+			{{ else }}
+<!--		  else  -->
+			<ul>
+				<li id="right"><a id="right" href="/login">Log in</a>  |  <a href="/signup">Sign up</a></li>
+			</ul>
+			{{ end }}
+<!--		   end 	-->
 					<div class="row" id="backgroundcolor">
 						<div class="col-xs-2">
 							<img src="/static/img/a.jpg" class="img"/>

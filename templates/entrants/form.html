@@ -1,30 +1,48 @@
 {{ define "form" }}
 	<div class="row">
 		<div class="col-xs-2">
-			<h4 id="h4">Name: </h4>
+			<h4 id="h4">First Name: </h4>
 		</div>
 		<div class="col-xs-2">
-			<h4 id="h4">Team ID: </h4>
+			<h4 id="h4">Last_Name: </h4>
 		</div>
 		<div class="col-xs-2">
-			<h4 id="h4">Event IDs: </h4>
-		</div>		
+			<h4 id="h4">ID#: </h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">K9 Name: </h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">K9 ID#: </h4>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Breed: </h4>
+		</div>
 	</div>
+	<div class="row">
 		<div class="col-xs-2">
-			<p class="ftext"><input type="text" name="Name" value="{{ .Name }}"></p>	
+			<p class="ftext"><input type="text" name="First_name" value="{{ .Data.First_name }}"></p>	
 		</div>
 		<div class="col-xs-2">
-			<p class="ftext"><input type="text" name="Team_Id" value="{{ .Team_Id }}"></p>	
+			<p class="ftext"><input type="text" name="Last_name" value="{{ .Data.Last_name }}"></p>	
 		</div>
 		<div class="col-xs-2">
-		  {{ range $index, $value := .Event_Id }}
-			<p class="ftext"><input type="text" name="$value" value="{{ $value }}"></p>
-			{{ end }}
+			<h5 id="h5">{{ .Data.Id_number }}</h5>	
+		</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Dog_name" value="{{ .Data.Dog_name }}"></p>	
+		</div>
+		<div class="col-xs-2">
+			<h5 id="h5">{{ .Data.Dog_id_number }}</h5>	
+		</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Breed" value="{{ .Data.Breed }}"></p>	
 		</div>		
+	</div>		
 	<div class="row">
 		<div class="col-xs-4">
 			<div class="actions">
-				<p><input type="submit" value="Submit"></p>
+				<p><input class="button" type="submit" value="Update"></p>
 			</div>
 		</div>
 	</div>

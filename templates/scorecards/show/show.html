@@ -12,79 +12,107 @@
 	</div>
 </div>
 <div class="container-fluid" id="padbottom">
+	<h1 id="h1">{{ .EVData.Data.Name }} Scorecard</h1>
 	<div id="bdr"></div>
 	<div class="row">
-		<div class="col-xs-6">
-			<h4 id="h4bold">Scorecard ID: {{ .Scorecard_Id }}</h4> 
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .EVData.Data.Name }}</h4> 
 		</div>
-		<div class="col-xs-6">
-			<h4 id="h4bold">Event ID: {{ .Event_Id }}</h4> 
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .EVData.Data.Location }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4bold">{{ .EVData.Data.Date }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4boldright">Division: {{ .EVData.Data.Division }}</h4> 
 		</div>		
-  </div>		
+  </div>
+	<div id="bdr"></div>
 	<div class="row">
 		<div class="col-xs-4">
-			<h4 id="h4bold">Element: {{ .Element }} {{ .Search_area }}</h4> 
+			<h4 id="h4bold">Element: {{ .SCData.Data.Element }} {{ .SCData.Data.Search_area }}</h4> 
 		</div>
 		<div class="col-xs-4">
-			<h4 id="h4bold">Point Value: {{ .Maxpoint }}</h4> 
+			<h4 id="h4bold">Point Value: {{ .SCData.Data.Maxpoint }}</h4> 
 		</div>
 		<div class="col-xs-4">
-			<h4 id="h4boldright">Time Limit: {{ .Maxtime_m }}:{{ .Maxtime_s }}</h4> 
+			<h4 id="h4boldright">Time Limit: {{ .SCData.Data.Maxtime_m }}:{{ .SCData.Data.Maxtime_s }}:00</h4> 
 		</div>  
 	</div>
 	<div id="bdr"></div>
 	<div class="row">
-		<div class="col-xs-3">
-			<h4 id="h4">Search Area: {{ .Search_area }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4">Search Area Hides: {{ .Hides_max }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4">Hides found: {{ .Hides_found }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4right">Hides missed: {{ .Hides_missed }}</h4> 
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-3">
-			<h4 id="h4">Finish call: {{ .Finish_call }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4">False alert/fringe: {{ .False_alert_fringe }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4">Timed out: {{ .Timed_out }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4right">Dismissed: {{ .Dismissed }}</h4> 
-		</div>    
-	</div>
-	<div class="row">
-		<div class="col-xs-3">
-			<h4 id="h4">Excused: {{ .Excused }}</h4> 
-		</div>
-		<div class="col-xs-3">
-			<h4 id="h4">Absent: {{ .Absent }}</h4> 
+		<div class="col-xs-8">
+			<h4 id="h4bold">Handler Name: {{ .ENData.Data.First_name }} {{ .ENData.Data.First_name }}</h4> 
 		</div>
 		<div class="col-xs-4">
-			<h4 id="h4">Eliminated during search: {{ .Eliminated_during_search }}</h4> 
+			<h4 id="h4boldright">ID: {{ .ENData.Data.Id_number }}</h4> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4bold">K9 Name: {{ .ENData.Data.Dog_name }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4bold">K9 Breed: {{ .ENData.Data.Breed }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4boldright">K9 ID: {{ .ENData.Data.Dog_id_number }}</h4> 
+		</div>
+	</div>
+	<div id="bdr"></div>	
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area: {{ .SCData.Data.Search_area }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Search Area Hides: {{ .SCData.Data.Hides_max }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Hides found: {{ .SCData.Data.Hides_found }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Hides missed: {{ .SCData.Data.Hides_missed }}</h4> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Finish call: {{ .SCData.Data.Finish_call.Value }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">False alert/fringe: {{ .SCData.Data.False_alert_fringe }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Timed out: {{ .SCData.Data.Timed_out.Value }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4right">Dismissed: {{ .SCData.Data.Dismissed.Value }}</h4> 
 		</div>    
 	</div>
+	<div class="row">
+		<div class="col-xs-3">
+			<h4 id="h4">Excused: {{ .SCData.Data.Excused.Value }}</h4> 
+		</div>
+		<div class="col-xs-3">
+			<h4 id="h4">Absent: {{ .SCData.Data.Absent.Value }}</h4> 
+		</div>
+		<div class="col-xs-4">
+			<h4 id="h4">Eliminated during search: {{ .SCData.Data.Eliminated_during_search.Value }}</h4> 
+		</div>    
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4">Other faults count:  {{ .SCData.Data.Other_faults_count }}</h4>
+		</div>
+	</div> 	
 	<div class="row">
 		<div class="col-xs-12">
-			<h4 id="h4">Other faults descr: {{ .Other_faults_descr }}</h4>
+			<h4 id="h4">Other faults descr: {{ .SCData.Data.Other_faults_descr }}</h4>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-4">
-			<h4 id="h4">Other faults count:  {{ .Other_faults_count }}</h4>
-		</div>
-	</div>  
+	</div> 
 	<div class="row"> 
 		<div class="col-xs-12">
-			<h4 id="h4">Comments: {{ .Comments }}</h4>
+			<h4 id="h4">Comments: {{ .SCData.Data.Comments }}</h4>
 		</div>
 	</div>
 	<div id="bdr"></div>
@@ -104,24 +132,24 @@
 	</div>
 	<div class="row" id="center">
 		<div class="col-xs-3">
-			<h4 id="h4bold">{{ .Time_elapsed_m }}:{{ .Time_elapsed_s }}:{{ .Time_elapsed_ms }}</h4> 
+			<h4 id="h4bold">{{ .SCData.Data.Total_time }}</h4> 
 		</div>
 		<div class="col-xs-3">
-			<h4 id="h4bold">{{ .Total_points }}</h4> 
+			<h4 id="h4bold">{{ .SCData.Data.Total_points }}</h4> 
 		</div>
 		<div class="col-xs-3">
-			<h4 id="h4bold">{{ .Pronounced }}</h4> 
+			<h4 id="h4bold">{{ .SCData.Data.Pronounced.Value }}</h4> 
 		</div>
 		<div class="col-xs-3">
-			<h4 id="h4bold">{{ .Total_faults }}</h4> 
+			<h4 id="h4bold">{{ .SCData.Data.Total_faults }}</h4> 
 		</div>
 	</div>
 	<div id="bdr"></div>
-	<h4>Judge signature: {{ .Judge_signature }}</h4>
+	<h4>Judge signature: {{ .SCData.Data.Judge_signature.Value }}</h4>
 </div>
 <div class="nav">
 	<div class="container-fluid" id="posfix">
 		<footer>
 			<ul id="nopad">
-				<li><p class="linktopgreen"><a href="/scorecards/edit/{{ .Id }}">Update Scorecard</a> | <a href="/scorecards">Back to Scorecards</a> | <a href="/events">Back to Events</a></p></li>
+				<li><p class="linktopgreen"><a href="/scorecards/edit/{{ .SCData.Data.Id }}">Update Scorecard</a> | <a href="/events/show/{{ .EVData.Data.Id }}">Back to Event</a> | <a href="/info">Info</a></p></li>
 {{ end }}

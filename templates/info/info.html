@@ -1,0 +1,63 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">				
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Info</span><span id="tilda">~</span></h1>
+			</div>				
+			<div class="col-xs-6" id="right">				
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div class="row">
+	  <div class="col-xs-12">
+			<h4 id="h4bold">Welcome and thank you for stopping by.</h4>
+			<p id="wrap">This webapp was built to provide prospective customers and recruiters with a demo.</p>
+			<p id="wrap">It is based upon the concept of running, tabulating, scoring and storing data for canine scentwork trials, consisting of various divisions and elements, in real time.  It is a Go app deployed from AWS using a MongoDB database where event, team, user, scorecard and tally info is stored.</p>
+			<h4 id="h4bold">Anticipated webapp run progression:</h4>
+			<p id="wrap">"Sign in" or "Log in" (currently not controlled by admin) takes you to the Event page where all database events are listed with links to "Run", "Edit" and "Delete" and where "New Event"   takes you to the New Event page where events can be created and added to the database.</p>
+      <p id="wrap"><strong>From the Events page:</strong></p>			
+      <p id="wrap">Create an event with "New Event" taking you to the New Event page where division, element, search area, hide, officials and teams can be defined upon "Update Search Area Info" and "Create Event".  You will automatically be forwarded to the Event page where links to team scorecards, tallies and summary tabulations are provided.</p>
+			<p id="wrap">"Run" takes you to the Event page providing links to team scorecards, tallies and summary tabulations.</p>
+			<p id="wrap">"Edit" takes you to the Update Event page where division, element, search area, hide, official and team definitions can be updated upon "Update Search Area Info" and "Update Event".</p>
+      <p id="wrap">"List Teams" takes you to the Teams page where database teams are listed with links to "Show", "Edit" and "Remove" and where "New Team" takes you to the New Team page where teams can be created and added to the database upon "Update".  "Edit" takes you to the Update Team Info page where team info can be updated upon "Update".</p>
+      <p id="wrap">"List Users" takes you to the Users page where database Users (officials) are listed with links to "Show", "Edit" and "Remove" and where "New User" takes you to the New User page where users can be created and added to the database upon "Enter".  "Edit" takes you to the Update User Info page where user info can be updated upon "Enter".</p>
+      <p id="wrap"><strong>From the Event page:</strong></p>
+			<p id="wrap">The Event page is intended to hold all of the information relevant to running the event. The Result Summary section contains a list of all teams registered in the event along with links to their scorecards and tallies from which relevant team data is displayed.  At the bottom of the page is a Placing section displaying a running list of teams and relevant data sorted by best times, points and faults.</p>     
+			<p id="wrap">During the course of the trial, "Run" (update) and "View" team scorecards, tallies and results as overall results are tabulated and displayed at the bottom of the page.</p>
+			<p id="wrap"><strong>Anticipated scorecard and tally entry progression:</strong></p>
+      <p id="wrap"><strong>From the Update Scorecard page:</strong></p>
+      <p id="wrap">Enter search area hide count and "Tabulate points".</p>
+      <p id="wrap">Enter time limit and "Save points and time limit".</p>
+      <p id="wrap">Check that the timed out checkbox shows "no".</p>
+      <p id="wrap">Time search using "Stopwatch".</p>
+      <p id="wrap">After search, enter hides found, timed out checkbox, finish call, faults, notes and "Tabulate Score".</p>
+      <p id="wrap">Make final revisions, sign and enter "Final Submit".</p>
+      <p id="wrap">Other than the search time, entries can be updated at a later time and can be entered manually instead of using the automatic tabulations.  The search time can be entered manually after timing the search if the search time from other timers is available.  Hides missed is part of the tabulation.</p> 
+      <p id="wrap">After all of the scorecards are complete, from the Event page, "Run" (update) the tally.</p>
+      <p id="wrap"><strong>From the Update Tally page:</strong></p>             
+      <p id="wrap">The tally should automatically tabulate the results so that entering "Update Tally" is a merely a confirmation. Tallies can be updated manually as well thru "Edit Tally" from the Tally page.</p>
+			<h4 id="h4bold">Known errors and ommisions:</h4>
+      <p id="wrap">The webapp will currently accept duplications of names, id numbers, etc - verification left to user.</p>
+			<p id="wrap">If a team or user is deleted, the user and user info or team and team info will currently be removed from all events.</p>
+			<p id="wrap">Timer is not infallible and should always be backed up by other timers.</p>
+			<p id="wrap">For an event, the webapp does not verify that time limits and hide counts are consistent for scorecards between teams - left to user verification.</p>
+			<p id="wrap">The webapp will alert users if a search area hide count is greater than the element hide count but will not alert the user if the search area or combined search area hide counts are less than the element hide count - verification left to user.</p>
+			<p id="wrap">The webapp will allow the user to enter both a false alert and a found hide for the same hide - verification left to user.</p>
+			<p id="wrap">Completed scorecard and tally shade out is base upon the scorecard judge signature and use of the tally submit/update button.</p>
+			<p id="wrap">The timeout checkbox is not fully controlled and should be checked before scorecard tabulation - left to user verification.</p>
+			<p id="wrap">When updating Event element search areas and hides, sometimes the update button needs to be pressed more than once before the update is fully implemented.</p>
+			<p id="wrap">There currently are no locks in place other than simulcrums for closing an event and de-activating users.  For example, if while an Event is being run, changes are made to Event element search areas and hides, completed scorecards and tallies may be impacted.</p>
+			<p id="wrap">Error alerts and validation is currently minimal.</p>
+		</div>
+	</div>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><a href="/events">Back to Events</a></p></li>
+{{ end }}

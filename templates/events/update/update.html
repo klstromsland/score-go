@@ -12,7 +12,7 @@
 	</div>
 </div>
 <div class="container-fluid" id="padbottom">
-	<form method="POST" action="/events/update/{{ .Id }}">
+	<form method="POST" action="/events/update/{{ .EVData.Data.Id }}">
 
   	{{ template "form" . }}
 		
@@ -21,6 +21,6 @@
 	<div class="container-fluid" id="posfix">
 		<footer>
 			<ul id="nopad">
-				<li><p class="linktopgreen"><a href="/events/show/{{ .Id }}">Show Event</a> |
-	<a href="/events">Back to Events</a> | <a href=#>Officials</a> | <a href=#>Teams</a></p></li>
+				<li><p class="linktopgreen"><a href="/events/show/{{ .EVData.Data.Id }}">Show Event</a> |
+	<a href="/events">Back to Events</a> | <a href="/users">Officials</a> | <a href="/entrants">Teams</a> | <a href="/info">Info</a></p></li>
 {{ end }}

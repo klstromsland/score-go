@@ -1,0 +1,27 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-8" id="left">	
+				<h2 id="h2"><span id="tilda">~</span><span id="whitetxt">Canine Scentwork ScoreSheet<span id="tilda">~</span></h2>
+			</div>
+			<div class="col-xs-4" id="right">			
+				<h2 id="h2right"><span id="greenyellow">Demo Use Only</span></h2>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+	<div class="row" id="center">
+		<form method="post" action="/session">
+
+		{{ template "form" . }}
+		
+	</div>
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">
+		<footer>
+			<ul id="nopad">
+				<li><p class="linktopgreen"><a href="/info">Info</a></p></li>			
+{{ end }}

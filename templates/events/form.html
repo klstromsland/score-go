@@ -3,38 +3,56 @@
 		<div class="col-xs-1">
 			<h4 id="h4">Name: </h4>
 		</div>
-		<div class="col-xs-3">
-			<p class="ftext"><input type="text" name="Name" value="{{ .Name }}"></p>	
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Name" value="{{ .EVData.Data.Name }}"></p>	
 		</div>
-		<div class="col-xs-1">
+		<div class="col-xs-2">
 			<h4 id="h4">Location: </h4>
 		</div>
 		<div class="col-xs-2">
-			<p class="ftext"><input type="text" name="Location" value="{{ .Location }}"></p>
+			<p class="ftext"><input type="text" name="Location" value="{{ .EVData.Data.Location }}"></p>
 		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Date: </h4>
+		</div>
+		<div class="col-xs-3">
+			<h5 class="ftext" id="nopad"><input type="date" name="Date" value="{{ .EVData.Data.Date }}"></h5>
+		</div>		
 	</div>
 	<div class="row">
 		<div class="col-xs-1">
-			<h4 id="h4">Division</h4>
+			<h4 id="h4">Status:  </h4>
+		</div>
+		<div class="col-xs-2">		
+			<h5 id="h5">
+				<select name="Status">
+					<option value="active" {{if eq .EVData.Data.Status "active"}}selected="selected"{{end}}>active</option>
+					<option value="closed" {{if eq .EVData.Data.Status "closed"}}selected="selected"{{end}}>closed</option>
+				</select>
+			</h5>
+		</div>
+		<div class="col-xs-2">
+			<h4 id="h4">Host: </h4>
+		</div>
+		<div class="col-xs-2">
+			<p class="ftext"><input type="text" name="Host" value="{{ .EVData.Data.Host }}"></p>
+		</div>		
+		<div class="col-xs-2">
+			<h4 id="h4">Division:  </h4>
 		</div>
 		<div class="col-xs-3">
-			<h5 id="h5right">
-				<select name="Division" value="{{ .Division }}">
-					<option name="NW1" value="NW1">NW1</option>
-					<option name="NW2" value="NW2">NW2</option>
-					<option name="NW3" value="NW3">NW3</option>
-					<option name="Element Specialty" value="Element Specialty">Element Specialty</option>
-					<option name="Elite" value="Elite">Elite</option>
+			<h5 id="h5">
+				<select name="Division">
+					<option value="NW1" {{if eq .EVData.Data.Division "NW1"}}selected="selected"{{end}}>NW1</option>
+					<option value="NW2" {{if eq .EVData.Data.Division "NW2"}}selected="selected"{{end}}>NW2</option>
+					<option value="NW3" {{if eq .EVData.Data.Division "NW3"}}selected="selected"{{end}}>NW3</option>
+					<option value="Element Specialty" {{if eq .EVData.Data.Division "Element Specialty"}}selected="selected"{{end}}>Element Specialty</option>
+					<option value="Elite" {{if eq .EVData.Data.Division "Elite"}}selected="selected"{{end}}>Elite</option>
 				</select>
 			</h5>				
 		</div>	  
-		<div class="col-xs-1">
-			<h4 id="h4">Event ID</h4>
-		</div>	
-		<div class="col-xs-2">
-			<p class="ftext"><input type="text" name="Event_Id" value="{{ .Event_Id }}"></p>
-		</div>
 	</div>
+	<div id="bdr"></div>
 	<h4 id="h4bold">Element Search Areas and Hides</h4>
   <div class="row">
 	  <div class = "col-xs-2">
@@ -61,68 +79,19 @@
 		  <h5 id="bold">Search Areas</h5>
 	  </div>	
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Int_search_areas" value="{{ .Int_search_areas }}">
-					<option name="0" value="0">0</option>
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-				</select></p>
+	    <p class="fnum"><input type="number" name="Int_search_areas" min="0" max="10" value="{{ .EVData.Data.Int_search_areas }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Ext_search_areas" value="{{ .Ext_search_areas }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-				</select></p>
+	    <p class="fnum"><input type="number" name="Ext_search_areas" min="0" max="6" value="{{ .EVData.Data.Ext_search_areas }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Cont_search_areas" value="{{ .Cont_search_areas }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-				</select></p>
+	    <p class="fnum"><input type="number" name="Cont_search_areas" min="0" max="6" value="{{ .EVData.Data.Cont_search_areas }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Veh_search_areas" value="{{ .Veh_search_areas }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-				</select></p>
+	    <p class="fnum"><input type="number" name="Veh_search_areas" min="0" max="6" value="{{ .EVData.Data.Veh_search_areas }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Elite_search_areas" value="{{ .Elite_search_areas }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-				</select></p>
+	    <p class="fnum"><input type="number" name="Elite_search_areas" min="0" max="6" value="{{ .EVData.Data.Elite_search_areas }}"></p>
     </div>		
   </div>	
   <div class="row">
@@ -130,148 +99,81 @@
 		  <h5 id="bold">Hides</h5>
 	  </div>
 	  <div class = "col-xs-2">	
-	    <p class="fnum">
-				<select name="Int_hides" value="{{ .Int_hides }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-					<option name="10" value="10">11</option>
-					<option name="10" value="10">12</option>
-					<option name="10" value="10">13</option>
-					<option name="10" value="10">14</option>	
-					<option name="10" value="10">15</option>
-					<option name="10" value="10">16</option>					
-				</select></p>		
+	    <p class="fnum"><input type="number" name="Int_hides" min="0" max="16" value="{{ .EVData.Data.Int_hides }}"></p>	
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Ext_hides" value="{{ .Ext_hides }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-					<option name="10" value="10">11</option>
-					<option name="10" value="10">12</option>
-					<option name="10" value="10">13</option>
-					<option name="10" value="10">14</option>	
-					<option name="10" value="10">15</option>
-					<option name="10" value="10">16</option>					
-				</select></p>			
-      </div>
+	    <p class="fnum"><input type="number" name="Ext_hides" min="0" max="16" value="{{ .EVData.Data.Ext_hides }}"></p>		
+    </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Cont_hides" value="{{ .Cont_hides }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-					<option name="10" value="10">11</option>
-					<option name="10" value="10">12</option>
-					<option name="10" value="10">13</option>
-					<option name="10" value="10">14</option>	
-					<option name="10" value="10">15</option>
-					<option name="10" value="10">16</option>					
-				</select></p>			
+	    <p class="fnum"><input type="number" name="Cont_hides" min="0" max="16" value="{{ .EVData.Data.Cont_hides }}"></p>	
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Veh_hides" value="{{ .Veh_hides }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-					<option name="10" value="10">11</option>
-					<option name="10" value="10">12</option>
-					<option name="10" value="10">13</option>
-					<option name="10" value="10">14</option>	
-					<option name="10" value="10">15</option>
-					<option name="10" value="10">16</option>					
-				</select></p>			
+	    <p class="fnum"><input type="number" name="Veh_hides" min="0" max="16" value="{{ .EVData.Data.Veh_hides }}"></p>		
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum">
-				<select name="Elite_hides" value="{{ .Elite_hides }}">
-					<option name="0" value="0">0</option>				
-					<option name="1" value="1">1</option>
-					<option name="2" value="2">2</option>
-					<option name="3" value="3">3</option>
-					<option name="4" value="4">4</option>
-					<option name="5" value="5">5</option>
-					<option name="6" value="6">6</option>
-					<option name="7" value="7">7</option>
-					<option name="8" value="8">8</option>
-					<option name="9" value="9">9</option>
-					<option name="10" value="10">10</option>
-					<option name="10" value="10">11</option>
-					<option name="10" value="10">12</option>
-					<option name="10" value="10">13</option>
-					<option name="10" value="10">14</option>	
-					<option name="10" value="10">15</option>
-					<option name="10" value="10">16</option>					
-				</select></p>			
+	    <p class="fnum"><input type="number" name="Elite_hides" min="0" max="16" value="{{ .EVData.Data.Elite_hides }}"></p>		
 	  </div>
-  </div>	
+  </div>
 	<div class="row">
-		<div class="col-xs-2">
-			<h4 id="h4">All Teams</h4>
+	  <div class = "col-xs-8">
+	    <div class="actions">
+        <p></p>
+      </div>
+    </div>		
+	  <div class = "col-xs-2">
+	    <div class="actions">
+        <p><input class="button" type="submit" value="Update Search Area Info"></p>
+			</div>
+    </div>
+	</div>	
+	<div id="bdr"></div>	
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 id="h4">Teams: </h4>
 		</div>
-		<div class="col-xs-3">
-			<h5 id="h5right">
-				<select name="EntrantSelected_Id" value="{{ .EntrantSelected_Id }}" multiple>
-					{{ range $index, $allvalue := .EntrantAll_Id }}
-						 <option value="{{ $allvalue }}">{{ $allvalue }}</option>
+		<div class="col-xs-4">
+			<h4 id="h4">Officials: </h4>
+		</div>		
+	</div>		
+	<div class="row">	
+		<div class="col-xs-4">
+			<h5 id="h5">
+				  {{ $entrants := .ENSData.Data }}
+				  {{ $allvalues := .EVData.Data.EntrantAll_Id }}
+				<select name="EntrantSelected_Id" size="20" multiple>						
+					{{ range $allvalue := $allvalues }}
+						{{ range $entrant := $entrants }}
+							{{ if eq $entrant.Data.Team_Id $allvalue.Value }}
+								{{ if $allvalue.Selected }}<option label="{{ $entrant.Data.Last_name }}, {{ $entrant.Data.First_name }}, {{ $entrant.Data.Id_number }}" value="{{ $allvalue.Value }}" selected>{{ $allvalue.Value}}</option>{{ else }}<option label="{{ $entrant.Data.Last_name }}, {{ $entrant.Data.First_name }}, {{ $entrant.Data.Id_number }}" value="{{ $allvalue.Value }}">{{ $allvalue.Value }}</option>{{ end }}
+							{{ end }}
+						{{ end }}
+					{{ end }}					
+					<option value=""> </option>
+				</select>
+			</h5>			
+		</div>
+		<div class="col-xs-4">
+			<h5 id="h5">
+				  {{ $users := .USRSData.Data }}		
+				  {{ $allvalues := .EVData.Data.UserAll_Id }}			
+				<select name="UserSelected_Id" size="20" multiple>
+					{{ range $allvalue := $allvalues }}
+						{{ range $user := $users }}		
+							{{ if eq $user.Data.User_Id $allvalue.Value }}
+								{{ if $allvalue.Selected }}<option label="{{ $user.Data.Last_name }}, {{ $user.Data.First_name }}, {{ $user.Data.Role }}" value="{{ $allvalue.Value }}" selected>{{ $allvalue.Value }}</option>
+								{{ else }}<option label="{{ $user.Data.Last_name }}, {{ $user.Data.First_name }}, {{ $user.Data.Role }}" value="{{ $allvalue.Value }}">{{ $allvalue.Value }}</option>{{ end }}
+							{{ end }}
+						{{ end }}
 					{{ end }}
 					<option value=""> </option>
 				</select>
-			</h5>				
-		</div>
-		<div class="col-xs-2">
-			<h4 id="h4">Event Teams</h4>
-		</div>	  
-		<div class="col-xs-3">
-			<h5 id="h5right">
-				<select name="EntrantSelected_Id" value="{{ .EntrantSelected_Id }}" multiple>
-					{{ range $index, $selvalue := .EntrantSelected_Id }}
-						 <option value="{{ $selvalue }}" disabled >{{ $selvalue }}</option>
-					{{ end }}
-					<option value="" disabled> </option>
-				</select>
-			</h5>				
+			</h5>			
 		</div>			
-	</div>								
-	<div class="row">
-		<div class="col-xs-4">
-			<div class="actions">
-				<p><input type="submit" value="Submit"></p>
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="actions">
+					<p id="h5bold"><input class="button" type="submit" value="Create Event"></p>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,21 +1,34 @@
 {{ define "form" }}
 	<div class="row">
 		<div class="col-xs-12">
-			<h5 id="wrap">f.text_field :first_name, :placeholder => "First Name"
-			f.text_field :last_name, :placeholder => "Last Name"
-			f.text_field :email, :placeholder => "Email"
-			f.password_field :password, :placeholder => "Password"</h5>
+			<p class="ftext"><input type="text" name="First_name" value="{{ .Data.First_name }}" placeholder="First Name"> <input type="text" name="Last_name" value="{{ .Data.Last_name }}" placeholder="Last Name"> <input type="text" name="Email" value="{{ .Data.Email }}" placeholder="Email"> <input type="password" name="Password" placeholder="Password"></p>
 		</div>
 	</div>
-  <div class="row">
+	<div class="row">
 		<div class="col-xs-4">
-			<h5>f.label :role, "Role: "f.select( :role, ["Judge", "Certifying Official", "Representative"] )</h5>
+			<h5 id="h5">
+				<select name="Role">
+					<option value="Judge" {{if eq .Data.Role "Judge"}}selected="selected"{{end}}>Judge</option>
+					<option value="Representative" {{if eq .Data.Role "Representative"}}selected="selected"{{end}}>Representative</option>
+					<option value="Certifying Official" {{if eq .Data.Role "Certifying Official"}}selected="selected"{{end}}>Certifying Official</option>
+				</select>				
+			</h5>			
+		</div>		
+		<div class="col-xs-4">
+			<h5 id="h5">
+				<select name="Status">
+					<option value="active" {{if eq .Data.Status "active"}}selected="selected"{{end}}>active</option>
+					<option value="inactive" {{if eq .Data.Status "inactive"}}selected="selected"{{end}}>inactive</option>
+				</select>				
+			</h5>			
 		</div>
-		<div class="col-xs-2">
-			<h5>f.label :status, "Status: "f.select( :status, ["active", "inactive"] )</h5>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<div class="actions">
+				<p><input class="button" type="submit" value="Enter"></p>
+			</div>
 		</div>
-  </div>
-  <div class="actions">
-    <h5>f.submit "Enter", class: "button"</h5>
-  </div>
+	</div>
+</form>
 {{ end }}

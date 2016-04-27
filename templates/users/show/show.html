@@ -18,26 +18,26 @@
 		</div>
 		<div class="col-xs-2">
 			<h4 id="h4bold">Last Name</h4>
-		</div>
+		</div>		
 		<div class="col-xs-2">
 			<h4 id="h4bold">Role</h4>
 		</div>
 		<div class="col-xs-1">
 			<h4 id="h4bold">Status</h4>
-		</div>
+		</div>	
 	</div> 
 	<div class="row">
 		<div class="col-xs-2">
-			<h5 id="h5">@user.first_name</h5>
+			<h5 id="h5">{{ .Data.First_name }}</h5>
 		</div>
 		<div class="col-xs-2">
-			<h5 id="h5">@user.last_name</h5>
-		</div>
+			<h5 id="h5">{{ .Data.Last_name }}</h5>
+		</div>		
 		<div class="col-xs-2">
-			<h5 id="h5">@user.role</h5>
+			<h5 id="h5">{{ .Data.Role }}</h5>
 		</div>
-		<div class="col-xs-2">
-			<h5 id="h5">@user.status</h5>
+		<div class="col-xs-1">
+			<h5 id="h5">{{ .Data.Status }}</h5>
 		</div>
 	</div>
 </div>
@@ -46,5 +46,5 @@
 	<div class="container-fluid" id="posfix">
 		<footer>
 			<ul id="nopad">
-				<li><p class="linktopgreen"><a href="/events">Back to Events</a> | <a href="/users/update/{{ .Id }}">Edit User Info</a> | <a href="/users">Back to Users</a></p></li>
+				<li><p class="linktopgreen"><a href="/events">Back to Events</a> | <a href="/users/edit/{{ .Data.Id }}">Edit User Info</a> | <a href="/users">Back to Users</a></p></li>
 {{ end }}

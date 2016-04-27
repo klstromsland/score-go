@@ -12,7 +12,9 @@
 	</div>
 </div>
 <div class="container-fluid" id="padbottom">
-	<form method="POST" action="/users/update/{{ .Id }}" >
+	<!-- if authenticated user -->
+	<form method="post" action="/users/create" >
+	<!-- else post to login -->
 		{{ template "form" . }}
 
 </div>
@@ -20,5 +22,5 @@
 	<div class="container-fluid" id="posfix">
 		<footer>
 			<ul id="nopad">
-				<li><p class="linktopgreen"><a href="/events">Back to Events</a> | <a href="/users">List Users</a></p></li>
+				<li><p class="linktopgreen"><a href="/events">Back to Events</a> | <a href="/users">List Users</a> | <a href="/info">Info</a></p></li>
 {{ end }}

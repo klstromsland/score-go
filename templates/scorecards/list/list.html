@@ -14,12 +14,18 @@
 <div class="container-fluid" id="padbottom">
   <div class="row" id="topmargin">
     <div class="col-xs-2">
+      <h4 id="h4bold">Event_Id</h4>
+		</div>
+    <div class="col-xs-1">
+      <h4 id="h4bold">Entrant_Id</h4>
+		</div>		
+    <div class="col-xs-2">
       <h4 id="h4bold">Element</h4>
 		</div>
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <h4 id="h4bold">Search_area</h4>
 		</div>
-    <div class="col-xs-2" id="center">
+    <div class="col-xs-1" id="center">
       <h4 id="h4bold">Maxpoint</h4>
 		</div>
     <div class="col-xs-2" id="center">
@@ -27,30 +33,35 @@
 		</div>		
   </div>
   <div id="bdr"></div>
-	{{ range . }}
+	{{ range .Data }}
 	<div class="row">
 		<div class = "col-xs-2">
-			<p>{{ .Element }}</p>
+			<p>{{ .Data.Event_Id }}</p>
 		</div>
-		<div class="col-xs-2">
-			<p>{{ .Search_area }}</p>
+		<div class = "col-xs-1">
+			<p>{{ .Data.Entrant_Id }}</p>
+		</div>		
+		<div class = "col-xs-2">
+			<p>{{ .Data.Element }}</p>
+		</div>
+		<div class="col-xs-1">
+			<p>{{ .Data.Search_area }}</p>
+		</div>
+		<div class="col-xs-1" id="center">
+			<p>{{ .Data.Maxpoint }}</p>
 		</div>
 		<div class="col-xs-2" id="center">
-			<p>{{ .Maxpoint }}</p>
-		</div>
-		<div class="col-xs-2" id="center">
-			<p>{{ .Scorecard_Id }}</p>
+			<p>{{ .Data.Scorecard_Id }}</p>
 		</div>		
 		<div class="col-xs-2">
-			<p class="linksm" id="right"><a href="/scorecards/show/{{ .Id }}">Show</a>|<a href="/scorecards/edit/{{ .Id }}">Update</a>|<a href="/scorecards/delete/{{ .Id }}">Delete</a></p>
+			<p class="linksm" id="right"><a href="/scorecards/show/{{ .Data.Id }}">Show</a>|<a href="/scorecards/edit/{{ .Data.Id }}">Update</a>|<a href="/scorecards/delete/{{ .Data.Id }}">Delete</a></p>
 		</div>			
 	</div>
 	{{ end }}
 </div>
-		<div class="nav">
-			<div class="container-fluid" id="posfix">		
-				<footer id="footer">
-					<ul>
+<div class="nav">
+	<div class="container-fluid" id="posfix">		
+		<footer id="footer">
 			<ul id="nopad">
 				<li><p class = "linktopgreen"><a href="/scorecards/new">New Scorecard</a> | <a href="/scorecards">Back to Scorecards</a> | <a href="/events">Back to Events</a></p></li>
 {{ end }}

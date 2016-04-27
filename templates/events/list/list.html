@@ -13,44 +13,65 @@
 </div>
 <div class="container-fluid" id="padbottom">
   <div class="row" id="topmargin">
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <h4 id="h4bold">Name</h4>
 		</div>
     <div class="col-xs-2">
       <h4 id="h4bold">Location</h4>
 		</div>
+    <div class="col-xs-1">
+      <h4 id="h4bold">Date</h4>
+		</div>		
     <div class="col-xs-2" id="center">
       <h4 id="h4bold">Division</h4>
 		</div>
     <div class="col-xs-2" id="center">
-      <h4 id="h4bold">Event ID</h4>
-		</div>		
+      <h4 id="h4bold">Host</h4>
+		</div>
+    <div class="col-xs-1" id="center">
+      <h4 id="h4bold">Status</h4>
+		</div>
+    <div class="col-xs-1" id="center">
+      <h4 id="h4bold">Event_Id</h4>
+		</div>			
   </div>
   <div id="bdr"></div>
-	{{ range . }}
+	{{ range .Data }}
 	<div class="row">
-		<div class = "col-xs-2">
-			<p>{{ .Name }}</p>
+		<div class = "col-xs-1">
+			<p>{{ .Data.Name }}</p>
 		</div>
 		<div class="col-xs-2">
-			<p>{{ .Location }}</p>
+			<p>{{ .Data.Location }}</p>
 		</div>
+		<div class="col-xs-1">
+			<p>{{ .Data.Date }}</p>
+		</div>		
 		<div class="col-xs-2" id="center">
-			<p>{{ .Division }}</p>
+			<p>{{ .Data.Division }}</p>
 		</div>
-		<div class="col-xs-2" id="center">
-			<p>{{ .Event_Id }}</p>
+		<div class="col-xs-2">
+			<p>{{ .Data.Host }}</p>
+		</div>
+		<div class="col-xs-1" id="center">
+			{{ if eq .Data.Status "active" }}
+				<p><strong><span style="color:#72a54d">{{ .Data.Status }}</span></strong></p>
+			{{ else }}
+				<p><strong><span style="color:#bf3d5b">{{ .Data.Status }}</span></strong></p>
+			{{ end }}
+		</div>
+		<div class="col-xs-1">
+			<p>{{ .Data.Event_Id }}</p>
 		</div>		
 		<div class="col-xs-2">
-			<p class="linksm" id="right"><a href="/events/show/{{ .Id }}">Show</a>|<a href="/getEntrants/edit/{{ .Id }}">Update</a>|<a href="/events/delete/{{ .Id }}">Delete</a></p>
+			<p class="linksm" id="right"><a href="/events/show/{{ .Data.Id }}">Run</a>|<a href="events/edit/{{ .Data.Id }}">Update</a>|<a href="/events/delete/{{ .Data.Id }}">Delete</a></p>
 		</div>			
 	</div>
 	{{ end }}
 </div>
-		<div class="nav">
-			<div class="container-fluid" id="posfix">		
-				<footer id="footer">
-					<ul>
+<div class="nav">
+	<div class="container-fluid" id="posfix">		
+		<footer id="footer">
 			<ul id="nopad">
-				<li><p class = "linktopgreen"><a href="/getEntrants/new">New Event</a> | <a href=#>List Users</a> | <a href="/entrants">List Teams</a> | <a href="/scorecards">List Scorecards</a> | <a href=#>Info</a></p></li>
+				<li><p class = "linktopgreen"><a href="/events/new">New Event</a> | <a href="/users">List Users</a> | <a href="/entrants">List Teams</a> | <a href="/scorecards">List Scorecards</a> | <a href="/tallies">List Tallies</a> | <a href="/info">Info</a></p></li>
 {{ end }}

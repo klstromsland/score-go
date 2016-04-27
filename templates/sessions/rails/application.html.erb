@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+  <title>ScoreSheet</title>
+  <%= stylesheet_link_tag  "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class="nav" id="navpad">
+	<div class="container-fluid">
+		<header>
+		<% if current_user %>
+			<ul>
+				<li id="right"><a><%= current_user.email %> | <%= link_to "Log out", logout_path, method: "delete" %></a></li>
+			</ul>
+		<% else %>
+			<ul>
+				<li id="right"><a id="right"><%= link_to "Log in  |  ", login_path %> <%= link_to "Sign up", signup_path %></a></li>
+			</ul>
+		<% end %>
+			<div class="row" id="backgroundcolor">	
+				<div class="col-xs-2" id="sniffingleft">
+					<%= image_tag("P1060231.JPG", class: "img") %>
+				</div>
+				<div class="col-xs-2" id="sniffingleftside">
+					<%= image_tag("two-dogs-sniffing.jpg", class: "img") %>
+				</div>
+				<div class="col-xs-2" id="sniffingleftside">
+					<%= image_tag("dog-142328_1920.jpg", class: "img") %>
+				</div>
+				<div class="col-xs-2" id="sniffingrightside">
+					<%= image_tag("7175995318_b30fb66085_m.jpg", class: "img") %>
+				</div>	
+				<div class="col-xs-2" id="sniffingrightside">
+					<%= image_tag("dog_sniffing_water.jpg", class: "img") %>
+				</div>
+				<div class="col-xs-2" id="sniffingright">
+					<%= image_tag("dog_sniffing_185404-980x560.jpg", class: "img") %>
+				</div>
+			</div>
+		</header>
+	</div>
+</div>
+	
+	<%= yield %>
+
+				<li id="footerli"><h4 id="footer"><span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span>NOSINGforFUN<span id="tilda" style="font-size:28px">~</span></h4></li>
+			</ul>
+		</footer>
+	</div>	
+</div>
+</body>
+</html>
