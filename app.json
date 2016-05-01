@@ -1,0 +1,12 @@
+{
+  "name": "score",
+  "description": "Go ScoreSheet test",
+  "keywords": [
+    "score",
+    "go"
+  ],
+  "image": "heroku/go:1.6",
+  "mount_dir": "src/github.com/heroku/score",
+  "website": "http://github.com/heroku/score",
+  "repository": "http://github.com/heroku/score"
+}
