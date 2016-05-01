@@ -794,71 +794,79 @@ func (r *TallyRepo) Delete(id string) error {
 // go net/http
 
 func recoverHandler(next http.Handler) http.Handler {
-//	fmt.Println("In recoverHandler")
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		defer func() {
-			if err := recover(); err != nil {
-        fmt.Println("out of recoverHandler")
-				log.Printf("panic: %+v", err)
+	fmt.Println("In recoverHandler")
+  fn := func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("In recoverHandler fn")
+    defer func() {
+			fmt.Println("In recoverHandler defer")
+      if err := recover(); err != nil {
+        fmt.Println("out of recoverHandler defer, err")				
+        log.Printf("panic: %+v", err)
 				WriteError(w, ErrInternalServer)
-				fmt.Println("in defer")
+        fmt.Println(ErrInternalServer)
 			}
 		}()
-
+    fmt.Println("out defer and recoverHandler fn to next")
 		next.ServeHTTP(w, r)
 	}
-//	fmt.Println("out of recoverHandler")
+	fmt.Println("out of recoverHandler returning fn")
 	return http.HandlerFunc(fn)
 }
 //  go net/http
 func loggingHandler(next http.Handler) http.Handler {
   timelimit = 0
-//	fmt.Println("In logging handler")
+	fmt.Println("In logging handler")
 	fn := func(w http.ResponseWriter, r *http.Request) {
 //		t1 := time.Now()
+    fmt.Println("in and out of logging handler fn to next")
 		next.ServeHTTP(w, r)
 //		t2 := time.Now()
 //		log.Printf("[%s] %q %v\n", r.Method, r.URL.String(), t2.Sub(t1))
 //    log.Printf("[%s] %q \n", r.Method, r.URL.String())
 	}
-//	fmt.Println("out of logging handler")
+	fmt.Println("out of logging handler returning fn")
 	return http.HandlerFunc(fn)
 }
 //  go net/http
 func acceptHandler(next http.Handler) http.Handler {
-//	fmt.Println("In acceptHandler")
-	
+	fmt.Println("In acceptHandler")	
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		if r.Header.Get("Accept") != "application/vnd.api+json" {
-//      fmt.Println("out of acceptHandler")
+		fmt.Println("In acceptHandler fn")
+    if r.Header.Get("Accept") != "application/vnd.api+json" {
+      fmt.Println("out of acceptHandler, error")
       WriteError(w, ErrNotAcceptable)
 			return
 		}
+    fmt.Println("out of acceptHandler fn to next")
 		next.ServeHTTP(w, r)
 	}
-//	fmt.Println("out of acceptHandler")
+	fmt.Println("out of acceptHandler returning fn")
 	return http.HandlerFunc(fn)
 }
 //  go net/http
 func contentTypeHandler(next http.Handler) http.Handler {
-//	fmt.Println("In contentTypeHandler")
+	fmt.Println("In contentTypeHandler")
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		if r.Header.Get("Content-Type") != "application/vnd.api+json" {
-      fmt.Println("out of contentTypeHandler")
+		fmt.Println("in contentTypeHandler fn")
+    if r.Header.Get("Content-Type") != "application/vnd.api+json" {
+      fmt.Println("out of contentTypeHandler, error")
       WriteError(w, ErrUnsupportedMediaType)
 			return
 		}
+    fmt.Println("out of contentTypeHandler fn to next")
 		next.ServeHTTP(w, r)
 	}
-//	fmt.Println("out of contentTypeHandler")
+	fmt.Println("out of contentTypeHandler, returning fn")
 	return http.HandlerFunc(fn)
 }
 //  go net/http, reflect, gorilla context, mongodb driver
 func bodyHandler(v interface{}) func(next http.Handler) http.Handler {
-//	fmt.Println("In bodyHandler")	
+	fmt.Println("In bodyHandler")	
 	t := reflect.TypeOf(v)                        //type interface{} which may be empty
 	m := func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {    
+		fmt.Println("In bodyHandler m")
+    fn := func(w http.ResponseWriter, r *http.Request) {    
+      fmt.Println("In bodyHandler fn")	
       val := reflect.New(t).Interface()   //val is type interface{}      
 //      err := json.NewDecoder(r.Body).Decode(val)  //r.Body is the request body and is type interface io.ReadCloser
 //      err := json.NewDecoder(strings.NewReader(evj)).Decode(val)      
@@ -871,16 +879,17 @@ func bodyHandler(v interface{}) func(next http.Handler) http.Handler {
 //			}
 			if next != nil {
 				context.Set(r, "body", val)     //gorilla context, key "body": val, val is type interface{}  "body" will now retrieve val
+        fmt.Println("bodyHandler fn to next")        
         next.ServeHTTP(w, r)
-//				fmt.Println("Key set")
-//        fmt.Println("Printing body.value")
-//        fmt.Println(val)
+				fmt.Println("Key set")
+        fmt.Println("Printing body.value")
+        fmt.Println(val)  
 			}
 		}
-//    fmt.Println("out of bodyHandler")
+    fmt.Println("out of bodyHandler returning fn")
     return http.HandlerFunc(fn)
   }
-//	fmt.Println("out of bodyHandler")
+	fmt.Println("out of bodyHandler returning m")
 	return m
 }
 
@@ -915,7 +924,6 @@ func infoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
 // Event Handlers /////////////////////////////////////////////////////////////////////////////////////
 
 func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {	
@@ -926,7 +934,10 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("Out of eventsHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else{
     eventsresrc := EventsResource{}
     eventsresrc.SData = current_session  
     repo := EventRepo{c.db.C("events")}
@@ -937,6 +948,7 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
       body.Data.Name = events.Data[i].Name
       body.Data.Location = events.Data[i].Location
       body.Data.Status = events.Data[i].Status
+      body.Data.Host = events.Data[i].Host
       body.Data.Division = events.Data[i].Division
       body.Data.Event_Id = events.Data[i].Event_Id
       body.Data.Date = events.Data[i].Date
@@ -955,9 +967,6 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("Out of eventsHandler")
-  }else{
-    fmt.Println("Out of eventsHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -969,7 +978,10 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of eventHandler") 
+    http.Redirect(w, r, "/login", 302)  
+  }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id")) //getting data from named param :id
@@ -1114,9 +1126,6 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Println("out of eventHandler") 
-  }else{
-    fmt.Println("out of eventHandler") 
-    http.Redirect(w, r, "/login", 302)
   } 
 }
 
@@ -1128,50 +1137,10 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
-    evRepo := EventRepo{c.db.C("events")}
-    events, err := evRepo.All()
-    body := context.Get(r, "body").(*EventResource)
-    body.Data.Int_search_areas = "0"
-    body.Data.Ext_search_areas = "0"
-    body.Data.Cont_search_areas = "0"
-    body.Data.Veh_search_areas = "0"
-    body.Data.Elite_search_areas = "0"
-    body.Data.Int_hides = "0"
-    body.Data.Ext_hides = "0"
-    body.Data.Cont_hides = "0"
-    body.Data.Veh_hides = "0"
-    body.Data.Elite_hides = "0"
-    body.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
-    // check for duplicates
-    rrcount := 0
-    for r:=0; r<len(events.Data); r++{               
-      if body.Data.Event_Id == events.Data[r].Event_Id{
-        fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
-        body.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
-      }
-      for rr:=0;rr<len(events.Data); rr++{                  
-        if body.Data.Event_Id == events.Data[rr].Event_Id{
-          fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
-          body.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
-          break
-        }else{
-          rrcount = rr 
-        }  
-      }
-      if rrcount == len(events.Data)-1{
-        fmt.Println("No duplicates both loops")
-        break
-      }
-    }    
-    fmt.Println("printing &body.Data") 
-    fmt.Println(&body.Data)
-    
-    err, id := evRepo.Create(&body.Data)
-    fmt.Println(err)
-    
-    event, err := evRepo.Find(id.Hex())  
-    
+  if current_session.Current_status == false{
+    fmt.Println("out of newEventHandler")
+    http.Redirect(w, r, "/login", 302)  
+  }else{     
     eventresrc := EventEditResource{}
     eventresrc.SData = current_session
     
@@ -1207,34 +1176,377 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
     
     eventresrc.ENSData = entrants_resrc
     eventresrc.USRSData = users_resrc
-      
+
+    body := EventResource{}
+    body.Data.Int_search_areas = "0"
+    body.Data.Ext_search_areas = "0"
+    body.Data.Cont_search_areas = "0"
+    body.Data.Veh_search_areas = "0"
+    body.Data.Elite_search_areas = "0"
+    body.Data.Int_hides = "0"
+    body.Data.Ext_hides = "0"
+    body.Data.Cont_hides = "0"
+    body.Data.Veh_hides = "0"
+    body.Data.Elite_hides = "0"
+    
+    fmt.Println("printing body.Data") 
+    fmt.Println(body.Data)    
+    
     for i:=0; i<len(entrants.Data); i++{
       newEntrant := Selected{Value: entrants.Data[i].Team_Id, Selected: false}
-      event.Data.EntrantAll_Id = append(event.Data.EntrantAll_Id, newEntrant)  
+      body.Data.EntrantAll_Id = append(body.Data.EntrantAll_Id, newEntrant)  
     }
     for i:=0; i<len(users.Data); i++{
       newUser := Selected{Value: users.Data[i].User_Id, Selected: false}
-      event.Data.UserAll_Id = append(event.Data.UserAll_Id, newUser)    
+      body.Data.UserAll_Id = append(body.Data.UserAll_Id, newUser)    
     }  
-    fmt.Println("printing event.Data")
-    fmt.Println(event.Data)
-
-    err = evRepo.Update(&body.Data)
+    fmt.Println("printing body.Data")
+    fmt.Println(body.Data)
     
-    eventresrc.EVData = event
+    eventresrc.EVData = body
     
     if err := createnewEvent.Execute(w, eventresrc); err != nil {
         fmt.Println("out of newEventHandler") 
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
+    fmt.Println(err)
     fmt.Println("out of newEventHandler")
-  }else{
-    fmt.Println("out of newEventHandler")
-    http.Redirect(w, r, "/login", 302)
   }     
 }
 
+func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("In createEntrantHandler")  
+  if count < 1{
+    c.sessionHandler(w, r)
+    count += 1
+  }else{
+    count = 0
+  }  
+  if current_session.Current_status == false{
+    fmt.Println("out of createEventHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of createEventHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/events", 302)     
+  }else if current_session.Current_status == true && count > 0{   
+    evRepo := EventRepo{c.db.C("events")}	
+    events, err := evRepo.All()  
+    rrcount := 0
+    evbody := context.Get(r, "body").(*EventResource)    //gorilla context, key "body" that returns val    
+
+    enRepo := EntrantRepo{c.db.C("entrants")}
+    entrants, err := enRepo.All()
+    
+    usRepo := UserRepo{c.db.C("users")}
+    users, err := usRepo.All()    
+    
+    for i:=0; i<len(entrants.Data); i++{
+      newEntrant := Selected{Value: entrants.Data[i].Team_Id, Selected: false}
+      evbody.Data.EntrantAll_Id = append(evbody.Data.EntrantAll_Id, newEntrant)
+    }
+    for i:=0; i<len(users.Data); i++{
+      newUser := Selected{Value: users.Data[i].User_Id, Selected: false}
+      evbody.Data.UserAll_Id = append(evbody.Data.UserAll_Id, newUser)
+    }
+    evbody.Data.Name = r.FormValue("Name")
+    evbody.Data.Location = r.FormValue("Location")
+    evbody.Data.Date = r.FormValue("Date")
+    evbody.Data.Host = r.FormValue("Host")
+    evbody.Data.Status = r.FormValue("Status")  
+    evbody.Data.Division = r.FormValue("Division")
+    evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
+    for r:=0; r<len(events.Data); r++{               
+      if evbody.Data.Event_Id == events.Data[r].Event_Id{
+        fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+        evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
+      }
+      for rr:=0;rr<len(events.Data); rr++{                  
+        if evbody.Data.Event_Id == events.Data[rr].Event_Id{
+          fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+          evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
+          break
+        }else{
+          rrcount = rr 
+        }  
+      }
+      if rrcount == len(events.Data)-1{
+        fmt.Println("No duplicates both loops")
+        break
+      }
+    }            
+    evbody.Data.Int_search_areas = r.FormValue("Int_search_areas")
+    if evbody.Data.Int_search_areas == ""{
+      evbody.Data.Int_search_areas = "0"
+    }
+    evbody.Data.Ext_search_areas = r.FormValue("Ext_search_areas")
+    if evbody.Data.Ext_search_areas == ""{
+      evbody.Data.Ext_search_areas = "0"
+    }  
+    evbody.Data.Cont_search_areas = r.FormValue("Cont_search_areas")
+    if evbody.Data.Cont_search_areas == ""{
+      evbody.Data.Cont_search_areas = "0"
+    }  
+    evbody.Data.Veh_search_areas = r.FormValue("Veh_search_areas")
+    if evbody.Data.Veh_search_areas == ""{
+      evbody.Data.Veh_search_areas = "0"
+    }  
+    evbody.Data.Elite_search_areas = r.FormValue("Elite_search_areas")
+    if evbody.Data.Elite_search_areas == ""{
+      evbody.Data.Elite_search_areas = "0"
+    }  
+    evbody.Data.Int_hides = r.FormValue("Int_hides")
+    if evbody.Data.Int_hides == ""{
+      evbody.Data.Int_hides = "0"
+    }  
+    evbody.Data.Ext_hides = r.FormValue("Ext_hides")
+    if evbody.Data.Ext_hides == ""{
+      evbody.Data.Ext_hides = "0"
+    }  
+    evbody.Data.Cont_hides = r.FormValue("Cont_hides")
+    if evbody.Data.Cont_hides == ""{
+      evbody.Data.Cont_hides = "0"
+    }  
+    evbody.Data.Veh_hides = r.FormValue("Veh_hides")
+    if evbody.Data.Veh_hides == ""{
+      evbody.Data.Veh_hides = "0"
+    }  
+    evbody.Data.Elite_hides = r.FormValue("Elite_hides")
+    if evbody.Data.Elite_hides == ""{
+      evbody.Data.Elite_hides = "0"
+    }  
+    evbody.Data.EntrantSelected_Id = r.Form["EntrantSelected_Id"]
+    evbody.Data.UserSelected_Id = r.Form["UserSelected_Id"]
+    for i:=0; i<len(evbody.Data.EntrantAll_Id); i++{
+      evbody.Data.EntrantAll_Id[i].Selected = false
+      if len(evbody.Data.EntrantSelected_Id)>0{
+        for j:=0; j<len(evbody.Data.EntrantSelected_Id); j++{
+          if evbody.Data.EntrantAll_Id[i].Value == evbody.Data.EntrantSelected_Id[j]{
+            evbody.Data.EntrantAll_Id[i].Selected = true
+          }      
+        }
+      }
+    }
+    for i:=0; i<len(evbody.Data.UserAll_Id); i++{
+      evbody.Data.UserAll_Id[i].Selected = false
+      if len(evbody.Data.UserSelected_Id)>0{
+        for j:=0; j<len(evbody.Data.UserSelected_Id); j++{
+          if evbody.Data.UserAll_Id[i].Value == evbody.Data.UserSelected_Id[j]{
+            evbody.Data.UserAll_Id[i].Selected = true
+          }      
+        }
+      }
+    }  
+    err, id := evRepo.Create(&evbody.Data)
+    
+    // Add Event_Id to selected entrants and add scorecards and tallies
+    scRepo := ScorecardRepo{c.db.C("scorecards")}
+    scorecards, err := scRepo.All()
+    
+    taRepo := TallyRepo{c.db.C("tallies")}
+    tallies, err := taRepo.All()  
+    
+    evRepo = EventRepo{c.db.C("events")}
+    event, err := evRepo.Find(id.Hex()) //getting data from named param :id  
+    fmt.Println("printing event.Data")
+    fmt.Println(event.Data)
+    
+    // Search through all of the entrants registered in event EntrantAll_Id
+    for i:=0; i<len(event.Data.EntrantAll_Id); i++{
+      // Search through all entrants
+      for j:=0; j<len(entrants.Data); j++{          
+        // Search through entrants registered in event EntrantSelected_Id
+        // If there is at least one entrant selected
+        if len(event.Data.EntrantSelected_Id) > 0{
+          if entrants.Data[j].Team_Id == event.Data.EntrantAll_Id[i].Value{
+            if event.Data.EntrantAll_Id[i].Selected == true{
+              // Register event in entrant and create scorecards and tally
+              entrants.Data[j].Event_Id = append(entrants.Data[j].Event_Id, event.Data.Event_Id) 
+              enbody := EntrantResource{}
+              enbody.Data.Id = entrants.Data[j].Id
+              enbody.Data.First_name = entrants.Data[j].First_name
+              enbody.Data.Last_name = entrants.Data[j].Last_name
+              enbody.Data.Id_number = entrants.Data[j].Id_number
+              enbody.Data.Dog_name = entrants.Data[j].Dog_name              
+              enbody.Data.Dog_id_number = entrants.Data[j].Dog_id_number  
+              enbody.Data.Breed = entrants.Data[j].Breed              
+              enbody.Data.Team_Id = entrants.Data[j].Team_Id
+              enbody.Data.Event_Id = entrants.Data[j].Event_Id
+              err = enRepo.Update(&enbody.Data)
+              fmt.Println("printing enbody.Data.Event_Id")
+              fmt.Println(enbody.Data.Event_Id)              
+              // create scorecards for this event and entrant
+              search_areas := 0
+              element := ""
+              for elm:=0; elm<len(ELEMENTS); elm++{
+                switch element = ELEMENTS[elm]; ELEMENTS[elm]{
+                  case "Container":
+                    if event.Data.Cont_search_areas != ""{
+                      search_areas, err = strconv.Atoi(event.Data.Cont_search_areas)
+                    }else{
+                      search_areas = 0
+                    }
+                  case "Interior":
+                    if (event.Data.Int_search_areas != ""){
+                      search_areas, err = strconv.Atoi(event.Data.Int_search_areas)
+                    }else{
+                      search_areas = 0
+                    }
+                  case "Exterior":
+                    if event.Data.Ext_search_areas != ""{        
+                      search_areas, err = strconv.Atoi(event.Data.Ext_search_areas)
+                    }else{
+                      search_areas = 0
+                    }
+                  case "Vehicle":
+                    if event.Data.Veh_search_areas != ""{                
+                      search_areas, err = strconv.Atoi(event.Data.Veh_search_areas)
+                    }else{
+                      search_areas = 0
+                    }
+                  case "Elite":
+                    if event.Data.Elite_search_areas != ""{                
+                      search_areas, err = strconv.Atoi(event.Data.Elite_search_areas)
+                    }else{
+                      search_areas = 0
+                    }
+                }
+                if search_areas > 0{
+//                    fmt.Println("printing search_areas")
+//                    fmt.Println(search_areas)
+                  for s:=1; s<=search_areas; s++{                   
+                    scbody := ScorecardResource{}
+                    scbody.Data.Element = element                  
+                    scbody.Data.Event_Id = event.Data.Event_Id
+                    scbody.Data.Entrant_Id = entrants.Data[j].Team_Id                    
+                    scbody.Data.Search_area = strconv.Itoa(s)
+//                    fmt.Println("printing s")
+//                    fmt.Println(s)
+//                    fmt.Println("printing scbody.Data.Search_area")
+//                    fmt.Println(scbody.Data.Search_area)                    
+                    scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
+                    // check for duplicates
+                    rrcount := 0
+                    for r:=0; r<len(scorecards.Data); r++{               
+                      if scbody.Data.Scorecard_Id == scorecards.Data[r].Scorecard_Id{
+                        fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                        scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
+                      }
+                      for rr:=0;rr<len(scorecards.Data); rr++{                  
+                        if scbody.Data.Scorecard_Id == scorecards.Data[rr].Scorecard_Id{
+                          fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")                      
+                          scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
+                          break
+                        }else{
+                          rrcount = rr 
+                        }  
+                      }
+                      if rrcount == len(scorecards.Data)-1{
+                        fmt.Println("No duplicates both loops")
+                        break
+                      }
+                    }                    
+                    scbody.Data.Hides_max = "0"
+                    scbody.Data.Hides_found = "0"
+                    scbody.Data.Hides_missed = "0"
+                    scbody.Data.Maxpoint = "0"
+                    scbody.Data.False_alert_fringe = "0"
+                    scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
+                    scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
+                    scbody.Data.Dismissed = Selected{Value: "no", Selected: false}
+                    scbody.Data.Excused = Selected{Value: "no", Selected: false}
+                    scbody.Data.Absent = Selected{Value: "no", Selected: false}
+                    scbody.Data.Eliminated_during_search = Selected{Value: "no", Selected: false}
+                    scbody.Data.Pronounced = Selected{Value: "no", Selected: false}
+                    scbody.Data.Judge_signature = Selected{Value: "no", Selected: false}
+                    fmt.Println("printing new Scorecard_Id")
+                    fmt.Println(scbody.Data.Scorecard_Id)
+                    err, id := scRepo.Create(&scbody.Data)
+                    fmt.Println(err)
+                    fmt.Println(id)
+                  }
+                }
+              }
+              tabody := TallyResource{}
+              tabody.Data.Entrant_Id = entrants.Data[j].Team_Id
+              tabody.Data.Event_Id = event.Data.Event_Id
+              tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
+              // check for duplicates
+              rrcount := 0
+              for r:=0; r<len(tallies.Data); r++{               
+                if tabody.Data.Tally_Id == tallies.Data[r].Tally_Id{
+                  fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                  tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
+                }
+                for rr:=0;rr<len(tallies.Data); rr++{                  
+                  if tabody.Data.Tally_Id == tallies.Data[rr].Tally_Id{
+                    fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1")                      
+                    tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
+                    break
+                  }else{
+                    rrcount = rr 
+                  }  
+                }
+                if rrcount == len(tallies.Data)-1{
+                  fmt.Println("No duplicates both loops")
+                  break
+                }
+              }              
+              tabody.Data.Total_time = "0"
+              tabody.Data.Total_faults = "0"
+              tabody.Data.Title = "not this time"
+              tabody.Data.Total_points = "0" 
+              tabody.Data.Qualifying_score = "0"
+              tabody.Data.Qualifying_scores = "0"             
+              err, id := taRepo.Create(&tabody.Data)
+              fmt.Println(err)
+              fmt.Println(id)              
+            }
+          }
+        }
+      }
+    }
+    for i:=0; i<len(event.Data.UserAll_Id); i++{
+      for j:=0; j<len(users.Data); j++{          
+        if len(event.Data.UserSelected_Id) > 0{
+          if users.Data[j].User_Id == event.Data.UserAll_Id[i].Value{
+            if event.Data.UserAll_Id[i].Selected == true{
+              fmt.Println("printing users.Data[j].User_Id")
+              fmt.Println(users.Data[j].User_Id)              
+              fmt.Println("printing users.Data[j].Event_Id")
+              fmt.Println(users.Data[j].Event_Id)              
+              users.Data[j].Event_Id = append(users.Data[j].Event_Id, event.Data.Event_Id) 
+              usbody := UserResource{}
+              usbody.Data.Id = users.Data[j].Id
+              usbody.Data.First_name = users.Data[j].First_name
+              usbody.Data.Last_name = users.Data[j].Last_name
+              usbody.Data.Status = users.Data[j].Status
+              usbody.Data.Approved = users.Data[j].Approved
+              usbody.Data.Email = users.Data[j].Email 
+              usbody.Data.Password = users.Data[j].Password              
+              usbody.Data.User_Id = users.Data[j].User_Id
+              usbody.Data.Role = users.Data[j].Role
+              usbody.Data.Event_Id = users.Data[j].Event_Id
+              err = usRepo.Update(&usbody.Data)
+              fmt.Println("printing usbody.Data.Event_Id")
+              fmt.Println(usbody.Data.Event_Id)              
+            }              
+          }
+        }
+      }
+    }
+    if err != nil {
+      fmt.Println("out of updateEventHandler")
+      panic(err)
+    }
+    fmt.Println("out of updateEventHandler")
+    if event.Data.Event_Id == ""{
+      http.Redirect(w, r, "/events/delete/" + event.Data.Id.Hex(), 302)
+    }else{
+      http.Redirect(w, r, "/events/show/" + event.Data.Id.Hex(), 302)   
+    } 
+  }
+}
 
 func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("In editEventHandler")  
@@ -1244,7 +1556,10 @@ func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{  
+  if current_session.Current_status == false{
+    fmt.Println("out of editEventHandler")
+    http.Redirect(w, r, "/login", 302)  
+  }else{  
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id")) //getting data from named param :id  
@@ -1326,21 +1641,24 @@ func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Println("out of editEventHandler")
-  }else{
-    fmt.Println("out of editEventHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
 func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) {
-  fmt.Println("In updateEventHandler")
-	if count < 1{
+  fmt.Println("In updateEventHandler")   
+  if count < 1{
     c.sessionHandler(w, r)
     count += 1
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of updateEventHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of updateEventHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/events", 302)     
+  }else if current_session.Current_status == true && count > 0{  
     params := context.Get(r, "params").(httprouter.Params)  
     
     evRepo := EventRepo{c.db.C("events")}
@@ -1352,8 +1670,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
     entrants, err := enRepo.All()
     
     usRepo := UserRepo{c.db.C("users")}
-    users, err := usRepo.All()   
-    
+    users, err := usRepo.All()    
     if len(event.Data.EntrantAll_Id) == 0{
       for i:=0; i<len(entrants.Data); i++{
           newEntrant := Selected{Value: entrants.Data[i].Team_Id, Selected: false}
@@ -1367,7 +1684,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
       }
     }  
     evbody := context.Get(r, "body").(*EventResource)
-//    evbody.SData = current_session
+  //    evbody.SData = current_session
     evbody.Data.Id = event.Data.Id
     evbody.Data.Name = r.FormValue("Name")
     evbody.Data.Location = r.FormValue("Location")
@@ -2117,11 +2434,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
       http.Redirect(w, r, "/events/delete/" + event.Data.Id.Hex(), 302)
     }else{
       http.Redirect(w, r, "/events/show/" + event.Data.Id.Hex(), 302)   
-    }    
-  }else{
-    fmt.Println("out of updateEventHandler")
-    http.Redirect(w, r, "/login", 302)
-  }
+    }
+  }    
   //  w.WriteHeader(204)
   //	w.Write([]byte("\n"))	
 }
@@ -2134,7 +2448,13 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
   }else{
     count = 0
   }
-  if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("out of deleteEventHandler")
+    http.Redirect(w, r, "/login", 302)    
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of deleteEventHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/events", 302)     
+  }else if current_session.Current_status == true && count > 0{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id"))
@@ -2264,9 +2584,6 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
     fmt.Println("out of deleteEventHandler")
     //  _, err = http.Get("/events")
     http.Redirect(w, r, "/events", 302)    
-  }else{
-    fmt.Println("out of deleteEventHandler")
-    http.Redirect(w, r, "/login", 302)
   }  
   //	w.WriteHeader(204)
   //	w.Write([]byte("\n"))
@@ -2477,7 +2794,10 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("Out of entrantsHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else{
     repo := EntrantRepo{c.db.C("entrants")}
     entrants, err := repo.All()
     entrants_resrc := EntrantsResource{}
@@ -2489,6 +2809,7 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
       body.Data.First_name = entrants.Data[i].First_name
       body.Data.Last_name = entrants.Data[i].Last_name
       body.Data.Team_Id = entrants.Data[i].Team_Id
+      body.Data.Breed = entrants.Data[i].Breed
       body.Data.Dog_name = entrants.Data[i].Dog_name
       body.Data.Dog_id_number = entrants.Data[i].Dog_id_number
       body.Data.Id_number = entrants.Data[i].Id_number           
@@ -2504,9 +2825,6 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("Out of entrantsHandler")
-  }else{
-    fmt.Println("Out of entrantsHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -2518,7 +2836,10 @@ func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{  
+  if current_session.Current_status == false{
+    fmt.Println("out of entrantHandler")
+    http.Redirect(w, r, "/login", 302)  
+  }else{  
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -2537,9 +2858,6 @@ func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Println("out of entrantHandler")
-  }else{
-    fmt.Println("out of entrantHandler")
-    http.Redirect(w, r, "/login", 302)
   }  
 }
 
@@ -2551,7 +2869,10 @@ func (c *appContext) newEntrantHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of newEntrantHandler")
+    http.Redirect(w, r, "/login", 302)  
+  }else{
     entrantresrc := EntrantResource{}
     entrantresrc.SData = current_session
     if err := createnewEntrant.Execute(w, entrantresrc); err != nil {
@@ -2559,26 +2880,29 @@ func (c *appContext) newEntrantHandler(w http.ResponseWriter, r *http.Request) {
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
-  }else{
-    fmt.Println("out of newEntrantHandler")
-    http.Redirect(w, r, "/login", 302)
   }   
   fmt.Println("out of newEntrantHandler") 
 }
 
 func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("In createEntrantHandler")
+	fmt.Println("In createEntrantHandler")  
   if count < 1{
+    c.sessionHandler(w, r)
     count += 1
-    c.sessionHandler(w, r)    
   }else{
     count = 0
-  }
-  if current_session.Current_status == true && count > 0{   
+  }  
+  if current_session.Current_status == false{
+    fmt.Println("out of createEntrantHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of createEntrantHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/entrants", 302)     
+  }else if current_session.Current_status == true && count > 0{   
     repo := EntrantRepo{c.db.C("entrants")}	
     entrants, err := repo.All()  
     rrcount := 0
-    body := context.Get(r, "body").(*EntrantResource)    //gorilla context, key "body" that returns val
+    body := context.Get(r, "body").(*EntrantResource)    //gorilla context, key "body" that returns val    
     body.Data.First_name = r.FormValue("First_name")
     body.Data.Last_name = r.FormValue("Last_name")
     body.Data.Id_number = "M_" + strconv.Itoa(rand.Int())
@@ -2666,7 +2990,10 @@ func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) 
   }else{
     count = 0
   }
-  if current_session.Current_status == true && count > 0{	
+  if current_session.Current_status == false{
+    fmt.Println("out of editEntrantHandler, status is false")
+    http.Redirect(w, r, "/login", 302)  
+  }else{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id")) //getting data from named param :id 
@@ -2679,25 +3006,24 @@ func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) 
       return
     }
     fmt.Println("out of editEntrantHandler, template executed")
-  }else if current_session.Current_status == true && count <= 0{
-    fmt.Println("out of editEntrantHandler, status is true, count <= 0")
-    http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == false{
-    fmt.Println("out of editEntrantHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
   }
 }
-
 
 func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request) {
   fmt.Println("In updateEntrantHandler")
   if count < 1{
+    c.sessionHandler(w, r)
     count += 1
-    c.sessionHandler(w, r)    
   }else{
     count = 0
-  }
-  if current_session.Current_status == true && count > 0{		
+  }  
+  if current_session.Current_status == false{
+    fmt.Println("out of createEntrantHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of createEntrantHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/entrants", 302)     
+  }else if current_session.Current_status == true && count > 0{ 	
     params := context.Get(r, "params").(httprouter.Params)  
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id")) //getting data from named param :id     
@@ -2717,13 +3043,7 @@ func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request
       panic(err)
     }
     fmt.Println("out of updateEntrantHandler, entrant updated")
-    http.Redirect(w, r, "/entrants/show/" + body.Data.Id.Hex(), 302)    
-  }else if current_session.Current_status == true && count <= 0{
-    fmt.Println("out of updateEntrantHandler, status is true, count <= 0")
-    http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == false{
-    fmt.Println("out of updateEntrantHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
+    http.Redirect(w, r, "/entrants/show/" + body.Data.Id.Hex(), 302)
   }
 }
 
@@ -2735,7 +3055,13 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
   }else{
     count = 0
   }
-  if current_session.Current_status == true && count > 0{	
+  if current_session.Current_status == false{
+    fmt.Println("out of deleteEntrantHandler, status is false")
+    http.Redirect(w, r, "/login", 302)  
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of deleteEntrantHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/entrants", 302)  
+  }else if current_session.Current_status == true && count > 0{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"	
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id"))
@@ -2752,12 +3078,6 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
     fmt.Println(err)
     fmt.Println("out of deleteEntrantHandler, entrant deleted")
     http.Redirect(w, r, "/entrants", 302)    
-    }else if current_session.Current_status == true && count <= 0{
-      fmt.Println("out of deleteEntrantHandler, status is true, count <= 0")
-      http.Redirect(w, r, "/entrants", 302)
-    }else if current_session.Current_status == false{
-    fmt.Println("out of deleteEntrantHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -2769,11 +3089,14 @@ func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("In usersHandler")
   if count < 1{
     count += 1
-    c.sessionHandler(w, r)    
+    c.sessionHandler(w, r)
   }else{
     count = 0
   }
-  if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("Out of usersHandler")
+    http.Redirect(w, r, "/login", 302)  
+  }else{	
     repo := UserRepo{c.db.C("users")}
     users, err := repo.All()
     users_resrc := UsersResource{}
@@ -2800,9 +3123,6 @@ func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("Out of usersHandler")
-  }else{
-    fmt.Println("Out of usersHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -2814,7 +3134,10 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-  if current_session.Current_status == true{	  
+  if current_session.Current_status == false{
+    fmt.Println("out of userHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else{	  
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := UserRepo{c.db.C("users")}
     user, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -2831,9 +3154,6 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Println("out of userHandler")
-  }else{
-    fmt.Println("out of userHandler")
-    http.Redirect(w, r, "/login", 302)
   }    
 }
 
@@ -2885,59 +3205,64 @@ func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
   body.Data.Password = r.FormValue("Password")    
   err, id := repo.Create(&body.Data)
   if err != nil {
-    fmt.Println("out of createUserHandler")
+    fmt.Println("out of createUserHandler with err")
     panic(err)
-  }
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
+  }  
   fmt.Println("out of createUserHandler, user created")
-  if current_session.Current_status == true && count > 0{  
-    fmt.Println("out of createUserHandler, user created")
-    http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
-  }else if current_session.Current_status == true && count <= 0{
-    fmt.Println("out of createUserHandler, status is true, count <= 0")
-    http.Redirect(w, r, "/users", 302)     
-  }else if current_session.Current_status == false{
-    fmt.Println("out of createUserHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
-  }
+  http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
 }
 
 func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("In editUserHandler")
-  c.sessionHandler(w, r)    
-  params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
-  repo := UserRepo{c.db.C("users")}
-  user, err := repo.Find(params.ByName("id")) //getting data from named param :id 
-  userresrc := UserResource{}
-  userresrc.Data = user.Data
-  userresrc.SData = current_session
-  if err = updateUser.Execute(w, userresrc); err != nil {
-    fmt.Println("out of editUserHandler")
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
-  }
-  fmt.Println("out of editUserHandler, template executed")
-// forwards to updateUserHandler
-}
-
-func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
-  fmt.Println("In updateUserHandler")
+  fmt.Println("printing r")  
+  fmt.Println(r)   
   if count < 1{
     count += 1
     c.sessionHandler(w, r)    
   }else{
     count = 0
   }
-  if current_session.Current_status == true && count > 0{  
-    params := context.Get(r, "params").(httprouter.Params)  
+  if current_session.Current_status == false{
+    fmt.Println("out of editUserHandler, status is false")
+    http.Redirect(w, r, "/login", 302)  
+  }else{  
+    params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
+    repo := UserRepo{c.db.C("users")}
+    user, err := repo.Find(params.ByName("id")) //getting data from named param :id 
+    userresrc := UserResource{}
+    userresrc.Data = user.Data
+    userresrc.SData = current_session
+    if err = updateUser.Execute(w, userresrc); err != nil {
+      fmt.Println("out of editUserHandler")
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
+    fmt.Println("out of editUserHandler, template executed")
+    // forwards to updateUserHandler
+    fmt.Println("printing r")  
+    fmt.Println(r)
+  }    
+}
+
+func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
+  fmt.Println("In updateUserHandler")
+  if count < 1{
+    c.sessionHandler(w, r)
+    count += 1
+  }else{
+    count = 0
+  }  
+  if current_session.Current_status == false{
+    fmt.Println("out of updateUserHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of updateUserHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/users", 302)     
+  }else if current_session.Current_status == true && count > 0{  
+    params := context.Get(r, "params").(httprouter.Params)
+    body := context.Get(r, "body").(*UserResource)
     repo := UserRepo{c.db.C("users")}
     user, err := repo.Find(params.ByName("id")) //getting data from named param :id     
-    body := context.Get(r, "body").(*UserResource)
     body.Data.Id = user.Data.Id
     body.Data.First_name = r.FormValue("First_name")
     body.Data.Last_name = r.FormValue("Last_name")  
@@ -2953,14 +3278,8 @@ func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
       panic(err)
     }
     fmt.Println(err)
-    fmt.Println("out of updateUserHandler, user updated")
+    fmt.Println("out of updateUserHandler, user updated")   
     http.Redirect(w, r, "/users/show/" + body.Data.Id.Hex(), 302)
-  }else if current_session.Current_status == true && count <= 0{
-    fmt.Println("out of updateUserHandler, status is true, count <= 0")
-    http.Redirect(w, r, "/users", 302)
-  }else{
-    fmt.Println("out of updateUserHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -2972,7 +3291,13 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true && count > 0{	
+  if current_session.Current_status == false{
+    fmt.Println("out of deleteUserHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of deleteUserHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/users", 302)  
+	}else if current_session.Current_status == true && count > 0{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := UserRepo{c.db.C("users")}
     user, err := repo.Find(params.ByName("id"))
@@ -2989,12 +3314,6 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Println(err)
     fmt.Println("out of deleteUserHandler, user deleted")
     http.Redirect(w, r, "/users", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    fmt.Println("out of deleteUserHandler, status is true, count <= 0")
-    http.Redirect(w, r, "/users", 302)    
-  }else{
-    fmt.Println("out of deleteUserHandler, status is false")
-    http.Redirect(w, r, "/login", 302)
   }   
 }
 
@@ -3010,7 +3329,10 @@ func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("Out of scorecardsHandler")
+    http.Redirect(w, r, "/login", 302)  
+	}else{	
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecards, err := repo.All()
     scorecards_resrc := ScorecardsResource{}
@@ -3041,9 +3363,6 @@ func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     fmt.Println("Out of scorecardsHandler")
-  }else{
-    fmt.Println("Out of scorecardsHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -3055,7 +3374,10 @@ func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true{  
+  if current_session.Current_status == false{
+    fmt.Println("out of scorecardHandler")
+    http.Redirect(w, r, "/login", 302)  
+	}else{  
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecard, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -3103,9 +3425,6 @@ func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("out of scorecardHandler")
-  }else{
-    fmt.Println("out of scorecardHandler")
-    http.Redirect(w, r, "/login", 302)
   }        
 }
 
@@ -3117,7 +3436,10 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
   }else{
     count = 0
   }
-	if current_session.Current_status == true{ 
+  if current_session.Current_status == false{
+    fmt.Println("out of editScorecardHandler")
+    http.Redirect(w, r, "/login", 302)  
+	}else{ 
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecard, err := repo.Find(params.ByName("id")) //getting data from named param :id  
@@ -3199,9 +3521,6 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
       fmt.Println(err)
     }
     fmt.Println("out of editScorecardHandler")  
-  }else{
-    fmt.Println("out of editScorecardHandler")
-    http.Redirect(w, r, "/login", 302)
   }    
 }
 
@@ -3394,12 +3713,18 @@ func handlerPostTime(w http.ResponseWriter, r *http.Request) {
 func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Request) {
   fmt.Println("In updateScorecardHandler") 
   if count < 1{
-    c.sessionHandler(w, r)
     count += 1
+    c.sessionHandler(w, r)    
   }else{
     count = 0
   }
-	if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of updateScorecardHandler") 
+    http.Redirect(w, r, "/login", 302)   
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of updateScorecardHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/scorecards", 302)      
+	}else if current_session.Current_status == true && count > 0{  
     params := context.Get(r, "params").(httprouter.Params)  
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecard, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -3419,6 +3744,10 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     body.Data.Other_faults_count = r.FormValue("Other_faults_count")
     body.Data.Comments = r.FormValue("Comments")
     body.Data.Total_time = timedata  //timedata global variable
+    elapsed_time := c.get_time(body.Data.Id.Hex())
+    if elapsed_time != ""{
+      body.Data.Total_time = elapsed_time
+    }    
     body.Data.Pronounced.Value = r.FormValue("Pronounced")
     body.Data.Judge_signature.Value = r.FormValue("Judge_signature")
     body.Data.Event_Id = scorecard.Data.Event_Id
@@ -3480,7 +3809,7 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     timelimit = tmp_timeD
     
     err = repo.Update(&body.Data)
-
+    
     if err != nil {
       fmt.Println("out of updateScorecardHandler")
       panic(err)
@@ -3493,21 +3822,24 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     }else{
       http.Redirect(w, r, "/scorecards/edit/" + body.Data.Id.Hex(), 302)
     }
-  }else{
-    fmt.Println("out of updateScorecardHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
 func (c *appContext) deleteScorecardHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("In deleteScorecardHandler")
   if count < 1{
-    c.sessionHandler(w, r)
     count += 1
+    c.sessionHandler(w, r)    
   }else{
     count = 0
   }
-	if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("out of deleteScorecardHandler") 
+    http.Redirect(w, r, "/login", 302)   
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of deleteScorecardHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/scorecards", 302)      
+	}else if current_session.Current_status == true && count > 0{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     err := repo.Delete(params.ByName("id"))
@@ -3520,9 +3852,6 @@ func (c *appContext) deleteScorecardHandler(w http.ResponseWriter, r *http.Reque
     //  _, err = http.Get("/scorecards")
     fmt.Println("out of deleteScorecardHandler") 
     http.Redirect(w, r, "/scorecards", 302)
-  }else{
-    fmt.Println("out of deleteScorecardHandler") 
-    http.Redirect(w, r, "/login", 302)
   }   
 }
 
@@ -3608,12 +3937,12 @@ func (c *appContext) get_check_hide_count(id string) string {
     }
   }
   hideCountCheck, err := strconv.Atoi(c.get_elmHides(scorecard.Data.Id.Hex()))
-  elm_hides := hideCountCheck  
+  elm_hides := hideCountCheck 
   if scorecard.Data.Hides_max != "" || scorecard.Data.Hides_max != "0"{
     for i:=0; i<len(entrants.Data); i++{
       if scorecard.Data.Entrant_Id == entrants.Data[i].Team_Id{    
         for j:=0; j<len(scorecards.Data); j++{                  
-          if scorecards.Data[j].Entrant_Id == entrants.Data[i].Team_Id && scorecards.Data[j].Element == scorecard.Data.Element && (scorecards.Data[j].Hides_max != "" || scorecards.Data[j].Hides_max != "0"){
+          if (scorecards.Data[j].Entrant_Id == entrants.Data[i].Team_Id) && (scorecards.Data[j].Element == scorecard.Data.Element) && (scorecards.Data[j].Event_Id == scorecard.Data.Event_Id) && ((scorecards.Data[j].Hides_max != "") || (scorecards.Data[j].Hides_max != "0")){
             hidesMax, err := strconv.Atoi(scorecards.Data[j].Hides_max)
             hideCountCheck = hideCountCheck - hidesMax                                     
             if err != nil {
@@ -3623,7 +3952,7 @@ func (c *appContext) get_check_hide_count(id string) string {
           }
         }
       }
-    }  
+    }   
     message = ""
     if ((hideCountCheck > elm_hides) || (hideCountCheck < 0)) && (event.Data.Division != "NW1"){
       message =  "Incorrect Hide Count..."
@@ -3639,6 +3968,9 @@ func (c *appContext) get_check_hide_count(id string) string {
       fmt.Println(err)
       if scorecard.Data.Hides_max == "0" || ((hidesmax >= elm_hides) && (search_areas > 1)){
         message = "Incorrect Hide Count..." 
+      }
+      if (scorecard.Data.Hides_max == "1") && (elm_hides == 1) && (search_areas == 1){
+        message =""
       }
     }
   }
@@ -3812,17 +4144,17 @@ func (c *appContext) get_time(id string) string {
   events, err := evRepo.All()
   event := EventResource{}
   falseAlertFringe, err := strconv.Atoi(scorecard.Data.False_alert_fringe)
-  time := "0"
+  elapsed_time := ""
   for i:=0; i<len(events.Data); i++{
     if scorecard.Data.Event_Id == events.Data[i].Event_Id{
       event.Data = events.Data[i]
     }
   }  
   if (scorecard.Data.Timed_out.Value == "yes" || scorecard.Data.Finish_call.Value == "no") && event.Data.Division == "Elite"{
-      time = scorecard.Data.Maxtime_m + ":" + scorecard.Data.Maxtime_s + ":00"
+      elapsed_time = scorecard.Data.Maxtime_m + ":" + scorecard.Data.Maxtime_s + ":00"
   }else if event.Data.Division != "Elite"{
     if scorecard.Data.Timed_out.Value == "yes" || scorecard.Data.Finish_call.Value == "no" || scorecard.Data.Absent.Value == "yes" || scorecard.Data.Eliminated_during_search.Value == "yes" || scorecard.Data.Excused.Value == "yes" || falseAlertFringe > 0{
-      time = scorecard.Data.Maxtime_m + ":" + scorecard.Data.Maxtime_s + ":00"
+      elapsed_time = scorecard.Data.Maxtime_m + ":" + scorecard.Data.Maxtime_s + ":00"
     }
   }
   if err != nil {
@@ -3831,7 +4163,7 @@ func (c *appContext) get_time(id string) string {
 	}
 //  fmt.Println("printing time from get_time")
 //  fmt.Println(time)    
-  return time
+  return elapsed_time
 }
 
 func (c *appContext) get_points(id string) string {
@@ -3930,7 +4262,10 @@ func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("Out of talliesHandler")
+    http.Redirect(w, r, "/login", 302)  
+	}else{	
     repo := TallyRepo{c.db.C("tallies")}
     tallies, err := repo.All()
     tallies_resrc := TalliesResource{}
@@ -3962,9 +4297,6 @@ func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("Out of talliesHandler")
-  }else{
-    fmt.Println("Out of talliesHandler")
-    http.Redirect(w, r, "/login", 302)
   }
 }
 
@@ -3976,7 +4308,10 @@ func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("out of tallyHandler")
+    http.Redirect(w, r, "/login", 302)  
+	}else{	
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     tally, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -4023,9 +4358,6 @@ func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
       return
     }
     fmt.Println("out of tallyHandler")
-  }else{
-    fmt.Println("out of tallyHandler")
-    http.Redirect(w, r, "/login", 302)
   }       
 }
 
@@ -4037,7 +4369,10 @@ func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
   }else{
     count = 0
   }
-	if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of editTallyHandler") 
+    http.Redirect(w, r, "/login", 302)  
+	}else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     tally, err := repo.Find(params.ByName("id")) //getting data from named param :id  
@@ -4091,9 +4426,6 @@ func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
     }
     fmt.Println("out of editTallyHandler") 
     http.Redirect(w, r, "/tallies/update/" + tally.Data.Id.Hex(), 302)
-  }else{
-    fmt.Println("out of editTallyHandler") 
-    http.Redirect(w, r, "/login", 302)
   }   
 }
 
@@ -4105,7 +4437,13 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
   }else{
     count = 0
   }
-  if current_session.Current_status == true{
+  if current_session.Current_status == false{
+    fmt.Println("out of updateTallyHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of updateTallyHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/tallies", 302)     
+  }else if current_session.Current_status == true && count > 0{	  
     params := context.Get(r, "params").(httprouter.Params)  
     repo := TallyRepo{c.db.C("tallies")}
     tally, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -4137,9 +4475,6 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
     }else{
       http.Redirect(w, r, "/tallies/edit/" + body.Data.Id.Hex(), 302)
     }
-  }else{
-    fmt.Println("out of updateTallyHandler")
-    http.Redirect(w, r, "/login", 302)
   }    
 }
 
@@ -4151,7 +4486,13 @@ func (c *appContext) deleteTallyHandler(w http.ResponseWriter, r *http.Request) 
   }else{
     count = 0
   }
-  if current_session.Current_status == true{	
+  if current_session.Current_status == false{
+    fmt.Println("out of deleteTallyHandler")
+    http.Redirect(w, r, "/login", 302)
+  }else if current_session.Current_status == true && count <= 0{
+    fmt.Println("out of deleteTallyHandler, status is true, count <= 0")
+    http.Redirect(w, r, "/tallies", 302)     
+  }else if current_session.Current_status == true && count > 0{	
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     err := repo.Delete(params.ByName("id"))
@@ -4163,10 +4504,7 @@ func (c *appContext) deleteTallyHandler(w http.ResponseWriter, r *http.Request) 
     //	w.Write([]byte("\n"))
     fmt.Println("out of deleteTallyHandler")
     //  _, err = http.Get("/tallies")
-    http.Redirect(w, r, "/tallies", 302)
-  }else{
-    fmt.Println("out of deleteTallyHandler")
-    http.Redirect(w, r, "/login", 302)
+    http.Redirect(w, r, "/tallies", 302)    
   }   
 }
 
@@ -4477,6 +4815,7 @@ func newSessionHandler(w http.ResponseWriter, r *http.Request) {
   sessionresrc := SessionResource{}
   current_session = Session{Current_user: "", Current_email: "", Current_status: false}  
   sessionresrc.SData = current_session
+  r.SetBasicAuth("", "")
   if err := createnewSession.Execute(w, sessionresrc); err != nil {
     fmt.Println("out of newSessionHandler") 
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -4487,84 +4826,99 @@ func newSessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
-	fmt.Println("In openSessionHandler") 
+	fmt.Println("In sessionHandler") 
   // go to login page and either sign up or enter email and password, get authenticated and go to "/events"
   usRepo := UserRepo{c.db.C("users")}
   users, err := usRepo.All()
+  var current_user = ""
   fmt.Println(err)
   Email := r.FormValue("email")
   Password := r.FormValue("password")
+  if Email == ""{
+    current_user = current_session.Current_user
+    Email = current_session.Current_email
+  }    
+  fmt.Println("printing current_user")
+  fmt.Println(current_user)
   fmt.Println("printing Email")
   fmt.Println(Email)
   fmt.Println("printing Password")
-  fmt.Println(Password)    
-  for i:=0;i<len(users.Data);i++{
-    if (Password == users.Data[i].Password) && (Email == users.Data[i].Email){
-      fmt.Println("printing users.Data[i]")
-      fmt.Println(users.Data[i])
-      current_session.Current_user = users.Data[i].User_Id
-      r.SetBasicAuth(Email, Password)    
-    }
-  } 
-  email, password, ok := r.BasicAuth()
-  if (ok == true) && (email != "") && (password != ""){
+  fmt.Println(Password) 
+//  fmt.Println("printing users.Data")  
+//  fmt.Println(users.Data)
+  if len(users.Data) > 0{
     for i:=0;i<len(users.Data);i++{
-      if (password == users.Data[i].Password) && (email == users.Data[i].Email) && (current_session.Current_user == users.Data[i].User_Id){
+      if ((Password == users.Data[i].Password) && (Email == users.Data[i].Email)) || ((current_user == users.Data[i].User_Id) && (Email == users.Data[i].Email)){
         fmt.Println("printing users.Data[i]")
         fmt.Println(users.Data[i])
-        current_session.Current_status = true
-        current_session.Current_email = users.Data[i].Email
+        current_session.Current_user = users.Data[i].User_Id
+        r.SetBasicAuth(Email, Password)
       }
     } 
-  }
-  fmt.Println("printing email")
-  fmt.Println(email)
-  fmt.Println("printing password")
-  fmt.Println(password)
-  fmt.Println("printing ok")
-  fmt.Println(ok)  
-  
-  refurlstr := ""
-  matchedRef := false
-  matchedUrl := false
-  // if referer is login, go to events as start page
-  fmt.Println("printing r.Header[\"Referer\"]")  
-  fmt.Println(r.Header["Referer"])  
-  
-  if r.Header["Referer"] != nil{
-    refurlstr = r.Header["Referer"][0]
-    matchedRef, err = regexp.MatchString("login", refurlstr)
-    fmt.Println("printing refurlstr")
-    fmt.Println(refurlstr)  
-  }
-  fmt.Println("printing refurlstr")  
-  fmt.Println(refurlstr)
-  fmt.Println("printing matchedRef")  
-  fmt.Println(matchedRef)  
-  
-  urlsrc := r.URL
-  urlstr := urlsrc.String()  
-  fmt.Println("printing urlstr")
-  fmt.Println(urlstr)
-  // if referer and current url are the same
-  matchedUrl, err = regexp.MatchString(urlstr, refurlstr)
-  fmt.Println("printing matchedUrl")  
-  fmt.Println(matchedUrl)
-    
-  if current_session.Current_status == false{
-    fmt.Println("out of openSessionHandler")
-    http.Redirect(w, r, "/login", 302)
-  }else{
-    fmt.Println("out of openSessionHandler")
-    // if referer is login or referer is nil or the referer and current url are not the same
-    // to to events as home page
-    if matchedRef || (r.Header["Referer"] == nil) || ((urlstr != "/signup") && matchedRef){
-      fmt.Println("redirecting to events")
-      http.Redirect(w, r, "/events", 302)
-    }else if !matchedRef || (!matchedRef && urlstr == "/signup"){
-      fmt.Println("redirecting to url")
-      http.Redirect(w, r, urlstr, 302)
+    email, password, ok := r.BasicAuth()
+    if (ok == true) && (email != "") && (password != ""){
+      for i:=0;i<len(users.Data);i++{
+        if (password == users.Data[i].Password) && (email == users.Data[i].Email) && (current_session.Current_user == users.Data[i].User_Id){
+          fmt.Println("printing users.Data[i]")
+          fmt.Println(users.Data[i])
+          current_session.Current_status = true
+          current_session.Current_email = users.Data[i].Email
+        }
+      } 
     }
+    fmt.Println("printing current_session.Current_user")
+    fmt.Println(current_session.Current_user)  
+    fmt.Println("printing current_session.Current_email")
+    fmt.Println(current_session.Current_email)
+    fmt.Println("printing current_session.Current_status")
+    fmt.Println(current_session.Current_status)
+    fmt.Println("printing ok")
+    fmt.Println(ok)  
+    
+    refurlstr := ""
+    matchedRef := false
+    matchedUrl := false
+    // if referer is login, go to events as start page
+    fmt.Println("printing r.Header[\"Referer\"]")  
+    fmt.Println(r.Header["Referer"])  
+    
+    if r.Header["Referer"] != nil{
+      refurlstr = r.Header["Referer"][0]
+      matchedRef, err = regexp.MatchString("login", refurlstr)
+      fmt.Println("printing refurlstr")
+      fmt.Println(refurlstr)  
+    }
+    fmt.Println("printing refurlstr")  
+    fmt.Println(refurlstr)
+    fmt.Println("printing matchedRef")  
+    fmt.Println(matchedRef)  
+    
+    urlsrc := r.URL
+    urlstr := urlsrc.String()  
+    fmt.Println("printing urlstr")
+    fmt.Println(urlstr)
+    // if referer and current url are the same
+    matchedUrl, err = regexp.MatchString(urlstr, refurlstr)
+    fmt.Println("printing matchedUrl")  
+    fmt.Println(matchedUrl)     
+    if current_session.Current_status == false{
+      fmt.Println("out of sessionHandler")
+      http.Redirect(w, r, "/login", 302)
+    }else{
+      fmt.Println("out of sessionHandler")
+      // if referer is login or referer is nil or the referer and current url are not the same
+      // to to events as home page
+      if matchedRef || (r.Header["Referer"] == nil) || ((urlstr != "/signup") && matchedRef){
+        fmt.Println("redirecting to events")
+        http.Redirect(w, r, "/events", 302)
+      }else if !matchedRef || (!matchedRef && urlstr == "/signup"){
+        fmt.Println("redirecting to url")
+        http.Redirect(w, r, urlstr, 302)
+      }
+    }
+  }else{
+    fmt.Println("there are no authorized users")
+    http.Redirect(w, r, "/login", 302)
   }
 }      
 
@@ -4574,18 +4928,83 @@ func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request
   usRepo := UserRepo{c.db.C("users")}
   users, err := usRepo.All()
   fmt.Println(err)  
-  for i:=0;i<len(users.Data);i++{
-    if current_session.Current_user == users.Data[i].User_Id{
-      fmt.Println("out of currentUserHandler")
-      current_session.Current_user = ""
-      current_session.Current_status = false
-      current_session.Current_email = ""
-      r.SetBasicAuth("", "")
-      break
+  var test_str = []string{"/info", "/events", "/entrants", "/users", "/scorecards", "/tallies"}
+  refurlstr := "" 
+  scurlstr := ""
+  matchedRefurl := false
+  matchedUrl := false
+  matchedUpdate := false
+  matchedNew := false
+  matchedEvent := false
+  matchedfav := false
+  mrurl := false
+  murl := false
+  update := false
+  newevent := false
+  
+  if r.Header["Referer"] != nil{
+    refurlstr = r.Header["Referer"][0]
+  }
+  fmt.Println("printing r.URL")  
+  fmt.Println(r.URL)
+  urlsrc := r.URL
+  fmt.Println("printing urlsrc")
+  fmt.Println(urlsrc)
+  scurlstr = urlsrc.String()
+  fmt.Println("printing refurlstr")  
+  fmt.Println(refurlstr)
+  fmt.Println("printing scurlstr")  
+  fmt.Println(scurlstr)
+  matchedfav, err = regexp.MatchString("/favicon.ico", scurlstr)
+  if matchedfav{
+    scurlstr = refurlstr
+  }
+  for i:=0; i<len(test_str); i++{
+    matchedUrl, err = regexp.MatchString(test_str[i], scurlstr)
+    matchedUpdate, err = regexp.MatchString("/update", scurlstr)
+    matchedNew, err = regexp.MatchString("/new", scurlstr)
+    matchedEvent, err = regexp.MatchString("/events", scurlstr)
+    matchedRefurl, err = regexp.MatchString(test_str[i], refurlstr)
+    if matchedUrl && !matchedUpdate{     
+      murl = true
+      scurlstr = test_str[i]
+    }else if matchedUrl && matchedUpdate{
+      murl = true
+      update = true
+    }else if matchedEvent && matchedNew{
+      murl = true
+      newevent = true
+    }   
+    if matchedRefurl == true{
+      mrurl = true
     }
-  }  
-	fmt.Println("out of deleteSessionHandler")
-  http.Redirect(w, r, "/login", 302)
+  }
+  fmt.Println("printing scurlstr")  
+  fmt.Println(scurlstr)  
+  fmt.Println("printing murl")  
+  fmt.Println(murl)
+  fmt.Println("printing mrurl")  
+  fmt.Println(mrurl)  
+  if murl && mrurl && !update{    
+    fmt.Println("out of deleteSessionHandler matched")
+    http.Redirect(w, r, scurlstr, 302)
+  }else if murl && mrurl && update{
+    fmt.Println("out of deleteSessionHandler matched and updated")
+    http.Redirect(w, r, refurlstr, 302)    
+  }else if murl && mrurl && newevent{
+    fmt.Println("out of deleteSessionHandler matched and new event")
+    http.Redirect(w, r, refurlstr, 302)
+  }else{    
+    for i:=0;i<len(users.Data);i++{
+      if current_session.Current_user == users.Data[i].User_Id{
+        current_session.Current_user = ""
+        current_session.Current_status = false
+        current_session.Current_email = ""
+      }
+    }  
+    fmt.Println("out of deleteSessionHandler")
+    http.Redirect(w, r, "/login", 302)
+  }
 }
 
 
@@ -4629,8 +5048,8 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 //	fmt.Println("In and out of wrapHandler")
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     context.Set(r, "params", ps)    //gorilla context, key "params"
-//		fmt.Println("printing value of \"params\"")
-//    fmt.Println(ps)
+		fmt.Println("printing value of \"params\"")
+    fmt.Println(ps)
     h.ServeHTTP(w, r)
     
 	}
@@ -4660,7 +5079,10 @@ func main() {
 //  fmt.Println("Chained handlers set up")
 
   router := NewRouter()
-
+//  router := httprouter.New()
+  
+  router.HandleMethodNotAllowed = false
+  
 //	fmt.Println("Called to NewRouter")
   fmt.Println("in session")
   router.ServeFiles("/static/*filepath", http.Dir("static"))
@@ -4673,12 +5095,14 @@ func main() {
   router.Get("/login", commonHandlers.ThenFunc(newSessionHandler))
   router.Post("/session", commonHandlers.ThenFunc(appC.sessionHandler))
   router.Get("/logout", commonHandlers.ThenFunc(appC.deleteSessionHandler))
+  router.NotFound = commonHandlers.ThenFunc(appC.deleteSessionHandler)
   
   //  Event routing  /////////////////
   
   router.Get("/events", commonHandlers.ThenFunc(appC.eventsHandler))
   router.Get("/events/show/:id", commonHandlers.ThenFunc(appC.eventHandler))  
   router.Get("/events/new", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.newEventHandler)) 
+  router.Post("/events/create", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.createEventHandler))  
   router.Get("/events/edit/:id/", commonHandlers.ThenFunc(appC.editEventHandler))
   router.Post("/events/update/:id/", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))  
   //  router.Put("/events/update/:id", commonHandlers.Append(contentTypeHandler, bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))
