@@ -1,1 +1,1 @@
-web: score
+web: score-go

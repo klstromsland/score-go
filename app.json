@@ -1,0 +1,10 @@
+{
+  "name": "Scoresheet Demo Web App",
+  "description": "Scoresheet Demo Web App",
+  "keywords": [
+    "goscorebyanose",
+    "demo"
+  ],
+  "website": "http://goscorebyanose.net",
+  "repository": "https://github.com/trickling/score-go"
+}

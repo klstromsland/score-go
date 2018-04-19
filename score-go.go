@@ -1,37 +1,25 @@
 package main
 // REST API to create, retrieve, update and delete scores
 import (
-//  "bufio"
-//  "bytes"
-//  "encoding/base64"
-	"encoding/json"  //implements encoding and decoding of JSON objects
+  "encoding/json"  //implements encoding and decoding of JSON objects
   "fmt"
-  "html/template"
-//  "io"
-//  "io/ioutil"  
+  "html/template" 
   "log"
   "math"
   "math/rand"  
-	"net/http"
-//	"net/url"  
-//  "os"  
-//  "path"  
-	"reflect"
-	// implements run-time reflection, allowing a program to manipulate 
-	// objects with arbitrary types. The typical use is to take a value 
-	// with static type interface{} and extract its dynamic type information 
-	// by calling TypeOf, which returns a Type.    
+  "net/http"  
+  "reflect"
   "regexp"
   "strconv"  
   "strings"
-	"time" 
-	"github.com/gorilla/context" //request and response mapping
-	"github.com/julienschmidt/httprouter"  //to handle r&r from gorrilla
-	"github.com/justinas/alice" //used to chain handlers
-	"gopkg.in/mgo.v2"  //driver for mongodb
-	"gopkg.in/mgo.v2/bson"  //implementation of the BSON specification for Go
+  "time" 
+  "github.com/gorilla/context" //request and response mapping
+  "github.com/julienschmidt/httprouter"  //to handle r&r from gorrilla
+  "github.com/justinas/alice" //used to chain handlers
+  "gopkg.in/mgo.v2"  //driver for mongodb
+  "gopkg.in/mgo.v2/bson"  //implementation of the BSON specification for Go
 )
-// Nicolas Merouze
+// Based on blog by Nicolas Merouze
 // Repo BSON spec, mongodb driver
 
 var listEvent = template.Must(template.ParseFiles("templates/base.html", "templates/events/list/list.html"))
@@ -5060,8 +5048,8 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 
 func main() {
   
-//  session, err := mgo.Dial("localhost:27017")
-  session, err := mgo.Dial("ec2-52-38-184-52.us-west-2.compute.amazonaws.com")  
+  session, err := mgo.Dial("localhost:27017")
+//  session, err := mgo.Dial("ec2-52-38-184-52.us-west-2.compute.amazonaws.com")  
 //	fmt.Println("Dialed for session")
 	
   if err != nil {
