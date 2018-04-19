@@ -27,11 +27,11 @@
 [metadata.heroku]
   root-package = "github.com/heroku/score-go"
   go-version = "1.10.1"
+  install = [ "./..." ]
 
 [[constraint]]
   name = "github.com/gorilla/context"
   version = "1.1.0"
-  install = [ "./..." ]
 
 [[constraint]]
   name = "github.com/julienschmidt/httprouter"
