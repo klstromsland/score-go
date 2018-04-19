@@ -5049,6 +5049,7 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 func main() {
   
   session, err := mgo.Dial("localhost:27017")
+  session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
 //  session, err := mgo.Dial("ec2-52-38-184-52.us-west-2.compute.amazonaws.com")  
 //	fmt.Println("Dialed for session")
 	
