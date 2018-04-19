@@ -5084,7 +5084,7 @@ func main() {
   router.Get("/login", commonHandlers.ThenFunc(newSessionHandler))
   router.Post("/session", commonHandlers.ThenFunc(appC.sessionHandler))
   router.Get("/logout", commonHandlers.ThenFunc(appC.deleteSessionHandler))
-  router.NotFound = commonHandlers.ThenFunc(appC.deleteSessionHandler)
+  // router.NotFound = commonHandlers.ThenFunc(appC.deleteSessionHandler)
   
   //  Event routing  /////////////////
   
@@ -5095,7 +5095,7 @@ func main() {
   router.Get("/events/edit/:id/", commonHandlers.ThenFunc(appC.editEventHandler))
   router.Post("/events/update/:id/", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))  
   //  router.Put("/events/update/:id", commonHandlers.Append(contentTypeHandler, bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))
-	router.Get("/events/delete/:id", commonHandlers.ThenFunc(appC.deleteEventHandler))
+  router.Get("/events/delete/:id", commonHandlers.ThenFunc(appC.deleteEventHandler))
   
   //  Entrant routing  //////////////////
   
