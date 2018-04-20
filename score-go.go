@@ -8,6 +8,7 @@ import (
   "math"
   "math/rand"
   "net/http"
+  "os"
   "reflect"
   "regexp"
   "strconv"
@@ -61,6 +62,7 @@ var timelimit  time.Duration
 var timedata string = ""
 var data string = ""
 var count int = 0
+var repeat int
 const second = time.Second
 const minute = time.Minute
 const millisecond = time.Millisecond
@@ -5149,7 +5151,6 @@ func main() {
   if port == ""{
       log.Fatal("$PORT must be set")
   }
-  var err error
   tStr := os.Getenv("REPEAT")
   repeat, err = strconv.Atoi(tStr)
   if err != nil{
