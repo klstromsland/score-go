@@ -5068,7 +5068,7 @@ func main() {
 
   session.SetMode(mgo.Monotonic, true)
 
-  appC := appContext{session.DB("test")}
+  appC := appContext{session.DB("heroku_g884mk05")}
 
   // commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler, acceptHandler)
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
