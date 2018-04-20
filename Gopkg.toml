@@ -45,6 +45,10 @@
   branch = "v2"
   name = "gopkg.in/mgo.v2"
 
+[[constraint]]
+  branch = "v2"
+  name = "gopkg.in/mgo.v2/bson"
+
 [prune]
   go-tests = true
   unused-packages = true
