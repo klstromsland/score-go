@@ -5050,14 +5050,11 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 
 func main() {
 
-  //  listening
-
   port := os.Getenv("PORT")
   fmt.Print("printing " + port)
   if port == ""{
-      log.Fatal("$PORT must be set")
+     log.Fatal("$PORT must be set")
   }
-  http.ListenAndServe((":" + port), router)
 
  // session, err := mgo.Dial("localhost:27017")
   session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
@@ -5152,4 +5149,8 @@ func main() {
   router.Get("/tallies/edit/:id", commonHandlers.ThenFunc(appC.editTallyHandler))
   router.Post("/tallies/update/:id", commonHandlers.Append(bodyHandler(TallyResource{})).ThenFunc(appC.updateTallyHandler))
   router.Get("/tallies/delete/:id", commonHandlers.ThenFunc(appC.deleteTallyHandler))
+
+
+  //  listening
+  http.ListenAndServe((":" + port), router)
 }
