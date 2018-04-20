@@ -345,7 +345,7 @@ func (r *EntrantRepo) Update(entrant *Entrant) error {
   result := EntrantResource{}
   err := r.coll.Find(bson.M{"_id": entrant.Id}).One(&result.Data)
   // fmt.Println("printing err")
-  fmt.Println(err)
+  // fmt.Println(err)
   if err != nil {
     // fmt.Println("Find error")
     // fmt.Println("out of Entrant Update")
@@ -1198,7 +1198,7 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // fmt.Println(err)
+    fmt.Println(err)
     // fmt.Println("out of newEventHandler")
   }
 }
@@ -1450,8 +1450,8 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     // fmt.Println("printing new Scorecard_Id")
                     // fmt.Println(scbody.Data.Scorecard_Id)
                     err, id := scRepo.Create(&scbody.Data)
-                    // fmt.Println(err)
-                    // fmt.Println(id)
+                    fmt.Println(err)
+                    fmt.Println(id)
                   }
                 }
               }
@@ -1487,8 +1487,8 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
               tabody.Data.Qualifying_score = "0"
               tabody.Data.Qualifying_scores = "0"
               err, id := taRepo.Create(&tabody.Data)
-            //   fmt.Println(err)
-            //   fmt.Println(id)
+              fmt.Println(err)
+              fmt.Println(id)
             }
           }
         }
@@ -1911,8 +1911,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             err, id := scRepo.Create(&scbody.Data)
                             // decrement range
                             sc_count += 1
-                            // fmt.Println(err)
-                            // fmt.Println(id)
+                            fmt.Println(err)
+                            fmt.Println(id)
                           }else if scorecardfound == true{
                             // if scorecard exists, update it
                             // fmt.Println("scorecard exists, update it")
@@ -1943,7 +1943,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             scbody.Data.Judge_signature = scorecard.Data.Judge_signature
                             scbody.Data.Scorecard_Id = scorecard.Data.Scorecard_Id
                             err = scRepo.Update(&scbody.Data)
-                            // fmt.Println(err)
+                            fmt.Println(err)
                             // find match for other scorecards
                             scorecardfound = false
                           }
@@ -1959,7 +1959,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                           if scorecards.Data[sc].Element == element && searchArea > 0 && scorecards.Data[sc].Entrant_Id == entrants.Data[j].Team_Id && scorecards.Data[sc].Event_Id == event.Data.Event_Id{
                             id := scorecards.Data[sc].Id.Hex()
                             err = scRepo.Delete(id)
-                            // fmt.Println(err)
+                            fmt.Println(err)
                             // fmt.Println(id)
                           }
                         }
@@ -2005,8 +2005,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     tabody.Data.Qualifying_score = "0"
                     tabody.Data.Qualifying_scores = "0"
                     err, id := taRepo.Create(&tabody.Data)
-                    // fmt.Println(err)
-                    // fmt.Println(id)
+                    fmt.Println(err)
+                    fmt.Println(id)
                   }
                 }
               }
@@ -2117,8 +2117,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     //   fmt.Println("printing new Scorecard_Id")
                     //   fmt.Println(scbody.Data.Scorecard_Id)
                       err, id := scRepo.Create(&scbody.Data)
-                    //   fmt.Println(err)
-                    //   fmt.Println(id)
+                      fmt.Println(err)
+                      fmt.Println(id)
                     }
                   }
                 }
@@ -2154,8 +2154,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 tabody.Data.Qualifying_score = "0"
                 tabody.Data.Qualifying_scores = "0"
                 err, id := taRepo.Create(&tabody.Data)
-                // fmt.Println(err)
-                // fmt.Println(id)
+                fmt.Println(err)
+                fmt.Println(id)
               }
               found = false
             // If entrant IS NOT registered in event EntrantSelected_Id, if the event IS registered in entrant Event_Id, deregister it and delete scorecards and tally.
@@ -2204,7 +2204,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                       if scorecards.Data[sc].Entrant_Id == entrants.Data[j].Team_Id && scorecards.Data[sc].Event_Id == event.Data.Event_Id{
                         id := scorecards.Data[sc].Id.Hex()
                         err = scRepo.Delete(id)
-                        // fmt.Println(err)
+                        fmt.Println(err)
                         // fmt.Println(id)
                       }
                     }
@@ -2212,7 +2212,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                       if tallies.Data[ta].Entrant_Id == entrants.Data[j].Team_Id && tallies.Data[ta].Event_Id == event.Data.Event_Id{
                         id := tallies.Data[ta].Id.Hex()
                         err = taRepo.Delete(id)
-                        // fmt.Println(err)
+                        fmt.Println(err)
                         // fmt.Println(id)
                       }
                     }
@@ -2268,7 +2268,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   if scorecards.Data[sc].Event_Id == event.Data.Event_Id && scorecards.Data[sc].Entrant_Id == entrants.Data[j].Team_Id{
                     id := scorecards.Data[sc].Id.Hex()
                     err = scRepo.Delete(id)
-                    // fmt.Println(err)
+                    fmt.Println(err)
                     // fmt.Println(id)
                   }
                 }
@@ -2279,7 +2279,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   if tallies.Data[ta].Event_Id == event.Data.Event_Id && tallies.Data[ta].Entrant_Id == entrants.Data[j].Team_Id{
                     id := tallies.Data[ta].Id.Hex()
                     err = taRepo.Delete(id)
-                    // fmt.Println(err)
+                    fmt.Println(err)
                     // fmt.Println(id)
                   }
                 }
@@ -2670,7 +2670,7 @@ func (c *appContext) place_order(id string) []string{
           tcount += 1
           break
         }
-        // fmt.Println(err)
+        fmt.Println(err)
       }
     }
   }
@@ -2736,12 +2736,12 @@ func (c *appContext) scorecard_completion(id string) []string{
         }
       }
     }
-    // fmt.Println(err)
+    fmt.Println(err)
     if sc_count == cont_count + ext_count + int_count + veh_count + elite_count{
       completed_entrant_scorecards[i] = event.Data.EntrantSelected_Id[i]
     }
   }
-  // fmt.Println(err)
+  fmt.Println(err)
 //  fmt.Println(completed_entrant_scorecards)
 //  fmt.Println("out of scorecard_completion")
   return completed_entrant_scorecards
@@ -2766,7 +2766,7 @@ func (c *appContext) tally_completion(id string) []string{
       }
     }
   }
-  // fmt.Println(err)
+  fmt.Println(err)
 //  fmt.Println("out of tally_completion")
   return completed_entrant_tallies
 }
@@ -3057,7 +3057,7 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
     //   fmt.Println("Cannot delete team that is part of an event")
     }else{
       err := repo.Delete(params.ByName("id"))
-    //   fmt.Println(err)
+      fmt.Println(err)
     }
     if err != nil {
     //   fmt.Println("out of deleteEntrantHandler")
@@ -3293,7 +3293,7 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
     //   fmt.Println("Cannot delete user that is part of an event or yourself")
     }else{
       err := repo.Delete(params.ByName("id"))
-    //   fmt.Println(err)
+      fmt.Println(err)
     }
     if err != nil {
     //   fmt.Println("out of deleteUserHandler")
@@ -4888,7 +4888,7 @@ func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
     // if referer and current url are the same
     matchedUrl, err = regexp.MatchString(urlstr, refurlstr)
     // fmt.Println("printing matchedUrl")
-    // fmt.Println(matchedUrl)
+    fmt.Println(matchedUrl)
     if current_session.Current_status == false{
     //   fmt.Println("out of sessionHandler")
       http.Redirect(w, r, "/login", 302)
@@ -4915,7 +4915,7 @@ func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request
   // fmt.Println("In deleteSessionHandler")
   usRepo := UserRepo{c.db.C("users")}
   users, err := usRepo.All()
-  // fmt.Println(err)
+  fmt.Println(err)
   var test_str = []string{"/info", "/events", "/entrants", "/users", "/scorecards", "/tallies"}
   refurlstr := ""
   scurlstr := ""
@@ -5048,8 +5048,8 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 
 func main() {
 
- session, err := mgo.Dial("localhost:27017")
-  // session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+ // session, err := mgo.Dial("localhost:27017")
+  session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
 //  session, err := mgo.Dial("ec2-52-38-184-52.us-west-2.compute.amazonaws.com")
 //	fmt.Println("Dialed for session")
 
