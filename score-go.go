@@ -5145,5 +5145,19 @@ func main() {
 
   //  listening
 
-  http.ListenAndServe(":3000", router)
+  port := os.Getenv("PORT")
+  if port == ""{
+      log.Fatal("$PORT must be set")
+  }
+  var err error
+  tStr := os.Getenv("REPEAT")
+  repeat, err = strconv.Atoi(tStr)
+  if err != nil{
+      log.Print("Error converting $REPEAT to an int: %q - Using default", err)
+      repeat = 5
+  }
+  if err != nil{
+      log.Fatalf("Error opening database: %q", err)
+  }
+  http.ListenAndServe((":" + port), router)
 }
