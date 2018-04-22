@@ -5090,6 +5090,7 @@ func main() {
   //  Session routing ////////////////
 
   router.Get("/signup", commonHandlers.Append(bodyHandler(UserResource{})).ThenFunc(appC.newUserHandler))
+  router.Get("/", commonHandlers.ThenFunc(newSessionHandler))
   router.Get("/login", commonHandlers.ThenFunc(newSessionHandler))
   router.Post("/session", commonHandlers.ThenFunc(appC.sessionHandler))
   router.Get("/logout", commonHandlers.ThenFunc(appC.deleteSessionHandler))
