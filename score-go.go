@@ -104,11 +104,9 @@ type Error struct {
 }
 
 func WriteError(w http.ResponseWriter, err *Error) {
-  // fmt.Println("In WriteError")
   w.Header().Set("Content-Type", "application/vnd.api+json")
   w.WriteHeader(err.Status)
   json.NewEncoder(w).Encode(Errors{[]*Error{err}})
-  // fmt.Println("Out of WriteError")
 }
 
 var (
@@ -184,19 +182,15 @@ type EventRepo struct {
 }
 
 func (r *EventRepo) All() (EventsCollection, error) {
-  // fmt.Println("In Event All")
   result := EventsCollection{[]Event{}}
   err := r.coll.Find(nil).All(&result.Data)
   if err != nil {
-    // fmt.Println("out of Event All")
 	return result, err
   }
-  // fmt.Println("out of Event All")
   return result, nil
 }
 
 func (r *EventRepo) Find(id string) (EventResource, error) {
-  // fmt.Println("In Event Find")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -205,47 +199,35 @@ func (r *EventRepo) Find(id string) (EventResource, error) {
   result := EventResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("out of Event Find")
 	return result, err
   }
-  // fmt.Println("out of Event Find")
   return result, nil
 }
 
 func (r *EventRepo) Create(event *Event) (error, bson.ObjectId) {
-  // fmt.Println("In Event Create")
   id := bson.NewObjectId()
   _, err := r.coll.UpsertId(id, event)
   if err != nil {
-	// fmt.Println("out of Event Create")
     return err, id
   }
   event.Id = id
-  // fmt.Println("out of Event Create")
   return err, id
 }
 
 func (r *EventRepo) Update(event *Event) error {
-  // fmt.Println("In Event Update")
   result := EventResource{}
   err := r.coll.Find(bson.M{"_id": event.Id}).One(&result.Data)
   if err != nil {
-    // fmt.Println("Find error")
-    // fmt.Println("out of Event Update")
 	return err
   }
   err = r.coll.Update(result.Data, event)
   if err != nil {
-    // fmt.Println("Update error")
-    // fmt.Println("out of Event Update")
 	return err
   }
-  // fmt.Println("out of Event Update")
   return nil
 }
 
 func (r *EventRepo) Delete(id string) error {
-  // fmt.Println("In Event Delete")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -254,17 +236,12 @@ func (r *EventRepo) Delete(id string) error {
   result := EventResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("error in find")
-    // fmt.Println("out of Event Delete")
 	return err
   }
   err = r.coll.Remove(result.Data)
   if err != nil {
-    // fmt.Println("error in Delete")
-    // fmt.Println("out of Event Delete")
 	return err
   }
-  // fmt.Println("out of Event Delete")
   return nil
 }
 
@@ -301,19 +278,15 @@ type EntrantRepo struct {
 }
 
 func (r *EntrantRepo) All() (EntrantsCollection, error) {
-  // fmt.Println("In Entrant All")
   result := EntrantsCollection{[]Entrant{}}
   err := r.coll.Find(nil).All(&result.Data)
   if err != nil {
-    // fmt.Println("out of Entrant All")
 	return result, err
   }
-  // fmt.Println("out of Entrant All")
   return result, nil
 }
 
 func (r *EntrantRepo) Find(id string) (EntrantResource, error) {
-  // fmt.Println("In Entrant Find")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -322,50 +295,35 @@ func (r *EntrantRepo) Find(id string) (EntrantResource, error) {
   result := EntrantResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("out of Entrant Find")
 	return result, err
   }
-  // fmt.Println("out of Entrant Find")
   return result, nil
 }
 
 func (r *EntrantRepo) Create(entrant *Entrant) (error, bson.ObjectId) {
-  // fmt.Println("In Entrant Create")
   id := bson.NewObjectId()
   _, err := r.coll.UpsertId(id, entrant)
   if err != nil {
-    //   fmt.Println("out of Entrant Create")
       return err, id
   }
   entrant.Id = id
-  // fmt.Println("out of Entrant Create")
   return err, id
 }
 
 func (r *EntrantRepo) Update(entrant *Entrant) error {
-  // fmt.Println("In Entrant Update")
   result := EntrantResource{}
   err := r.coll.Find(bson.M{"_id": entrant.Id}).One(&result.Data)
-  // fmt.Println("printing err")
-  // fmt.Println(err)
   if err != nil {
-    // fmt.Println("Find error")
-    // fmt.Println("out of Entrant Update")
 	return err
   }
   err = r.coll.Update(result.Data, entrant)
   if err != nil {
-    // fmt.Println("Update error")
-    // fmt.Println(err)
-    // fmt.Println("out of Entrant Update")
 	return err
   }
-  // fmt.Println("out of Entrant Update")
   return nil
 }
 
 func (r *EntrantRepo) Delete(id string) error {
-  // fmt.Println("In Entrant Delete")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -374,17 +332,12 @@ func (r *EntrantRepo) Delete(id string) error {
   result := EntrantResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("error in find")
-    // fmt.Println("out of Entrant Delete")
 	return err
   }
   err = r.coll.Remove(result.Data)
   if err != nil {
-    // fmt.Println("error in Delete")
-    // fmt.Println("out of Entrant Delete")
 	return err
   }
-  // fmt.Println("out of Entrant Delete")
   return nil
 }
 
@@ -422,19 +375,15 @@ type UserRepo struct {
 }
 
 func (r *UserRepo) All() (UsersCollection, error) {
-  // fmt.Println("In User All")
   result := UsersCollection{[]User{}}
   err := r.coll.Find(nil).All(&result.Data)
   if err != nil {
-    // fmt.Println("out of User All")
 	return result, err
   }
-  // fmt.Println("out of User All")
   return result, nil
 }
 
 func (r *UserRepo) Find(id string) (UserResource, error) {
-  // fmt.Println("In User Find")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -443,47 +392,35 @@ func (r *UserRepo) Find(id string) (UserResource, error) {
   result := UserResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("out of User Find")
 	return result, err
   }
-  // fmt.Println("out of User Find")
   return result, nil
 }
 
 func (r *UserRepo) Create(user *User) (error, bson.ObjectId) {
-  // fmt.Println("In User Create")
   id := bson.NewObjectId()
   _, err := r.coll.UpsertId(id, user)
   if err != nil {
-	// fmt.Println("out of User Create")
     return err, id
   }
   user.Id = id
-  // fmt.Println("out of User Create")
   return err, id
 }
 
 func (r *UserRepo) Update(user *User) error {
-  // fmt.Println("In User Update")
   result := UserResource{}
   err := r.coll.Find(bson.M{"_id": user.Id}).One(&result.Data)
   if err != nil {
-    // fmt.Println("Find error")
-    // fmt.Println("out of User Update")
 	return err
   }
   err = r.coll.Update(result.Data, user)
   if err != nil {
-    // fmt.Println("Update error")
-    // fmt.Println("out of User Update")
 	return err
   }
-  // fmt.Println("out of User Update")
   return nil
 }
 
 func (r *UserRepo) Delete(id string) error {
-  // fmt.Println("In User Delete")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -492,17 +429,12 @@ func (r *UserRepo) Delete(id string) error {
   result := UserResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("error in find")
-    // fmt.Println("out of User Delete")
 	return err
   }
   err = r.coll.Remove(result.Data)
   if err != nil {
-    // fmt.Println("error in Delete")
-    // fmt.Println("out of User Delete")
     return err
   }
-  // fmt.Println("out of User Delete")
   return nil
 }
 
@@ -567,19 +499,15 @@ type ScorecardRepo struct {
 }
 
 func (r *ScorecardRepo) All() (ScorecardsCollection, error) {
-  // fmt.Println("In Scorecard All")
   result := ScorecardsCollection{[]Scorecard{}}
   err := r.coll.Find(nil).All(&result.Data)
   if err != nil {
-    // fmt.Println("out of Scorecard All")
     return result, err
   }
-  // fmt.Println("out of Scorecard All")
   return result, nil
 }
 
 func (r *ScorecardRepo) Find(id string) (ScorecardResource, error) {
-  // fmt.Println("In Scorecard Find")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -588,47 +516,35 @@ func (r *ScorecardRepo) Find(id string) (ScorecardResource, error) {
   result := ScorecardResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("out of Scorecard Find")
 	return result, err
   }
-  // fmt.Println("out of Scorecard Find")
   return result, nil
 }
 
 func (r *ScorecardRepo) Create(scorecard *Scorecard) (error, bson.ObjectId) {
-  // fmt.Println("In Scorecard Create")
   id := bson.NewObjectId()
   _, err := r.coll.UpsertId(id, scorecard)
   if err != nil {
-	// fmt.Println("out of Scorecard Create")
     return err, id
   }
   scorecard.Id = id
-  // fmt.Println("out of Scorecard Create")
   return err, id
 }
 
 func (r *ScorecardRepo) Update(scorecard *Scorecard) error {
-  // fmt.Println("In Scorecard Update")
   result := ScorecardResource{}
   err := r.coll.Find(bson.M{"_id": scorecard.Id}).One(&result.Data)
   if err != nil {
-    // fmt.Println("Find error")
-    // fmt.Println("out of Scorecard Update")
 	return err
   }
   err = r.coll.Update(result.Data, scorecard)
   if err != nil {
-    // fmt.Println("Update error")
-    // fmt.Println("out of Scorecard Update")
 	return err
   }
-  // fmt.Println("out of Scorecard Update")
   return nil
 }
 
 func (r *ScorecardRepo) Delete(id string) error {
-  // fmt.Println("In Scorecard Delete")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -637,17 +553,12 @@ func (r *ScorecardRepo) Delete(id string) error {
   result := ScorecardResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("error in find")
-    // fmt.Println("out of Scorecard Delete")
     return err
   }
   err = r.coll.Remove(result.Data)
   if err != nil {
-    // fmt.Println("error in Delete")
-    // fmt.Println("out of Scorecard Delete")
 	return err
   }
-  // fmt.Println("out of Scorecard Delete")
   return nil
 }
 
@@ -695,19 +606,15 @@ type TallyRepo struct {
 }
 
 func (r *TallyRepo) All() (TalliesCollection, error) {
-	// fmt.Println("In Tally All")
 	result := TalliesCollection{[]Tally{}}
 	err := r.coll.Find(nil).All(&result.Data)
 	if err != nil {
-        // fmt.Println("out of Tally All")
 	  return result, err
 	}
-    // fmt.Println("out of Tally All")
     return result, nil
 }
 
 func (r *TallyRepo) Find(id string) (TallyResource, error) {
-  // fmt.Println("In Tally Find")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -716,47 +623,35 @@ func (r *TallyRepo) Find(id string) (TallyResource, error) {
   result := TallyResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("out of Tally Find")
 	return result, err
   }
-  // fmt.Println("out of Tally Find")
   return result, nil
 }
 
 func (r *TallyRepo) Create(tally *Tally) (error, bson.ObjectId) {
-	// fmt.Println("In Tally Create")
 	id := bson.NewObjectId()
 	_, err := r.coll.UpsertId(id, tally)
 	if err != nil {
-      // fmt.Println("out of Tally Create")
       return err, id
 	}
 	tally.Id = id
-    // fmt.Println("out of Tally Create")
 	return err, id
 }
 
 func (r *TallyRepo) Update(tally *Tally) error {
-	// fmt.Println("In Tally Update")
 	result := TallyResource{}
     err := r.coll.Find(bson.M{"_id": tally.Id}).One(&result.Data)
 	if err != nil {
-        // fmt.Println("Find error")
-        // fmt.Println("out of Tally Update")
 		return err
 	}
     err = r.coll.Update(result.Data, tally)
 	if err != nil {
-        // fmt.Println("Update error")
-        // fmt.Println("out of Tally Update")
 		return err
 	}
-	// fmt.Println("out of Tally Update")
 	return nil
 }
 
 func (r *TallyRepo) Delete(id string) error {
-  // fmt.Println("In Tally Delete")
   prefix := "ObjectIdHex(\""
   suffix := "\")"
   id = strings.TrimPrefix(id, prefix)
@@ -765,17 +660,12 @@ func (r *TallyRepo) Delete(id string) error {
   result := TallyResource{}
   err := r.coll.Find(bson.M{"_id": idb}).One(&result.Data)
   if err != nil {
-    // fmt.Println("error in find")
-    // fmt.Println("out of Tally Delete")
     return err
   }
   err = r.coll.Remove(result.Data)
   if err != nil {
-    // fmt.Println("error in Delete")
-    // fmt.Println("out of Tally Delete")
     return err
   }
-  // fmt.Println("out of Tally Delete")
   return nil
 }
 
@@ -784,102 +674,73 @@ func (r *TallyRepo) Delete(id string) error {
 // go net/http
 
 func recoverHandler(next http.Handler) http.Handler {
-	// fmt.Println("In recoverHandler")
   fn := func(w http.ResponseWriter, r *http.Request) {
-		// fmt.Println("In recoverHandler fn")
     defer func() {
-    //   fmt.Println("In recoverHandler defer")
       if err := recover(); err != nil {
-        // fmt.Println("out of recoverHandler defer, err")
         log.Printf("panic: %+v", err)
 		WriteError(w, ErrInternalServer)
-        // fmt.Println(ErrInternalServer)
       }
      }()
-    // fmt.Println("out defer and recoverHandler fn to next")
 	 next.ServeHTTP(w, r)
    }
-	// fmt.Println("out of recoverHandler returning fn")
    return http.HandlerFunc(fn)
 }
+
 //  go net/http
 func loggingHandler(next http.Handler) http.Handler {
   timelimit = 0
-	// fmt.Println("In logging handler")
   fn := func(w http.ResponseWriter, r *http.Request) {
 //		t1 := time.Now()
-        // fmt.Println("in and out of logging handler fn to next")
     next.ServeHTTP(w, r)
 //		t2 := time.Now()
-//		log.Printf("[%s] %q %v\n", r.Method, r.URL.String(), t2.Sub(t1))
-//    log.Printf("[%s] %q \n", r.Method, r.URL.String())
    }
-	// fmt.Println("out of logging handler returning fn")
-	return http.HandlerFunc(fn)
+   return http.HandlerFunc(fn)
 }
+
 //  go net/http
 func acceptHandler(next http.Handler) http.Handler {
-	// fmt.Println("In acceptHandler")
 	fn := func(w http.ResponseWriter, r *http.Request) {
-    	// fmt.Println("In acceptHandler fn")
         if r.Header.Get("Accept") != "application/vnd.api+json" {
-            // fmt.Println("out of acceptHandler, error")
             WriteError(w, ErrNotAcceptable)
     		return
     	}
-        // fmt.Println("out of acceptHandler fn to next")
 		next.ServeHTTP(w, r)
 	}
-	// fmt.Println("out of acceptHandler returning fn")
 	return http.HandlerFunc(fn)
 }
+
 //  go net/http
 func contentTypeHandler(next http.Handler) http.Handler {
-	// fmt.Println("In contentTypeHandler")
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		// fmt.Println("in contentTypeHandler fn")
         if r.Header.Get("Content-Type") != "application/vnd.api+json" {
-        //   fmt.Println("out of contentTypeHandler, error")
             WriteError(w, ErrUnsupportedMediaType)
     		return
         }
-    // fmt.Println("out of contentTypeHandler fn to next")
 		next.ServeHTTP(w, r)
 	}
-	// fmt.Println("out of contentTypeHandler, returning fn")
 	return http.HandlerFunc(fn)
 }
+
 //  go net/http, reflect, gorilla context, mongodb driver
 func bodyHandler(v interface{}) func(next http.Handler) http.Handler {
-	// fmt.Println("In bodyHandler")
 	t := reflect.TypeOf(v)                        //type interface{} which may be empty
 	m := func(next http.Handler) http.Handler {
-		// fmt.Println("In bodyHandler m")
     fn := func(w http.ResponseWriter, r *http.Request) {
-    //    fmt.Println("In bodyHandler fn")
        val := reflect.New(t).Interface()   //val is type interface{}
 //      err := json.NewDecoder(r.Body).Decode(val)  //r.Body is the request body and is type interface io.ReadCloser
 //      err := json.NewDecoder(strings.NewReader(evj)).Decode(val)
 //      val = evj
-//      fmt.Println("printing err")
-//			fmt.Println(err)
 //      if err != nil {
 //				WriteError(w, ErrBadRequest)
 //				return
 //			}
 		if next != nil {
 			context.Set(r, "body", val)     //gorilla context, key "body": val, val is type interface{}  "body" will now retrieve val
-            // fmt.Println("bodyHandler fn to next")
             next.ServeHTTP(w, r)
-    		// fmt.Println("Key set")
-            // fmt.Println("Printing body.value")
-            // fmt.Println(val)
 		}
 	}
-    // fmt.Println("out of bodyHandler returning fn")
     return http.HandlerFunc(fn)
   }
-	// fmt.Println("out of bodyHandler returning m")
   return m
 }
 
@@ -894,7 +755,6 @@ type appContext struct {
 
 
 func infoHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In infoHandler")
   sessionresrc := SessionResource{}
   sessionresrc.SData = current_session
 
@@ -904,20 +764,18 @@ func infoHandler(w http.ResponseWriter, r *http.Request) {
   //      http.Error(w, err.Error(), http.StatusInternalServerError)
   //      return
   //  }
-	// read JSON into BSON
+
+  // read JSON into BSON
   if err := showInfo.Execute(w, sessionresrc); err != nil {
-    //   fmt.Println("out of infoHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
   }
-  // fmt.Println("out of infoHandler")
 }
 
 
 // Event Handlers /////////////////////////////////////////////////////////////////////////////////////
 
 func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In eventsHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -925,7 +783,6 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("Out of eventsHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     eventsresrc := EventsResource{}
@@ -945,23 +802,20 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
       eventsresrc.Data = append(eventsresrc.Data, body)
     }
     if err != nil {
-    //   fmt.Println("Out of eventsHandler")
       panic(err)
     }
     //	w.Header().Set("Content-Type", "application/vnd.api+json")
     //	json.NewEncoder(w).Encode(events)
+
     // read BSON into JSON
     if err = listEvent.Execute(w, eventsresrc); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
-    //   fmt.Println("Out of eventsHandler")
       return
     }
-    // fmt.Println("Out of eventsHandler")
   }
 }
 
 func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In eventHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -969,24 +823,17 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of eventHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id")) //getting data from named param :id
-  //  fmt.Println("printing event")
-  //  fmt.Println(event)
     enRepo := EntrantRepo{c.db.C("entrants")}
     entrants, err := enRepo.All()
     entrants_resrc := EntrantsResource{}
-  //  fmt.Println("printing entrants")
-  //  fmt.Println(entrants)
     for i:=0; i<len(event.Data.EntrantSelected_Id); i++{
       for j:=0; j<len(entrants.Data); j++{
         if entrants.Data[j].Team_Id == event.Data.EntrantSelected_Id[i]{
-  //        fmt.Println("printing entrants.Data[j].Event_Id")
-  //        fmt.Println(entrants.Data[j].Event_Id)
           for k:=0; k<len(entrants.Data[j].Event_Id); k++{
             if entrants.Data[j].Event_Id[k] == event.Data.Event_Id{
               body := EntrantResource{}
@@ -998,10 +845,6 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
               body.Data.Dog_name = entrants.Data[j].Dog_name
               body.Data.Dog_id_number = entrants.Data[j].Dog_id_number
               body.Data.Id_number = entrants.Data[j].Id_number
-  //            fmt.Println("printing entrants.Data[j].Event_Id")
-  //            fmt.Println(entrants.Data[j].Event_Id)
-  //            fmt.Println("printing body.Data.Event_Id")
-  //            fmt.Println(body.Data.Event_Id)
               entrants_resrc.Data = append(entrants_resrc.Data, body)
             }
           }
@@ -1011,8 +854,6 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
 
     usrRepo := UserRepo{c.db.C("users")}
     users, err := usrRepo.All()
-  //  fmt.Println("printing users")
-  //  fmt.Println(users)
     users_resrc := UsersResource{}
     for i:=0; i<len(event.Data.UserSelected_Id); i++{
       for j:=0; j<len(users.Data); j++{
@@ -1078,49 +919,35 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     if err != nil {
-    //   fmt.Println("out of eventHandler")
       panic(err)
     }
     eventshow := EventShowResource{}
     eventshow.EVData = event
     eventshow.SData = current_session
-  //  fmt.Println("printing event")
-  //  fmt.Println(event)
     eventshow.ENSData = entrants_resrc
     eventshow.USRSData = users_resrc
     eventshow.TLYSData = tallies_resrc
     eventshow.SCSData = scorecards_resrc
-  //  fmt.Println("printing eventshow")
-  //  fmt.Println(eventshow)
     eventshow.Rank = c.place_order(event.Data.Id.Hex())
-  //  fmt.Println("printing eventshow.Rank")
-  //  fmt.Println(eventshow.Rank)
     eventshow.SCScompleted = c.scorecard_completion(event.Data.Id.Hex())
-  //  fmt.Println("printing eventshow.EVData.Data.EntrantSelected_Id")
-  //  fmt.Println(eventshow.EVData.Data.EntrantSelected_Id)
-  //  fmt.Println("printing eventshow.SCScompleted")
-  //  fmt.Println(eventshow.SCScompleted)
     eventshow.TLYcompleted = c.tally_completion(event.Data.Id.Hex())
-  //  fmt.Println("printing eventshow.TLYcompleted")
-  //  fmt.Println(eventshow.TLYcompleted)
+
     //  w.Header().Set("Content-Type", "application/vnd.api+json")
     //	json.NewEncoder(w).Encode(event)
     //	if err = show.Execute(w, json.NewEncoder(w).Encode(event)); err != nil {
     //      http.Error(w, err.Error(), http.StatusInternalServerError)
     //      return
     //  }
+
     // read JSON into BSON
     if err = showEvent.Execute(w, eventshow); err != nil {
-        // fmt.Println("out of eventHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // fmt.Println("out of eventHandler")
   }
 }
 
 func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In newEventHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -1128,7 +955,6 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of newEventHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     eventresrc := EventEditResource{}
@@ -1179,9 +1005,6 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
     body.Data.Veh_hides = "0"
     body.Data.Elite_hides = "0"
 
-    // fmt.Println("printing body.Data")
-    // fmt.Println(body.Data)
-
     for i:=0; i<len(entrants.Data); i++{
       newEntrant := Selected{Value: entrants.Data[i].Team_Id, Selected: false}
       body.Data.EntrantAll_Id = append(body.Data.EntrantAll_Id, newEntrant)
@@ -1190,23 +1013,18 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
       newUser := Selected{Value: users.Data[i].User_Id, Selected: false}
       body.Data.UserAll_Id = append(body.Data.UserAll_Id, newUser)
     }
-    // fmt.Println("printing body.Data")
-    // fmt.Println(body.Data)
 
     eventresrc.EVData = body
 
     if err := createnewEvent.Execute(w, eventresrc); err != nil {
-        // fmt.Println("out of newEventHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
     fmt.Println(err)
-    // fmt.Println("out of newEventHandler")
   }
 }
 
 func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In createEntrantHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -1214,10 +1032,8 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of createEventHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of createEventHandler, status is true, count <= 0")
     http.Redirect(w, r, "/events", 302)
   }else if current_session.Current_status == true && count > 0{
     evRepo := EventRepo{c.db.C("events")}
@@ -1248,12 +1064,12 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
     evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
     for r:=0; r<len(events.Data); r++{
       if evbody.Data.Event_Id == events.Data[r].Event_Id{
-        // fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+        // Event_Id duplicate found - re-naming and re-checking loop 1 to loop 2
         evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
       }
       for rr:=0;rr<len(events.Data); rr++{
         if evbody.Data.Event_Id == events.Data[rr].Event_Id{
-        //   fmt.Println("Event_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+          // Event_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
           evbody.Data.Event_Id = "EV_" + strconv.Itoa(rand.Int())
           break
         }else{
@@ -1261,7 +1077,7 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
         }
       }
       if rrcount == len(events.Data)-1{
-        // fmt.Println("No duplicates both loops")
+        // No duplicates both loops
         break
       }
     }
@@ -1338,8 +1154,6 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
 
     evRepo = EventRepo{c.db.C("events")}
     event, err := evRepo.Find(id.Hex()) //getting data from named param :id
-    // fmt.Println("printing event.Data")
-    // fmt.Println(event.Data)
 
     // Search through all of the entrants registered in event EntrantAll_Id
     for i:=0; i<len(event.Data.EntrantAll_Id); i++{
@@ -1363,8 +1177,7 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
               enbody.Data.Team_Id = entrants.Data[j].Team_Id
               enbody.Data.Event_Id = entrants.Data[j].Event_Id
               err = enRepo.Update(&enbody.Data)
-            //   fmt.Println("printing enbody.Data.Event_Id")
-            //   fmt.Println(enbody.Data.Event_Id)
+
               // create scorecards for this event and entrant
               search_areas := 0
               element := ""
@@ -1402,29 +1215,24 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     }
                 }
                 if search_areas > 0{
-//                    fmt.Println("printing search_areas")
-//                    fmt.Println(search_areas)
                   for s:=1; s<=search_areas; s++{
                     scbody := ScorecardResource{}
                     scbody.Data.Element = element
                     scbody.Data.Event_Id = event.Data.Event_Id
                     scbody.Data.Entrant_Id = entrants.Data[j].Team_Id
                     scbody.Data.Search_area = strconv.Itoa(s)
-//                    fmt.Println("printing s")
-//                    fmt.Println(s)
-//                    fmt.Println("printing scbody.Data.Search_area")
-//                    fmt.Println(scbody.Data.Search_area)
                     scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
+
                     // check for duplicates
                     rrcount := 0
                     for r:=0; r<len(scorecards.Data); r++{
                       if scbody.Data.Scorecard_Id == scorecards.Data[r].Scorecard_Id{
-                        // fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                        // Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                         scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                       }
                       for rr:=0;rr<len(scorecards.Data); rr++{
                         if scbody.Data.Scorecard_Id == scorecards.Data[rr].Scorecard_Id{
-                        //   fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+                          // Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
                           scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                           break
                         }else{
@@ -1432,7 +1240,7 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                         }
                       }
                       if rrcount == len(scorecards.Data)-1{
-                        // fmt.Println("No duplicates both loops")
+                        // No duplicates both loops
                         break
                       }
                     }
@@ -1449,8 +1257,6 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     scbody.Data.Eliminated_during_search = Selected{Value: "no", Selected: false}
                     scbody.Data.Pronounced = Selected{Value: "no", Selected: false}
                     scbody.Data.Judge_signature = Selected{Value: "no", Selected: false}
-                    // fmt.Println("printing new Scorecard_Id")
-                    // fmt.Println(scbody.Data.Scorecard_Id)
                     err, id := scRepo.Create(&scbody.Data)
                     fmt.Println(err)
                     fmt.Println(id)
@@ -1461,16 +1267,17 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
               tabody.Data.Entrant_Id = entrants.Data[j].Team_Id
               tabody.Data.Event_Id = event.Data.Event_Id
               tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
+
               // check for duplicates
               rrcount := 0
               for r:=0; r<len(tallies.Data); r++{
                 if tabody.Data.Tally_Id == tallies.Data[r].Tally_Id{
-                //   fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                // Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                   tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                 }
                 for rr:=0;rr<len(tallies.Data); rr++{
                   if tabody.Data.Tally_Id == tallies.Data[rr].Tally_Id{
-                    // fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1")
+                    // Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1
                     tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                     break
                   }else{
@@ -1478,7 +1285,7 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                   }
                 }
                 if rrcount == len(tallies.Data)-1{
-                //   fmt.Println("No duplicates both loops")
+                  // No duplicates both loops
                   break
                 }
               }
@@ -1501,10 +1308,6 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
         if len(event.Data.UserSelected_Id) > 0{
           if users.Data[j].User_Id == event.Data.UserAll_Id[i].Value{
             if event.Data.UserAll_Id[i].Selected == true{
-            //   fmt.Println("printing users.Data[j].User_Id")
-            //   fmt.Println(users.Data[j].User_Id)
-            //   fmt.Println("printing users.Data[j].Event_Id")
-            //   fmt.Println(users.Data[j].Event_Id)
               users.Data[j].Event_Id = append(users.Data[j].Event_Id, event.Data.Event_Id)
               usbody := UserResource{}
               usbody.Data.Id = users.Data[j].Id
@@ -1518,18 +1321,14 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
               usbody.Data.Role = users.Data[j].Role
               usbody.Data.Event_Id = users.Data[j].Event_Id
               err = usRepo.Update(&usbody.Data)
-            //   fmt.Println("printing usbody.Data.Event_Id")
-            //   fmt.Println(usbody.Data.Event_Id)
             }
           }
         }
       }
     }
     if err != nil {
-    //   fmt.Println("out of updateEventHandler")
       panic(err)
     }
-    // fmt.Println("out of updateEventHandler")
     if event.Data.Event_Id == ""{
       http.Redirect(w, r, "/events/delete/" + event.Data.Id.Hex(), 302)
     }else{
@@ -1539,7 +1338,6 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In editEventHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -1547,14 +1345,11 @@ func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of editEventHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id")) //getting data from named param :id
-    // fmt.Println("printing event.Data")
-    // fmt.Println(event.Data)
 
     eventresrc := EventEditResource{}
 
@@ -1621,21 +1416,15 @@ func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
     }
     eventresrc.EVData = event
     eventresrc.SData = current_session
-    // fmt.Println("printing event.Data")
-    // fmt.Println(event.Data)
 
     if err = updateEvent.Execute(w, eventresrc); err != nil {
-  //  if err = updateEvent.Execute(os.Stdout, event.Data); err != nil {
-        // fmt.Println("out of editEventHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // fmt.Println("out of editEventHandler")
   }
 }
 
 func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In updateEventHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -1643,18 +1432,14 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of updateEventHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of updateEventHandler, status is true, count <= 0")
     http.Redirect(w, r, "/events", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)
 
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id")) //getting data from named param :id
-    // fmt.Println("printing event.Data")
-    // fmt.Println(event.Data)
 
     enRepo := EntrantRepo{c.db.C("entrants")}
     entrants, err := enRepo.All()
@@ -1674,7 +1459,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
       }
     }
     evbody := context.Get(r, "body").(*EventResource)
-  //    evbody.SData = current_session
     evbody.Data.Id = event.Data.Id
     evbody.Data.Name = r.FormValue("Name")
     evbody.Data.Location = r.FormValue("Location")
@@ -1758,8 +1542,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
 
     evRepo = EventRepo{c.db.C("events")}
     event, err = evRepo.Find(params.ByName("id")) //getting data from named param :id
-    // fmt.Println("printing event.Data")
-    // fmt.Println(event.Data)
 
     found := false
     // Search through all of the entrants registered in event EntrantAll_Id
@@ -1780,7 +1562,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   found = true
                   search_areas := 0
                   element := ""
-                //   fmt.Println("The event registers the entrant and the entrant registers the event. Check for element and search area updates")
                   // The event registers the entrant and the entrant registers the event
                   // check for element and search area updates
                   for elm:=0; elm<len(ELEMENTS); elm++{
@@ -1817,56 +1598,25 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                         }
                     }
                     scorecardfound := false
-  //                  fmt.Println("printing element")
-  //                  fmt.Println(element)
-  //                  fmt.Println("printing search_areas")
-  //                  fmt.Println(search_areas)
-  //                  fmt.Println("printing entrant.Data[j]")
-  //                  fmt.Println(entrants.Data[j])
+
                     // For each element check to see if there are scorecards for the registered event and entrant
                     // If there is at least one scorecard for the element
                     if search_areas > 0{
                       // Survey scorecards for match, decrement when scorecard is added.
                       sc_count := 0
-                    //   fmt.Println("printing scorecardfound")
-                    //   fmt.Println(scorecardfound)
                       for s:=1; s<=search_areas; s++{
                         // if there is at least 1 scorecard in the db
-                        // fmt.Println("printing s")
-                        // fmt.Println(s)
-                        // fmt.Println("printing scorecardfound")
-                        // fmt.Println(scorecardfound)
                         if len(scorecards.Data) > 0{
                           scid := ""
                           // Search all scorecards for a match
                           for sc:=0; sc<len(scorecards.Data) - sc_count; sc++{
-                            // fmt.Println("printing entrant.Data[j].Team_Id")
-                            // fmt.Println(entrants.Data[j].Team_Id)
-                            // fmt.Println("printing scorecards.Data[sc].Entrant_Id")
-                            // fmt.Println(scorecards.Data[sc].Entrant_Id)
-                            // fmt.Println("printing element")
-                            // fmt.Println(element)
-                            // fmt.Println("printing scorecards.Data[sc].Element")
-                            // fmt.Println(scorecards.Data[sc].Element)
-                            // fmt.Println("printing scorecards.Data[sc].Search_area")
-                            // fmt.Println(scorecards.Data[sc].Search_area)
-                            // fmt.Println("printing strconv.Itoa(s)")
-                            // fmt.Println(strconv.Itoa(s))
-                            // fmt.Println("printing scorecards.Data[sc].Event_Id")
-                            // fmt.Println(scorecards.Data[sc].Event_Id)
-                            // fmt.Println("printing event.Data.Event_Id")
-                            // fmt.Println(event.Data.Event_Id)
                             if scorecards.Data[sc].Element == element && scorecards.Data[sc].Search_area == strconv.Itoa(s) && scorecards.Data[sc].Entrant_Id == entrants.Data[j].Team_Id && scorecards.Data[sc].Event_Id == event.Data.Event_Id{
                               // A match is found, get id to prepare for update
-                            //   fmt.Println("A match is found, get id to prepare for update")
                               scorecardfound = true
                               scid = scorecards.Data[sc].Id.Hex()
                             }
-                            // fmt.Println("printing scorecardfound")
-                            // fmt.Println(scorecardfound)
                           }
                           if scorecardfound == false{
-                            // fmt.Println("scorecard does not exist, create it")
                             // if scorecard does not exist, create it
                             scbody := ScorecardResource{}
                             scbody.Data.Event_Id = event.Data.Event_Id
@@ -1891,12 +1641,12 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             rrcount := 0
                             for r:=0; r<len(scorecards.Data); r++{
                               if scbody.Data.Scorecard_Id == scorecards.Data[r].Scorecard_Id{
-                                // fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                                // Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                                 scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                               }
                               for rr:=0;rr<len(scorecards.Data); rr++{
                                 if scbody.Data.Scorecard_Id == scorecards.Data[rr].Scorecard_Id{
-                                //   fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+                                  // Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
                                   scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                                   break
                                 }else{
@@ -1904,20 +1654,18 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                                 }
                               }
                               if rrcount == len(scorecards.Data)-1{
-                                // fmt.Println("No duplicates both loops")
+                                // No duplicates both loops
                                 break
                               }
                             }
-                            // fmt.Println("printing new Scorecard_Id")
-                            // fmt.Println(scbody.Data.Scorecard_Id)
                             err, id := scRepo.Create(&scbody.Data)
+
                             // decrement range
                             sc_count += 1
                             fmt.Println(err)
                             fmt.Println(id)
                           }else if scorecardfound == true{
                             // if scorecard exists, update it
-                            // fmt.Println("scorecard exists, update it")
                             scorecard, err := scRepo.Find(scid)
                             scbody := ScorecardResource{}
                             scbody.Data.Id = scorecard.Data.Id
@@ -1954,7 +1702,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     }
                     // if there is no search area, delete scorecard
                     if search_areas == 0{
-                    //   fmt.Println("no search areas")
+                      // No search areas
                       if len(scorecards.Data) > 0{
                         for sc:=0; sc<len(scorecards.Data); sc++{
                           searchArea, err := strconv.Atoi(scorecards.Data[sc].Search_area)
@@ -1962,7 +1710,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             id := scorecards.Data[sc].Id.Hex()
                             err = scRepo.Delete(id)
                             fmt.Println(err)
-                            // fmt.Println(id)
                           }
                         }
                       }
@@ -1983,12 +1730,12 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     rrcount := 0
                     for r:=0; r<len(tallies.Data); r++{
                       if tabody.Data.Tally_Id == tallies.Data[r].Tally_Id{
-                        // fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                        // Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                         tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                       }
                       for rr:=0;rr<len(tallies.Data); rr++{
                         if tabody.Data.Tally_Id == tallies.Data[rr].Tally_Id{
-                        //   fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1")
+                          // Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1
                           tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                           break
                         }else{
@@ -1996,7 +1743,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                         }
                       }
                       if rrcount == len(tallies.Data)-1{
-                        // fmt.Println("No duplicates both loops")
+                        // No duplicates both loops
                         break
                       }
                     }
@@ -2015,9 +1762,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               // Event was not registered for entrant, though the entrant was registered with event EntrantSelected_Id
               // Register event in entrant Event_Id, add scorecards and tally
               if found == false{
-                // fmt.Println("Event was not registered for entrant, though the entrant was registered with event EntrantSelected_Id.  Register event in entrant Event_Id, add scorecards and tally")
-                // fmt.Println("printing entrants.Data[j].Event_Id")
-                // fmt.Println(entrants.Data[j].Event_Id)
                 entrants.Data[j].Event_Id = append(entrants.Data[j].Event_Id, event.Data.Event_Id)
                 enbody := EntrantResource{}
                 enbody.Data.Id = entrants.Data[j].Id
@@ -2030,8 +1774,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 enbody.Data.Team_Id = entrants.Data[j].Team_Id
                 enbody.Data.Event_Id = entrants.Data[j].Event_Id
                 err = enRepo.Update(&enbody.Data)
-                // fmt.Println("printing enbody.Data.Event_Id")
-                // fmt.Println(enbody.Data.Event_Id)
+
                 // create scorecards for this event and entrant
                 search_areas := 0
                 element := ""
@@ -2069,29 +1812,24 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                       }
                   }
                   if search_areas > 0{
-  //                    fmt.Println("printing search_areas")
-  //                    fmt.Println(search_areas)
                     for s:=1; s<=search_areas; s++{
                       scbody := ScorecardResource{}
                       scbody.Data.Element = element
                       scbody.Data.Event_Id = event.Data.Event_Id
                       scbody.Data.Entrant_Id = entrants.Data[j].Team_Id
                       scbody.Data.Search_area = strconv.Itoa(s)
-  //                    fmt.Println("printing s")
-  //                    fmt.Println(s)
-  //                    fmt.Println("printing scbody.Data.Search_area")
-  //                    fmt.Println(scbody.Data.Search_area)
                       scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
+
                       // check for duplicates
                       rrcount := 0
                       for r:=0; r<len(scorecards.Data); r++{
                         if scbody.Data.Scorecard_Id == scorecards.Data[r].Scorecard_Id{
-                        //   fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                          // Scorecard_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                           scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                         }
                         for rr:=0;rr<len(scorecards.Data); rr++{
                           if scbody.Data.Scorecard_Id == scorecards.Data[rr].Scorecard_Id{
-                            // fmt.Println("Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+                            // Scorecard_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
                             scbody.Data.Scorecard_Id = "SC_" + strconv.Itoa(rand.Int())
                             break
                           }else{
@@ -2099,7 +1837,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                           }
                         }
                         if rrcount == len(scorecards.Data)-1{
-                        //   fmt.Println("No duplicates both loops")
+                          // No duplicates both loops
                           break
                         }
                       }
@@ -2116,8 +1854,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                       scbody.Data.Eliminated_during_search = Selected{Value: "no", Selected: false}
                       scbody.Data.Pronounced = Selected{Value: "no", Selected: false}
                       scbody.Data.Judge_signature = Selected{Value: "no", Selected: false}
-                    //   fmt.Println("printing new Scorecard_Id")
-                    //   fmt.Println(scbody.Data.Scorecard_Id)
                       err, id := scRepo.Create(&scbody.Data)
                       fmt.Println(err)
                       fmt.Println(id)
@@ -2128,16 +1864,17 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 tabody.Data.Entrant_Id = entrants.Data[j].Team_Id
                 tabody.Data.Event_Id = event.Data.Event_Id
                 tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
+
                 // check for duplicates
                 rrcount := 0
                 for r:=0; r<len(tallies.Data); r++{
                   if tabody.Data.Tally_Id == tallies.Data[r].Tally_Id{
-                    // fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+                    // Tally_Id duplicate found - re-naming and re-checking loop 1 to loop 2
                     tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                   }
                   for rr:=0;rr<len(tallies.Data); rr++{
                     if tabody.Data.Tally_Id == tallies.Data[rr].Tally_Id{
-                    //   fmt.Println("Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1")
+                      // Tally_Id duplicate found - re-naming and re-checking loop 2 to loop 1
                       tabody.Data.Tally_Id = "TLY_" + strconv.Itoa(rand.Int())
                       break
                     }else{
@@ -2145,7 +1882,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     }
                   }
                   if rrcount == len(tallies.Data)-1{
-                    // fmt.Println("No duplicates both loops")
+                    // No duplicates both loops
                     break
                   }
                 }
@@ -2160,9 +1897,9 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 fmt.Println(id)
               }
               found = false
+
             // If entrant IS NOT registered in event EntrantSelected_Id, if the event IS registered in entrant Event_Id, deregister it and delete scorecards and tally.
             }else if event.Data.EntrantAll_Id[i].Selected == false{
-            //   fmt.Println("If entrant IS NOT registered in event EntrantSelected_Id, if the event IS registered in entrant Event_Id, deregister it and delete scorecards and tally")
               for k:=0; k<len(entrants.Data[j].Event_Id); k++{
                 if entrants.Data[j].Event_Id[k] == event.Data.Event_Id{
                   k1 := 0
@@ -2176,8 +1913,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   if k < alength{
                     k2 = k + 1
                   }
-                //   fmt.Println("printing entrants.Data[j].Event_Id")
-                //   fmt.Println(entrants.Data[j].Event_Id)
                   if k == 0{
                     entrants.Data[j].Event_Id = entrants.Data[j].Event_Id[k1:]
                   }else if k > 0 && k < alength{
@@ -2185,8 +1920,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   }else if k == alength{
                     entrants.Data[j].Event_Id = entrants.Data[j].Event_Id[:alength]
                   }
-                //   fmt.Println("printing entrants.Data[j].Event_Id")
-                //   fmt.Println(entrants.Data[j].Event_Id)
                   enbody := EntrantResource{}
                   enbody.Data.Id = entrants.Data[j].Id
                   enbody.Data.First_name = entrants.Data[j].First_name
@@ -2198,16 +1931,14 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   enbody.Data.Team_Id = entrants.Data[j].Team_Id
                   enbody.Data.Event_Id = entrants.Data[j].Event_Id
                   err = enRepo.Update(&enbody.Data)
+
                   // delete scorecards for this event and this entrant
-                //   fmt.Println("printing enbody.Data.Event_Id")
-                //   fmt.Println(enbody.Data.Event_Id)
                   if len(scorecards.Data)>0{
                     for sc:=0; sc<len(scorecards.Data); sc++{
                       if scorecards.Data[sc].Entrant_Id == entrants.Data[j].Team_Id && scorecards.Data[sc].Event_Id == event.Data.Event_Id{
                         id := scorecards.Data[sc].Id.Hex()
                         err = scRepo.Delete(id)
                         fmt.Println(err)
-                        // fmt.Println(id)
                       }
                     }
                     for ta:=0; ta<len(tallies.Data); ta++{
@@ -2215,18 +1946,15 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                         id := tallies.Data[ta].Id.Hex()
                         err = taRepo.Delete(id)
                         fmt.Println(err)
-                        // fmt.Println(id)
                       }
                     }
                   }
                 }
               }
             }
-          }  // if no entrants are registered in event EntrantSelected_Id, deregister the event from entrant Event_Id and delete scorecards and tallies.
+          }
+        // if no entrants are registered in event EntrantSelected_Id, deregister the event from entrant Event_Id and delete scorecards and tallies.
         }else if len(event.Data.EntrantSelected_Id) <= 0{
-  //        fmt.Println("len(event.Data.EntrantSelected_Id) <= 0")
-  //        fmt.Println("printing entrants.Data[j].Event_Id")
-  //        fmt.Println(entrants.Data[j].Event_Id)
           for k:=0; k<len(entrants.Data[j].Event_Id); k++{
             if entrants.Data[j].Event_Id[k] == event.Data.Event_Id{
               k1 := 0
@@ -2240,8 +1968,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               if k < alength{
                 k2 = k + 1
               }
-            //   fmt.Println("printing entrants.Data[j].Event_Id")
-              fmt.Println(entrants.Data[j].Event_Id)
               if k == 0{
                 entrants.Data[j].Event_Id = entrants.Data[j].Event_Id[k1:]
               }else if k > 0 && k < alength{
@@ -2249,8 +1975,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               }else if k == alength{
                 entrants.Data[j].Event_Id = entrants.Data[j].Event_Id[:alength]
               }
-            //   fmt.Println("printing entrants.Data[j].Event_Id")
-            //   fmt.Println(entrants.Data[j].Event_Id)
               enbody := EntrantResource{}
               enbody.Data.Id = entrants.Data[j].Id
               enbody.Data.First_name = entrants.Data[j].First_name
@@ -2262,8 +1986,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               enbody.Data.Team_Id = entrants.Data[j].Team_Id
               enbody.Data.Event_Id = entrants.Data[j].Event_Id
               err = enRepo.Update(&enbody.Data)
-            //   fmt.Println("printing enbody.Data.Event_Id")
-            //   fmt.Println(enbody.Data.Event_Id)
+
               // delete all scorecards for this event and entrant
               if len(scorecards.Data)>0{
                 for sc:=0; sc<len(scorecards.Data); sc++{
@@ -2271,7 +1994,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     id := scorecards.Data[sc].Id.Hex()
                     err = scRepo.Delete(id)
                     fmt.Println(err)
-                    // fmt.Println(id)
                   }
                 }
               }
@@ -2282,7 +2004,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     id := tallies.Data[ta].Id.Hex()
                     err = taRepo.Delete(id)
                     fmt.Println(err)
-                    // fmt.Println(id)
                   }
                 }
               }
@@ -2305,10 +2026,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 }
               }
               if found == false{
-                // fmt.Println("printing users.Data[j].User_Id")
-                // fmt.Println(users.Data[j].User_Id)
-                // fmt.Println("printing users.Data[j].Event_Id")
-                // fmt.Println(users.Data[j].Event_Id)
                 users.Data[j].Event_Id = append(users.Data[j].Event_Id, event.Data.Event_Id)
                 usbody := UserResource{}
                 usbody.Data.Id = users.Data[j].Id
@@ -2322,12 +2039,8 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                 usbody.Data.Role = users.Data[j].Role
                 usbody.Data.Event_Id = users.Data[j].Event_Id
                 err = usRepo.Update(&usbody.Data)
-                // fmt.Println("printing usbody.Data.Event_Id")
-                // fmt.Println(usbody.Data.Event_Id)
               }
             }else if event.Data.UserAll_Id[i].Selected == false{
-            //   fmt.Println("printing users.Data[j].User_Id")
-            //   fmt.Println(users.Data[j].User_Id)
               for k:=0; k<len(users.Data[j].Event_Id); k++{
                 if users.Data[j].Event_Id[k] == event.Data.Event_Id{
                   k1 := 0
@@ -2341,8 +2054,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   if k < alength{
                     k2 = k + 1
                   }
-                //   fmt.Println("printing users.Data[j].Event_Id")
-                //   fmt.Println(users.Data[j].Event_Id)
                   if k == 0{
                     users.Data[j].Event_Id = users.Data[j].Event_Id[k1:]
                   }else if k > 0 && k < alength{
@@ -2362,18 +2073,12 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                   usbody.Data.User_Id = users.Data[j].User_Id
                   usbody.Data.Event_Id = users.Data[j].Event_Id
                   err = usRepo.Update(&usbody.Data)
-                //   fmt.Println("printing usbody.Data.Event_Id")
-                //   fmt.Println(usbody.Data.Event_Id)
                 }
               }
             }
           }
         }
         if len(event.Data.UserSelected_Id) <= 0{
-        //   fmt.Println("printing users.Data[j].Event_Id")
-        //   fmt.Println(users.Data[j].Event_Id)
-        //   fmt.Println("printing users.Data[j].User_Id")
-        //   fmt.Println(users.Data[j].User_Id)
           for k:=0; k<len(users.Data[j].Event_Id); k++{
             if users.Data[j].Event_Id[k] == event.Data.Event_Id{
               k1 := 0
@@ -2387,8 +2092,6 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               if k < alength{
                 k2 = k + 1
               }
-            //   fmt.Println("printing users.Data[j].Event_Id")
-              fmt.Println(users.Data[j].Event_Id)
               if k == 0{
                 users.Data[j].Event_Id = users.Data[j].Event_Id[k1:]
               }else if k > 0 && k < alength{
@@ -2408,30 +2111,23 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
               usbody.Data.User_Id = users.Data[j].User_Id
               usbody.Data.Event_Id = users.Data[j].Event_Id
               err = usRepo.Update(&usbody.Data)
-            //   fmt.Println("printing usbody.Data.Event_Id")
-            //   fmt.Println(usbody.Data.Event_Id)
             }
           }
         }
       }
     }
     if err != nil {
-    //   fmt.Println("out of updateEventHandler")
       panic(err)
     }
-    // fmt.Println("out of updateEventHandler")
     if event.Data.Event_Id == ""{
       http.Redirect(w, r, "/events/delete/" + event.Data.Id.Hex(), 302)
     }else{
       http.Redirect(w, r, "/events/show/" + event.Data.Id.Hex(), 302)
     }
   }
-  //  w.WriteHeader(204)
-  //	w.Write([]byte("\n"))
 }
 
 func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In deleteEventHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -2439,10 +2135,8 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of deleteEventHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of deleteEventHandler, status is true, count <= 0")
     http.Redirect(w, r, "/events", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
@@ -2469,6 +2163,7 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
           for k:=0; k<len(event.Data.EntrantSelected_Id); k++{
             if entrants.Data[j].Team_Id == event.Data.EntrantSelected_Id[k]{
               for m:=0; m<len(tallies.Data); m++{
+
                 //delete tally
                 if tallies.Data[m].Entrant_Id == entrants.Data[j].Team_Id && tallies.Data[m].Event_Id == event.Data.Event_Id{
                   err := tlyRepo.Delete(tallies.Data[m].Id.Hex())
@@ -2496,11 +2191,7 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
                   }else{
                     kup = alength
                   }
-  //                fmt.Println("printing entrants.Data[j].Event_Id")
-  //                fmt.Println(entrants.Data[j].Event_Id)
                   entrants.Data[j].Event_Id = append(entrants.Data[j].Event_Id[:kdn], entrants.Data[j].Event_Id[kup:alength]...)
-  //                fmt.Println("printing entrants.Data[j].Event_Id")
-  //                fmt.Println(entrants.Data[j].Event_Id)
                   enbody := EntrantResource{}
                   enbody.Data.Id = entrants.Data[j].Id
                   enbody.Data.First_name = entrants.Data[j].First_name
@@ -2512,8 +2203,6 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
                   enbody.Data.Team_Id = entrants.Data[j].Team_Id
                   enbody.Data.Event_Id = entrants.Data[j].Event_Id
                   err = enRepo.Update(&enbody.Data)
-  //                fmt.Println("printing enbody.Data.Event_Id")
-  //                fmt.Println(enbody.Data.Event_Id)
                 }
               }
             }
@@ -2541,8 +2230,6 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
                   }else{
                     kup = alength
                   }
-  //                fmt.Println("printing users.Data[j].Event_Id")
-  //                fmt.Println(users.Data[j].Event_Id)
                   users.Data[j].Event_Id = append(users.Data[j].Event_Id[:kdn], users.Data[j].Event_Id[kup:alength]...)
                   usbody := UserResource{}
                   usbody.Data.Id = users.Data[j].Id
@@ -2556,8 +2243,6 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
                   usbody.Data.User_Id = users.Data[j].User_Id
                   usbody.Data.Event_Id = users.Data[j].Event_Id
                   err = usRepo.Update(&usbody.Data)
-  //                fmt.Println("printing usbody.Data.Event_Id")
-  //                fmt.Println(usbody.Data.Event_Id)
                 }
               }
             }
@@ -2566,21 +2251,14 @@ func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) 
       }
     }
     err = evRepo.Delete(params.ByName("id"))
-    // fmt.Println(err)
     if err != nil {
-    //   fmt.Println("out of deleteEventHandler")
       panic(err)
     }
-    // fmt.Println("out of deleteEventHandler")
-    //  _, err = http.Get("/events")
     http.Redirect(w, r, "/events", 302)
   }
-  //	w.WriteHeader(204)
-  //	w.Write([]byte("\n"))
 }
 
 func (c *appContext) place_order(id string) []string{
-//  fmt.Println("in place_order")
   evRepo := EventRepo{c.db.C("events")}
   event, err := evRepo.Find(id)
   tlyRepo := TallyRepo{c.db.C("tallies")}
@@ -2679,8 +2357,8 @@ func (c *appContext) place_order(id string) []string{
   return placing
 }
 
+
 func (c *appContext) scorecard_completion(id string) []string{
-//  fmt.Println("in scorecard_completion")
   evRepo := EventRepo{c.db.C("events")}
   event, err := evRepo.Find(id)
   scRepo := ScorecardRepo{c.db.C("scorecards")}
@@ -2744,13 +2422,10 @@ func (c *appContext) scorecard_completion(id string) []string{
     }
   }
   fmt.Println(err)
-//  fmt.Println(completed_entrant_scorecards)
-//  fmt.Println("out of scorecard_completion")
   return completed_entrant_scorecards
 }
 
 func (c *appContext) tally_completion(id string) []string{
-  // fmt.Println("in tally_completion")
   evRepo := EventRepo{c.db.C("events")}
   event, err := evRepo.Find(id)
   tlyRepo := TallyRepo{c.db.C("tallies")}
@@ -2769,7 +2444,6 @@ func (c *appContext) tally_completion(id string) []string{
     }
   }
   fmt.Println(err)
-//  fmt.Println("out of tally_completion")
   return completed_entrant_tallies
 }
 
@@ -2777,7 +2451,6 @@ func (c *appContext) tally_completion(id string) []string{
 // Entrant Handlers /////////////////////////////////////////////////////////////////////////////////////
 
 func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In entrantsHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -2785,7 +2458,6 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("Out of entrantsHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     repo := EntrantRepo{c.db.C("entrants")}
@@ -2806,20 +2478,16 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
       entrants_resrc.Data = append(entrants_resrc.Data, body)
     }
     if err != nil {
-    //   fmt.Println("Out of entrantsHandler")
       panic(err)
     }
     if err = listEntrant.Execute(w, entrants_resrc); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
-    //   fmt.Println("Out of entrantsHandler")
       return
     }
-    // fmt.Println("Out of entrantsHandler")
   }
 }
 
 func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In entrantHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -2827,32 +2495,25 @@ func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of entrantHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id")) //getting data from named param :id
-    // fmt.Println("printing entrant.Data.Event_Id")
-    // fmt.Println(entrant.Data.Event_Id)
     entrant_resrc := EntrantResource{}
     entrant_resrc.Data = entrant.Data
     entrant_resrc.SData = current_session
     if err != nil {
-    //   fmt.Println("out of entrantHandler")
       panic(err)
     }
     if err = showEntrant.Execute(w, entrant_resrc); err != nil {
-        // fmt.Println("out of entrantHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // fmt.Println("out of entrantHandler")
   }
 }
 
 func (c *appContext) newEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In newEntrantHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -2860,22 +2521,18 @@ func (c *appContext) newEntrantHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of newEntrantHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     entrantresrc := EntrantResource{}
     entrantresrc.SData = current_session
     if err := createnewEntrant.Execute(w, entrantresrc); err != nil {
-    //   fmt.Println("out of newEntrantHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
   }
-  // fmt.Println("out of newEntrantHandler")
 }
 
 func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In createEntrantHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -2883,10 +2540,8 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of createEntrantHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of createEntrantHandler, status is true, count <= 0")
     http.Redirect(w, r, "/entrants", 302)
   }else if current_session.Current_status == true && count > 0{
     repo := EntrantRepo{c.db.C("entrants")}
@@ -2896,15 +2551,16 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
     body.Data.First_name = r.FormValue("First_name")
     body.Data.Last_name = r.FormValue("Last_name")
     body.Data.Id_number = "M_" + strconv.Itoa(rand.Int())
+
     // check for duplicates
     for r:=0; r<len(entrants.Data); r++{
       if body.Data.Id_number == entrants.Data[r].Id_number{
-        // fmt.Println("Id_number duplicate found - re-naming and re-checking loop 1 to loop 2")
+        // Id_number duplicate found - re-naming and re-checking loop 1 to loop 2
         body.Data.Id_number = "M_" + strconv.Itoa(rand.Int())
       }
       for rr:=0;rr<len(entrants.Data); rr++{
         if body.Data.Id_number == entrants.Data[rr].Id_number{
-        //   fmt.Println("Id_number duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+          // Id_number duplicate found - re-naming and re-checking loop 2 to outer loop 1
           body.Data.Id_number = "M_" + strconv.Itoa(rand.Int())
           break
         }else{
@@ -2912,22 +2568,23 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
         }
       }
       if rrcount == len(entrants.Data)-1{
-        // fmt.Println("No duplicates both loops")
+        // No duplicates both loops
         break
       }
     }
     body.Data.Dog_name = r.FormValue("Dog_name")
     body.Data.Dog_id_number = "K_" + strconv.Itoa(rand.Int())
+
     // check for duplicates
     rrcount = 0
     for r:=0; r<len(entrants.Data); r++{
       if body.Data.Dog_id_number == entrants.Data[r].Dog_id_number{
-        // fmt.Println("Dog_id_number duplicate found - re-naming and re-checking loop 1 to loop 2")
+        // Dog_id_number duplicate found - re-naming and re-checking loop 1 to loop 2
         body.Data.Dog_id_number = "K_" + strconv.Itoa(rand.Int())
       }
       for rr:=0;rr<len(entrants.Data); rr++{
         if body.Data.Dog_id_number == entrants.Data[rr].Dog_id_number{
-        //   fmt.Println("Dog_id_number duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+          // Dog_id_number duplicate found - re-naming and re-checking loop 2 to outer loop 1
           body.Data.Dog_id_number = "K_" + strconv.Itoa(rand.Int())
           break
         }else{
@@ -2935,22 +2592,23 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
         }
       }
       if rrcount == len(entrants.Data)-1{
-        // fmt.Println("No duplicates both loops")
+        // No duplicates both loops
         break
       }
     }
     body.Data.Breed = r.FormValue("Breed")
     body.Data.Team_Id = "TM_" + strconv.Itoa(rand.Int())
+
     // check for duplicates
     rrcount = 0
     for r:=0; r<len(entrants.Data); r++{
       if body.Data.Team_Id == entrants.Data[r].Team_Id{
-        // fmt.Println("Team_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+        // Team_Id duplicate found - re-naming and re-checking loop 1 to loop 2
         body.Data.Team_Id = "TM_" + strconv.Itoa(rand.Int())
       }
       for rr:=0;rr<len(entrants.Data); rr++{
         if body.Data.Team_Id == entrants.Data[rr].Team_Id{
-        //   fmt.Println("Team_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+          // Team_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
           body.Data.Team_Id = "TM_" + strconv.Itoa(rand.Int())
           break
         }else{
@@ -2958,22 +2616,19 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
         }
       }
       if rrcount == len(entrants.Data)-1{
-        // fmt.Println("No duplicates both loops")
+        // No duplicates both loops
         break
       }
     }
     err, id := repo.Create(&body.Data)
     if err != nil {
-    //   fmt.Println("out of createEntrantHandler")
       panic(err)
     }
-    // fmt.Println("out of createEntrantHandler, team created")
     http.Redirect(w, r, "/entrants/show/" + id.Hex(), 302)
   }
 }
 
 func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In editEntrantHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -2981,7 +2636,6 @@ func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of editEntrantHandler, status is false")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
@@ -2991,16 +2645,13 @@ func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) 
     entrant_resrc.Data = entrant.Data
     entrant_resrc.SData = current_session
     if err = updateEntrant.Execute(w, entrant_resrc); err != nil {
-    //   fmt.Println("out of editEntrantHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
-    // fmt.Println("out of editEntrantHandler, template executed")
   }
 }
 
 func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In updateEntrantHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -3008,10 +2659,8 @@ func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of createEntrantHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of createEntrantHandler, status is true, count <= 0")
     http.Redirect(w, r, "/entrants", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)
@@ -3029,16 +2678,13 @@ func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request
     body.Data.Event_Id = entrant.Data.Event_Id
     err = repo.Update(&body.Data)
     if err != nil {
-    //   fmt.Println("out of updateEntrantHandler")
       panic(err)
     }
-    // fmt.Println("out of updateEntrantHandler, entrant updated")
     http.Redirect(w, r, "/entrants/show/" + body.Data.Id.Hex(), 302)
   }
 }
 
 func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("In deleteEntrantHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3046,27 +2692,22 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of deleteEntrantHandler, status is false")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of deleteEntrantHandler, status is true, count <= 0")
     http.Redirect(w, r, "/entrants", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id"))
     if len(entrant.Data.Event_Id) > 0{
-    //   fmt.Println("Cannot delete team that is part of an event")
+        fmt.Println("Cannot delete team that is part of an event")
     }else{
       err := repo.Delete(params.ByName("id"))
       fmt.Println(err)
     }
     if err != nil {
-    //   fmt.Println("out of deleteEntrantHandler")
       panic(err)
     }
-    // fmt.Println(err)
-    // fmt.Println("out of deleteEntrantHandler, entrant deleted")
     http.Redirect(w, r, "/entrants", 302)
   }
 }
@@ -3076,7 +2717,6 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
 
 
 func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In usersHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3084,7 +2724,6 @@ func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("Out of usersHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     repo := UserRepo{c.db.C("users")}
@@ -3104,20 +2743,16 @@ func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
       users_resrc.Data = append(users_resrc.Data, body)
     }
     if err != nil {
-    //   fmt.Println("Out of usersHandler")
       panic(err)
     }
     if err = listUser.Execute(w, users_resrc); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
-    //   fmt.Println("Out of usersHandler")
       return
     }
-    // fmt.Println("Out of usersHandler")
   }
 }
 
 func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In userHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3125,7 +2760,6 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of userHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
@@ -3135,33 +2769,26 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
     user_resrc.Data = user.Data
     user_resrc.SData = current_session
     if err != nil {
-    //   fmt.Println("out of userHandler")
       panic(err)
     }
     if err = showUser.Execute(w, user_resrc); err != nil {
-        // fmt.Println("out of userHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // fmt.Println("out of userHandler")
   }
 }
 
 func (c *appContext) newUserHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In newUserHandler")
   usrresrc := UserResource{}
   usrresrc.SData = current_session
   if err := createnewUser.Execute(w, usrresrc); err != nil {
-    // fmt.Println("out of newUserHandler")
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-  // fmt.Println("out of newUserHandler")
-   // forwards to createUserHandler
+  // forwards to createUserHandler
 }
 
 func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In createUserHandler")
   repo := UserRepo{c.db.C("users")}
   users, err := repo.All()
   rrcount := 0
@@ -3172,12 +2799,12 @@ func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
   // check for duplicates
   for r:=0; r<len(users.Data); r++{
     if body.Data.User_Id == users.Data[r].User_Id{
-    //   fmt.Println("User_Id duplicate found - re-naming and re-checking loop 1 to loop 2")
+      // User_Id duplicate found - re-naming and re-checking loop 1 to loop 2
       body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
     }
     for rr:=0;rr<len(users.Data); rr++{
       if body.Data.User_Id == users.Data[rr].User_Id{
-        // fmt.Println("User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1")
+        // User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
         body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
         break
       }else{
@@ -3185,7 +2812,7 @@ func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
       }
     }
     if rrcount == len(users.Data)-1{
-    //   fmt.Println("No duplicates both loops")
+      // No duplicates both loops
       break
     }
   }
@@ -3195,17 +2822,12 @@ func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
   body.Data.Password = r.FormValue("Password")
   err, id := repo.Create(&body.Data)
   if err != nil {
-    // fmt.Println("out of createUserHandler with err")
     panic(err)
   }
-  // fmt.Println("out of createUserHandler, user created")
   http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
 }
 
 func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In editUserHandler")
-  // fmt.Println("printing r")
-  // fmt.Println(r)
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3213,7 +2835,6 @@ func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of editUserHandler, status is false")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
@@ -3223,19 +2844,14 @@ func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
     userresrc.Data = user.Data
     userresrc.SData = current_session
     if err = updateUser.Execute(w, userresrc); err != nil {
-    //   fmt.Println("out of editUserHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
-    // fmt.Println("out of editUserHandler, template executed")
     // forwards to updateUserHandler
-    // fmt.Println("printing r")
-    // fmt.Println(r)
   }
 }
 
 func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In updateUserHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -3243,10 +2859,8 @@ func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of updateUserHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of updateUserHandler, status is true, count <= 0")
     http.Redirect(w, r, "/users", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)
@@ -3264,17 +2878,13 @@ func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
     body.Data.Event_Id = user.Data.Event_Id
     err = repo.Update(&body.Data)
     if err != nil {
-    //   fmt.Println("out of updateUserHandler")
       panic(err)
     }
-    // fmt.Println(err)
-    // fmt.Println("out of updateUserHandler, user updated")
     http.Redirect(w, r, "/users/show/" + body.Data.Id.Hex(), 302)
   }
 }
 
 func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In deleteUserHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3282,27 +2892,22 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of deleteUserHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of deleteUserHandler, status is true, count <= 0")
     http.Redirect(w, r, "/users", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := UserRepo{c.db.C("users")}
     user, err := repo.Find(params.ByName("id"))
     if (len(user.Data.Event_Id) > 0) || (user.Data.User_Id == current_session.Current_user){
-    //   fmt.Println("Cannot delete user that is part of an event or yourself")
+        fmt.Println("Cannot delete user that is part of an event or yourself")
     }else{
       err := repo.Delete(params.ByName("id"))
       fmt.Println(err)
     }
     if err != nil {
-    //   fmt.Println("out of deleteUserHandler")
       panic(err)
     }
-    // fmt.Println(err)
-    // fmt.Println("out of deleteUserHandler, user deleted")
     http.Redirect(w, r, "/users", 302)
   }
 }
@@ -3312,7 +2917,6 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In scorecardsHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -3320,7 +2924,6 @@ func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("Out of scorecardsHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     repo := ScorecardRepo{c.db.C("scorecards")}
@@ -3341,23 +2944,20 @@ func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
       scorecards_resrc.Data = append(scorecards_resrc.Data, body)
     }
     if err != nil {
-    //   fmt.Println("Out of scorecardsHandler")
       panic(err)
     }
     //	w.Header().Set("Content-Type", "application/vnd.api+json")
     //	json.NewEncoder(w).Encode(scorecards)
     // read BSON into JSON
+
     if err = listScorecard.Execute(w, scorecards_resrc); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
-        // fmt.Println("Out of scorecardsHandler")
         return
     }
-    // fmt.Println("Out of scorecardsHandler")
   }
 }
 
 func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In scorecardHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -3365,16 +2965,12 @@ func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of scorecardHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecard, err := repo.Find(params.ByName("id")) //getting data from named param :id
-    // fmt.Println("printing scorecard")
-    // fmt.Println(scorecard)
     if err != nil {
-    //   fmt.Println("out of scorecardHandler")
       panic(err)
     }
     scorecard_resrc := ScorecardFormResource{}
@@ -3402,24 +2998,23 @@ func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
     }
     scorecard_resrc.ENData = enbody
     scorecard_resrc.SData = current_session
+
     //  w.Header().Set("Content-Type", "application/vnd.api+json")
     //	json.NewEncoder(w).Encode(scorecard)
     //	if err = show.Execute(w, json.NewEncoder(w).Encode(scorecard)); err != nil {
     //      http.Error(w, err.Error(), http.StatusInternalServerError)
     //      return
     //  }
+
     // read JSON into BSON
     if err = showScorecard.Execute(w, scorecard_resrc); err != nil {
-    //   fmt.Println("out of scorecardHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
-    // fmt.Println("out of scorecardHandler")
   }
 }
 
 func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In editScorecardHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -3427,7 +3022,6 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of editScorecardHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
@@ -3502,15 +3096,12 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
     message := c.get_check_hide_count(scorecard.Data.Id.Hex())
     scorecard_resrc.CheckCount = message
     if err = updateScorecard.Execute(w, scorecard_resrc); err != nil {
-        // fmt.Println("out of editScorecardHandler")
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
     if err != nil{
-    //   fmt.Println("printing err")
       fmt.Println(err)
     }
-    // fmt.Println("out of editScorecardHandler")
   }
 }
 
@@ -3535,13 +3126,13 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
 //  const jqDelay = 40*millisecond
 
   var idata int
-// gets time since an instance of time was declared
+  // gets time since an instance of time was declared
   var newTime time.Duration
-// gives the difference between the "last" newTime and the current newTime
+  // gives the difference between the "last" newTime and the current newTime
   var diff time.Duration
-// if we just started to get time go for it
-// do this unless JQuery shuts us down through a click on stop or the timelimit
-// has been superceded
+  // if we just started to get time go for it
+  // do this unless JQuery shuts us down through a click on stop or the timelimit
+  // has been superceded
   if dataStart && !dataStop{
     newTime = time.Since(timeStart)
     // the elapsed time since last call from JQuery
@@ -3693,6 +3284,8 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+
+
 // handler to cater AJAX requests
 func handlerPostTime(w http.ResponseWriter, r *http.Request) {
   params := context.Get(r, "params").(httprouter.Params)
@@ -3700,8 +3293,9 @@ func handlerPostTime(w http.ResponseWriter, r *http.Request) {
   timedata = params.ByName("data")
 }
 
+
+
 func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In updateScorecardHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3709,10 +3303,8 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of updateScorecardHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of updateScorecardHandler, status is true, count <= 0")
     http.Redirect(w, r, "/scorecards", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)
@@ -3801,12 +3393,9 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     err = repo.Update(&body.Data)
 
     if err != nil {
-    //   fmt.Println("out of updateScorecardHandler")
       panic(err)
     }
-    //  w.WriteHeader(204)
-    //	w.Write([]byte("\n"))
-    // fmt.Println("out of updateScorecardHandler")
+
     if body.Data.Scorecard_Id == ""{
       http.Redirect(w, r, "/scorecards/delete/" + body.Data.Id.Hex(), 302)
     }else{
@@ -3816,7 +3405,6 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (c *appContext) deleteScorecardHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In deleteScorecardHandler")
   if count < 1{
     count += 1
     c.sessionHandler(w, r)
@@ -3824,23 +3412,17 @@ func (c *appContext) deleteScorecardHandler(w http.ResponseWriter, r *http.Reque
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of deleteScorecardHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of deleteScorecardHandler, status is true, count <= 0")
     http.Redirect(w, r, "/scorecards", 302)
 	}else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     err := repo.Delete(params.ByName("id"))
     if err != nil {
-    //   fmt.Println("out of deleteScorecardHandler")
       panic(err)
     }
-    //	w.WriteHeader(204)
-    //	w.Write([]byte("\n"))
-    //  _, err = http.Get("/scorecards")
-    // fmt.Println("out of deleteScorecardHandler")
+
     http.Redirect(w, r, "/scorecards", 302)
   }
 }
@@ -3870,7 +3452,6 @@ func (c *appContext) get_elmSearchAreas(id string) string {
       search_areas = event.Data.Elite_search_areas
   }
   if err != nil {
-    // fmt.Println("err")
 	panic(err)
   }
   return search_areas
@@ -3901,7 +3482,6 @@ func (c *appContext) get_elmHides(id string) string {
       hides =  event.Data.Elite_hides
   }
   if err != nil {
-    // fmt.Println("err")
 	panic(err)
   }
   return hides
@@ -3965,14 +3545,12 @@ func (c *appContext) get_check_hide_count(id string) string {
     }
   }
   if err != nil {
-    // fmt.Println("err")
 	panic(err)
   }
   return message
 }
 
 func (c *appContext) get_max_point(id string) string {
-//  fmt.Println("in get_max_point")
   scRepo := ScorecardRepo{c.db.C("scorecards")}
   scorecard, err := scRepo.Find(id)
   hidesMax, err := strconv.ParseFloat(scorecard.Data.Hides_max, 64)
@@ -3986,7 +3564,6 @@ func (c *appContext) get_max_point(id string) string {
   }
   point := 0.0
   if err != nil {
-    // fmt.Println("err")
     panic(err)
   }
   if scorecard.Data.Maxpoint != "0"{
@@ -3995,7 +3572,6 @@ func (c *appContext) get_max_point(id string) string {
         case "Container":
           elementHides, err := strconv.ParseFloat(event.Data.Cont_hides, 64)
           if err != nil {
-            // fmt.Println("err")
             panic(err)
           }
           if hidesMax > 0{
@@ -4010,7 +3586,6 @@ func (c *appContext) get_max_point(id string) string {
         case "Interior":
           elementHides, err := strconv.ParseFloat(event.Data.Int_hides, 64)
           if err != nil {
-            // fmt.Println("err")
             panic(err)
           }
           if hidesMax > 0{
@@ -4025,7 +3600,6 @@ func (c *appContext) get_max_point(id string) string {
         case "Exterior":
           elementHides, err := strconv.ParseFloat(event.Data.Ext_hides, 64)
            if err != nil {
-            // fmt.Println("err")
             panic(err)
           }
           if hidesMax > 0{
@@ -4040,7 +3614,6 @@ func (c *appContext) get_max_point(id string) string {
         case "Vehicle":
           elementHides, err := strconv.ParseFloat(event.Data.Veh_hides, 64)
           if err != nil {
-            // fmt.Println("err")
             panic(err)
           }
           if hidesMax > 0{
@@ -4055,7 +3628,6 @@ func (c *appContext) get_max_point(id string) string {
         case "Elite":
           elementHides, err := strconv.ParseFloat(event.Data.Elite_hides, 64)
           if err != nil {
-            // fmt.Println("err")
             panic(err)
           }
           if hidesMax > 0{
@@ -4070,16 +3642,14 @@ func (c *appContext) get_max_point(id string) string {
   }
   pointStr := strconv.FormatFloat(point, 'f', 2, 64)
   if err != nil {
-    // fmt.Println("err")
 	panic(err)
   }
-//  fmt.Println("printing pointStr from get_max_point")
-//  fmt.Println(pointStr)
   return pointStr
 }
 
+
+
 func (c *appContext) get_fault_total(id string) string {
-//  fmt.Println("in get_fault_total")
   scRepo := ScorecardRepo{c.db.C("scorecards")}
   scorecard, err := scRepo.Find(id)
   evRepo := EventRepo{c.db.C("events")}
@@ -4118,14 +3688,12 @@ func (c *appContext) get_fault_total(id string) string {
     totalfaults += 4
   }
   if err != nil {
-    // fmt.Println("err")
     panic(err)
   }
   totalFaultsStr := strconv.Itoa(totalfaults)
-// fmt.Println("printing totalFaultsStr from get_fault_total")
-//  fmt.Println(totalFaultsStr)
   return totalFaultsStr
 }
+
 
 func (c *appContext) get_time(id string) string {
   scRepo := ScorecardRepo{c.db.C("scorecards")}
@@ -4148,16 +3716,13 @@ func (c *appContext) get_time(id string) string {
     }
   }
   if err != nil {
-    // fmt.Println("err")
 	panic(err)
   }
-//  fmt.Println("printing time from get_time")
-//  fmt.Println(time)
   return elapsed_time
 }
 
+
 func (c *appContext) get_points(id string) string {
-//  fmt.Println("in get_points")
   scRepo := ScorecardRepo{c.db.C("scorecards")}
   scorecard, err := scRepo.Find(id)
   evRepo := EventRepo{c.db.C("events")}
@@ -4231,12 +3796,9 @@ func (c *appContext) get_points(id string) string {
     points = 0.0
   }
   if err != nil {
-    // fmt.Println("err from get_points")
 	panic(err)
   }
   pointStr := strconv.FormatFloat(points, 'f', 2, 64)
-//  fmt.Println("printing pointStr from get_points")
-//  fmt.Println(pointStr)
   return pointStr
 }
 
@@ -4245,7 +3807,6 @@ func (c *appContext) get_points(id string) string {
 
 
 func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In talliesHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -4253,7 +3814,6 @@ func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("Out of talliesHandler")
     http.Redirect(w, r, "/login", 302)
 	}else{
     repo := TallyRepo{c.db.C("tallies")}
@@ -4275,23 +3835,20 @@ func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
       tallies_resrc.Data = append(tallies_resrc.Data, body)
     }
     if err != nil {
-    //   fmt.Println("Out of talliesHandler")
       panic(err)
     }
     //	w.Header().Set("Content-Type", "application/vnd.api+json")
     //	json.NewEncoder(w).Encode(tallies)
+
     // read BSON into JSON
     if err = listTally.Execute(w, tallies_resrc); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
-    //   fmt.Println("Out of talliesHandler")
       return
     }
-    // fmt.Println("Out of talliesHandler")
   }
 }
 
 func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In tallyHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -4299,14 +3856,12 @@ func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of tallyHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)  //gorrila context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     tally, err := repo.Find(params.ByName("id")) //getting data from named param :id
     if err != nil {
-    //   fmt.Println("out of tallyHandler")
       panic(err)
     }
     tally_resrc := TallyFormResource{}
@@ -4341,18 +3896,16 @@ func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
     //      http.Error(w, err.Error(), http.StatusInternalServerError)
     //      return
     //  }
+
     // read JSON into BSON
     if err = showTally.Execute(w, tally_resrc); err != nil {
-    //   fmt.Println("out of tallyHandler")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
-    // fmt.Println("out of tallyHandler")
   }
 }
 
 func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In editTallyHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -4360,7 +3913,6 @@ func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of editTallyHandler")
     http.Redirect(w, r, "/login", 302)
   }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
@@ -4406,21 +3958,17 @@ func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
     tally_resrc.SCSData = scorecards_resrc
 
     if err = updateTally.Execute(w, tally_resrc); err != nil {
-    //   fmt.Println("out of editTallyHandler FROM ERR")
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
     if err != nil{
-    //   fmt.Println("printing err")
       fmt.Println(err)
     }
-    // fmt.Println("out of editTallyHandler")
     http.Redirect(w, r, "/tallies/update/" + tally.Data.Id.Hex(), 302)
   }
 }
 
 func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) {
-  // fmt.Println("In updateTallyHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -4428,10 +3976,8 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of updateTallyHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of updateTallyHandler, status is true, count <= 0")
     http.Redirect(w, r, "/tallies", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)
@@ -4454,12 +4000,8 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
     c.get_tally(tally.Data.Id.Hex())
 
     if err != nil {
-    //   fmt.Println("out of updateTallyHandler")
       panic(err)
     }
-    //  w.WriteHeader(204)
-    //	w.Write([]byte("\n"))
-    // fmt.Println("out of updateTallyHandler")
     if body.Data.Tally_Id == ""{
       http.Redirect(w, r, "/tallies/delete/" + body.Data.Id.Hex(), 302)
     }else{
@@ -4469,7 +4011,6 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) deleteTallyHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In deleteTallyHandler")
   if count < 1{
     c.sessionHandler(w, r)
     count += 1
@@ -4477,29 +4018,21 @@ func (c *appContext) deleteTallyHandler(w http.ResponseWriter, r *http.Request) 
     count = 0
   }
   if current_session.Current_status == false{
-    // fmt.Println("out of deleteTallyHandler")
     http.Redirect(w, r, "/login", 302)
   }else if current_session.Current_status == true && count <= 0{
-    // fmt.Println("out of deleteTallyHandler, status is true, count <= 0")
     http.Redirect(w, r, "/tallies", 302)
   }else if current_session.Current_status == true && count > 0{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     err := repo.Delete(params.ByName("id"))
     if err != nil {
-    //   fmt.Println("out of deleteTallyHandler")
       panic(err)
     }
-    //	w.WriteHeader(204)
-    //	w.Write([]byte("\n"))
-    // fmt.Println("out of deleteTallyHandler")
-    //  _, err = http.Get("/tallies")
     http.Redirect(w, r, "/tallies", 302)
   }
 }
 
 func (c *appContext) get_tally(id string){
-//  fmt.Println("In get_tally")
   tlyRepo := TallyRepo{c.db.C("tallies")}
   tallies, err := tlyRepo.All()
   tally, err := tlyRepo.Find(id)
@@ -4731,17 +4264,13 @@ func (c *appContext) get_tally(id string){
   tbody.Data.Tally_Id = tally.Data.Tally_Id
   err = tlyRepo.Update(&tbody.Data)
   if err != nil {
-        // fmt.Println("out of get_tally")
 	panic(err)
   }
-//  fmt.Println("out of get_tally")
   return
 }
 
+
 func str_to_time (time string) int{
-//  fmt.Println("in str_to_time")
-//  fmt.Println("printing time")
-//  fmt.Println(time)
   var time_int int
   if (time == "") || (time == "0"){
     time_int = 0
@@ -4790,7 +4319,6 @@ func str_to_time (time string) int{
       fmt.Println(err)
     }
   }
-//  fmt.Println("out of str_to_time")
   return time_int
 }
 
@@ -4800,23 +4328,19 @@ func str_to_time (time string) int{
 
 
 func newSessionHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("In newSessionHandler")
   // go to login page
   sessionresrc := SessionResource{}
   current_session = Session{Current_user: "", Current_email: "", Current_status: false}
   sessionresrc.SData = current_session
   r.SetBasicAuth("", "")
   if err := createnewSession.Execute(w, sessionresrc); err != nil {
-    // fmt.Println("out of newSessionHandler")
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-  // fmt.Println("out of newSessionHandler")
   // submit forwards to openSessionHandler
 }
 
 func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
-	// fmt.Println("In sessionHandler")
   // go to login page and either sign up or enter email and password, get authenticated and go to "/events"
   usRepo := UserRepo{c.db.C("users")}
   users, err := usRepo.All()
@@ -4828,19 +4352,10 @@ func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
     current_user = current_session.Current_user
     Email = current_session.Current_email
   }
-  // fmt.Println("printing current_user")
-  // fmt.Println(current_user)
-  // fmt.Println("printing Email")
-  // fmt.Println(Email)
-  // fmt.Println("printing Password")
-  // fmt.Println(Password)
-//  fmt.Println("printing users.Data")
-//  fmt.Println(users.Data)
+
   if len(users.Data) > 0{
     for i:=0;i<len(users.Data);i++{
       if ((Password == users.Data[i].Password) && (Email == users.Data[i].Email)) || ((current_user == users.Data[i].User_Id) && (Email == users.Data[i].Email)){
-        // fmt.Println("printing users.Data[i]")
-        // fmt.Println(users.Data[i])
         current_session.Current_user = users.Data[i].User_Id
         r.SetBasicAuth(Email, Password)
       }
@@ -4849,72 +4364,46 @@ func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
     if (ok == true) && (email != "") && (password != ""){
       for i:=0;i<len(users.Data);i++{
         if (password == users.Data[i].Password) && (email == users.Data[i].Email) && (current_session.Current_user == users.Data[i].User_Id){
-        //   fmt.Println("printing users.Data[i]")
-        //   fmt.Println(users.Data[i])
           current_session.Current_status = true
           current_session.Current_email = users.Data[i].Email
         }
       }
     }
-    // fmt.Println("printing current_session.Current_user")
-    // fmt.Println(current_session.Current_user)
-    // fmt.Println("printing current_session.Current_email")
-    // fmt.Println(current_session.Current_email)
-    // fmt.Println("printing current_session.Current_status")
-    // fmt.Println(current_session.Current_status)
-    // fmt.Println("printing ok")
-    // fmt.Println(ok)
 
     refurlstr := ""
     matchedRef := false
     matchedUrl := false
-    // if referer is login, go to events as start page
-    // fmt.Println("printing r.Header[\"Referer\"]")
-    // fmt.Println(r.Header["Referer"])
 
+    // if referer is login, go to events as start page
     if r.Header["Referer"] != nil{
       refurlstr = r.Header["Referer"][0]
       matchedRef, err = regexp.MatchString("login", refurlstr)
-    //   fmt.Println("printing refurlstr")
-    //   fmt.Println(refurlstr)
     }
-    // fmt.Println("printing refurlstr")
-    // fmt.Println(refurlstr)
-    // fmt.Println("printing matchedRef")
-    // fmt.Println(matchedRef)
 
     urlsrc := r.URL
     urlstr := urlsrc.String()
-    // fmt.Println("printing urlstr")
-    // fmt.Println(urlstr)
+
     // if referer and current url are the same
     matchedUrl, err = regexp.MatchString(urlstr, refurlstr)
-    // fmt.Println("printing matchedUrl")
     fmt.Println(matchedUrl)
     if current_session.Current_status == false{
-    //   fmt.Println("out of sessionHandler")
       http.Redirect(w, r, "/login", 302)
     }else{
-    //   fmt.Println("out of sessionHandler")
       // if referer is login or referer is nil or the referer and current url are not the same
       // to to events as home page
       if matchedRef || (r.Header["Referer"] == nil) || ((urlstr != "/signup") && matchedRef){
-        // fmt.Println("redirecting to events")
         http.Redirect(w, r, "/events", 302)
       }else if !matchedRef || (!matchedRef && urlstr == "/signup"){
-        // fmt.Println("redirecting to url")
         http.Redirect(w, r, urlstr, 302)
       }
     }
   }else{
-    // fmt.Println("there are no authorized users")
     http.Redirect(w, r, "/login", 302)
   }
 }
 
 func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request) {
-//  De-authenticate user and direct to login - triggered by "/logout"
-  // fmt.Println("In deleteSessionHandler")
+  //  De-authenticate user and direct to login - triggered by "/logout"
   usRepo := UserRepo{c.db.C("users")}
   users, err := usRepo.All()
   fmt.Println(err)
@@ -4935,16 +4424,8 @@ func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request
   if r.Header["Referer"] != nil{
     refurlstr = r.Header["Referer"][0]
   }
-  // fmt.Println("printing r.URL")
-  // fmt.Println(r.URL)
   urlsrc := r.URL
-  // fmt.Println("printing urlsrc")
-  // fmt.Println(urlsrc)
   scurlstr = urlsrc.String()
-  // fmt.Println("printing refurlstr")
-  // fmt.Println(refurlstr)
-  // fmt.Println("printing scurlstr")
-  // fmt.Println(scurlstr)
   matchedfav, err = regexp.MatchString("/favicon.ico", scurlstr)
   if matchedfav{
     scurlstr = refurlstr
@@ -4969,20 +4450,11 @@ func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request
       mrurl = true
     }
   }
-  // fmt.Println("printing scurlstr")
-  // fmt.Println(scurlstr)
-  // fmt.Println("printing murl")
-  // fmt.Println(murl)
-  // fmt.Println("printing mrurl")
-  // fmt.Println(mrurl)
   if murl && mrurl && !update{
-    // fmt.Println("out of deleteSessionHandler matched")
     http.Redirect(w, r, scurlstr, 302)
   }else if murl && mrurl && update{
-    // fmt.Println("out of deleteSessionHandler matched and updated")
     http.Redirect(w, r, refurlstr, 302)
   }else if murl && mrurl && newevent{
-    // fmt.Println("out of deleteSessionHandler matched and new event")
     http.Redirect(w, r, refurlstr, 302)
   }else{
     for i:=0;i<len(users.Data);i++{
@@ -4992,7 +4464,6 @@ func (c *appContext) deleteSessionHandler(w http.ResponseWriter, r *http.Request
         current_session.Current_email = ""
       }
     }
-    // fmt.Println("out of deleteSessionHandler")
     http.Redirect(w, r, "/login", 302)
   }
 }
@@ -5006,22 +4477,14 @@ type router struct {
 
 func (r *router) Get(path string, handler http.Handler) {
 	r.GET(path, wrapHandler(handler))
-//	fmt.Println("Router getting")
 }
 
 func (r *router) Post(path string, handler http.Handler) {
 	r.POST(path, wrapHandler(handler))
-//	fmt.Println("Router posting")
 }
-
-//func (r *router) Put(path string, handler http.Handler) {
-//	r.PUT(path, wrapHandler(handler))
-//	fmt.Println("Router putting")
-//}
 
 func (r *router) Delete(path string, handler http.Handler) {
 	r.DELETE(path, wrapHandler(handler))
-//	fmt.Println("Router deleting")
 }
 
 // Integrating httprouter to our frameworks where it is incompatible with
@@ -5030,16 +4493,12 @@ func (r *router) Delete(path string, handler http.Handler) {
 // httprouter.Handler function
 
 func NewRouter() *router {
-//  fmt.Println("NewRouter")
 	return &router{httprouter.New()}
 }
 
 func wrapHandler(h http.Handler) httprouter.Handle {
-//	fmt.Println("In and out of wrapHandler")
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
         context.Set(r, "params", ps)    //gorilla context, key "params"
-    	// fmt.Println("printing value of \"params\"")
-        // fmt.Println(ps)
         h.ServeHTTP(w, r)
 
 	}
@@ -5051,15 +4510,11 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 func main() {
 
   port := os.Getenv("PORT")
-  fmt.Print("printing " + port)
   if port == ""{
      log.Fatal("$PORT must be set")
   }
 
-  // session, err := mgo.Dial("localhost:27017")
   session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
-//  session, err := mgo.Dial("ec2-52-38-184-52.us-west-2.compute.amazonaws.com")
-//	fmt.Println("Dialed for session")
 
   if err != nil {
 	panic(err)
@@ -5070,19 +4525,14 @@ func main() {
 
   appC := appContext{session.DB("heroku_g884mk05")}
 
-  // commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler, acceptHandler)
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
-	// alice is used to chain handlers
-	// context from gorrila mapping
-//  fmt.Println("Chained handlers set up")
+  // alice is used to chain handlers
+  // context from gorrila mapping
 
   router := NewRouter()
-//  router := httprouter.New()
 
   router.HandleMethodNotAllowed = false
 
-//	fmt.Println("Called to NewRouter")
-  fmt.Println("in session")
   router.ServeFiles("/static/*filepath", http.Dir("static"))
 
   router.Get("/info", commonHandlers.ThenFunc(infoHandler))
@@ -5094,7 +4544,6 @@ func main() {
   router.Get("/login", commonHandlers.ThenFunc(newSessionHandler))
   router.Post("/session", commonHandlers.ThenFunc(appC.sessionHandler))
   router.Get("/logout", commonHandlers.ThenFunc(appC.deleteSessionHandler))
-  // router.NotFound = commonHandlers.ThenFunc(appC.deleteSessionHandler)
 
   //  Event routing  /////////////////
 
@@ -5104,13 +4553,11 @@ func main() {
   router.Post("/events/create", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.createEventHandler))
   router.Get("/events/edit/:id/", commonHandlers.ThenFunc(appC.editEventHandler))
   router.Post("/events/update/:id/", commonHandlers.Append(bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))
-  //  router.Put("/events/update/:id", commonHandlers.Append(contentTypeHandler, bodyHandler(EventResource{})).ThenFunc(appC.updateEventHandler))
   router.Get("/events/delete/:id", commonHandlers.ThenFunc(appC.deleteEventHandler))
 
   //  Entrant routing  //////////////////
 
   router.Get("/entrants", commonHandlers.ThenFunc(appC.entrantsHandler))
-//  router.Post("/entrants/", commonHandlers.ThenFunc(appC.updateEntrantsEventHandler))
   router.Get("/entrants/show/:id", commonHandlers.ThenFunc(appC.entrantHandler))
   router.Get("/entrants/new", commonHandlers.ThenFunc(appC.newEntrantHandler))
   router.Post("/entrants/create", commonHandlers.Append(bodyHandler(EntrantResource{})).ThenFunc(appC.createEntrantHandler))
@@ -5121,7 +4568,6 @@ func main() {
   //  User routing  //////////////////
 
   router.Get("/users", commonHandlers.ThenFunc(appC.usersHandler))
-//  router.Post("/users/", commonHandlers.ThenFunc(appC.updateUsersEventHandler))
   router.Get("/users/show/:id", commonHandlers.ThenFunc(appC.userHandler))
   router.Get("/users/new", commonHandlers.ThenFunc(appC.newUserHandler))
   router.Post("/users/create", commonHandlers.Append(bodyHandler(UserResource{})).ThenFunc(appC.createUserHandler))
