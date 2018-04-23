@@ -1,0 +1,55 @@
+{{ define "body" }}
+<div class="nav" id="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-6" id="left">		
+				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Tallies
+			</div>				
+			<div class="col-xs-6" id="right">	
+				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
+			</div>				
+		</div>					
+	</div>
+</div>
+<div class="container-fluid" id="padbottom">
+  <div class="row" id="topmargin">
+    <div class="col-xs-2">
+      <h4 id="h4bold">Event_Id</h4>
+		</div>
+    <div class="col-xs-2">
+      <h4 id="h4bold">Team_Id</h4>
+		</div>
+    <div class="col-xs-2" id="center">
+      <h4 id="h4bold">Tally_Id</h4>
+		</div>
+    <div class="col-xs-2" id="center">
+      <h4 id="h4bold">Title</h4>
+		</div>		
+  </div>
+  <div id="bdr"></div>
+	{{ range .Data }}
+	<div class="row">
+		<div class = "col-xs-2">
+			<p>{{ .Data.Event_Id }}</p>
+		</div>
+		<div class="col-xs-2">
+			<p>{{ .Data.Entrant_Id }}</p>
+		</div>
+		<div class="col-xs-2" id="center">
+			<p>{{ .Data.Tally_Id }}</p>
+		</div>
+		<div class="col-xs-2" id="center">
+			<p>{{ .Data.Title }}</p>
+		</div>		
+		<div class="col-xs-2">
+			<p class="linksm" id="right"><a href="/tallies/show/{{ .Data.Id }}">Show</a>|<a href="/tallies/edit/{{ .Data.Id }}">Update</a>|<a href="/tallies/delete/{{ .Data.Id }}">Delete</a></p>
+		</div>			
+	</div>
+	{{ end }}
+</div>
+<div class="nav">
+	<div class="container-fluid" id="posfix">		
+		<footer id="footer">
+			<ul id="nopad">
+				<li><p class = "linktopgreen"><a href="/scorecards">Back to Scorecards</a> | <a href="/events">Back to Events</a></p></li>
+{{ end }}

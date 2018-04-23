@@ -4326,6 +4326,10 @@ func str_to_time (time string) int{
 
 // Session Handlers /////////////////////////////////////////////////////////////////////////////////////
 
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    http.Redirect(w, r, "/login", 302)
+}
+
 
 func newSessionHandler(w http.ResponseWriter, r *http.Request) {
   // go to login page
@@ -4390,7 +4394,7 @@ func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
       http.Redirect(w, r, "/login", 302)
     }else{
       // if referer is login or referer is nil or the referer and current url are not the same
-      // to to events as home page
+      // go to events as home page
       if matchedRef || (r.Header["Referer"] == nil) || ((urlstr != "/signup") && matchedRef){
         http.Redirect(w, r, "/events", 302)
       }else if !matchedRef || (!matchedRef && urlstr == "/signup"){
@@ -4515,6 +4519,7 @@ func main() {
   }
 
   session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+  // session, err := mgo.Dial("localhost:27017")
 
   if err != nil {
 	panic(err)
@@ -4524,6 +4529,7 @@ func main() {
   session.SetMode(mgo.Monotonic, true)
 
   appC := appContext{session.DB("heroku_g884mk05")}
+  // appC := appContext{session.DB("test")}
 
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
   // alice is used to chain handlers
@@ -4540,7 +4546,7 @@ func main() {
   //  Session routing ////////////////
 
   router.Get("/signup", commonHandlers.Append(bodyHandler(UserResource{})).ThenFunc(appC.newUserHandler))
-  router.Get("/", commonHandlers.ThenFunc(newSessionHandler))
+  router.GET("/", Index)
   router.Get("/login", commonHandlers.ThenFunc(newSessionHandler))
   router.Post("/session", commonHandlers.ThenFunc(appC.sessionHandler))
   router.Get("/logout", commonHandlers.ThenFunc(appC.deleteSessionHandler))
@@ -4600,4 +4606,5 @@ func main() {
 
   //  listening
   http.ListenAndServe((":" + port), router)
+  // http.ListenAndServe(":8081", router)
 }
