@@ -4,7 +4,7 @@
 			<h4 id="h4">Name: </h4>
 		</div>
 		<div class="col-xs-2">
-			<p class="ftext"><input type="text" name="Name" value="{{ .EVData.Data.Name }}"></p>	
+			<p class="ftext"><input type="text" name="Name" value="{{ .EVData.Data.Name }}"></p>
 		</div>
 		<div class="col-xs-2">
 			<h4 id="h4">Location: </h4>
@@ -17,13 +17,13 @@
 		</div>
 		<div class="col-xs-3">
 			<h5 class="ftext" id="nopad"><input type="date" name="Date" value="{{ .EVData.Data.Date }}"></h5>
-		</div>		
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-1">
 			<h4 id="h4">Status:  </h4>
 		</div>
-		<div class="col-xs-2">		
+		<div class="col-xs-2">
 			<h5 id="h5">
 				<select name="Status">
 					<option value="active" {{if eq .EVData.Data.Status "active"}}selected="selected"{{end}}>active</option>
@@ -36,7 +36,7 @@
 		</div>
 		<div class="col-xs-2">
 			<p class="ftext"><input type="text" name="Host" value="{{ .EVData.Data.Host }}"></p>
-		</div>		
+		</div>
 		<div class="col-xs-2">
 			<h4 id="h4">Division:  </h4>
 		</div>
@@ -49,8 +49,8 @@
 					<option value="Element Specialty" {{if eq .EVData.Data.Division "Element Specialty"}}selected="selected"{{end}}>Element Specialty</option>
 					<option value="Elite" {{if eq .EVData.Data.Division "Elite"}}selected="selected"{{end}}>Elite</option>
 				</select>
-			</h5>				
-		</div>	  
+			</h5>
+		</div>
 	</div>
 	<div id="bdr"></div>
 	<h4 id="h4bold">Element Search Areas and Hides</h4>
@@ -66,10 +66,10 @@
 	  </div>
 	  <div class = "col-xs-2">
 	    <h5 id="bold">Container</h5>
-	  </div>		
+	  </div>
 	  <div class = "col-xs-2">
 	    <h5 id="bold">Vehicle</h5>
-	  </div>		
+	  </div>
 	  <div class = "col-xs-2">
 	    <h5 id="bold">Elite</h5>
 	  </div>
@@ -77,7 +77,7 @@
 	<div class="row">
 	  <div class = "col-xs-2">
 		  <h5 id="bold">Search Areas</h5>
-	  </div>	
+	  </div>
 	  <div class = "col-xs-2">
 	    <p class="fnum"><input type="number" name="Int_search_areas" min="0" max="10" value="{{ .EVData.Data.Int_search_areas }}"></p>
 	  </div>
@@ -92,26 +92,26 @@
 	  </div>
 	  <div class = "col-xs-2">
 	    <p class="fnum"><input type="number" name="Elite_search_areas" min="0" max="6" value="{{ .EVData.Data.Elite_search_areas }}"></p>
-    </div>		
-  </div>	
+    </div>
+  </div>
   <div class="row">
 	  <div class = "col-xs-2">
 		  <h5 id="bold">Hides</h5>
 	  </div>
-	  <div class = "col-xs-2">	
-	    <p class="fnum"><input type="number" name="Int_hides" min="0" max="16" value="{{ .EVData.Data.Int_hides }}"></p>	
+	  <div class = "col-xs-2">
+	    <p class="fnum"><input type="number" name="Int_hides" min="0" max="16" value="{{ .EVData.Data.Int_hides }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum"><input type="number" name="Ext_hides" min="0" max="16" value="{{ .EVData.Data.Ext_hides }}"></p>		
+	    <p class="fnum"><input type="number" name="Ext_hides" min="0" max="16" value="{{ .EVData.Data.Ext_hides }}"></p>
     </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum"><input type="number" name="Cont_hides" min="0" max="16" value="{{ .EVData.Data.Cont_hides }}"></p>	
+	    <p class="fnum"><input type="number" name="Cont_hides" min="0" max="16" value="{{ .EVData.Data.Cont_hides }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum"><input type="number" name="Veh_hides" min="0" max="16" value="{{ .EVData.Data.Veh_hides }}"></p>		
+	    <p class="fnum"><input type="number" name="Veh_hides" min="0" max="16" value="{{ .EVData.Data.Veh_hides }}"></p>
 	  </div>
 	  <div class = "col-xs-2">
-	    <p class="fnum"><input type="number" name="Elite_hides" min="0" max="16" value="{{ .EVData.Data.Elite_hides }}"></p>		
+	    <p class="fnum"><input type="number" name="Elite_hides" min="0" max="16" value="{{ .EVData.Data.Elite_hides }}"></p>
 	  </div>
   </div>
 	<div class="row">
@@ -119,46 +119,46 @@
 	    <div class="actions">
         <p></p>
       </div>
-    </div>		
+    </div>
 	  <div class = "col-xs-2">
 	    <div class="actions">
-        <p><input class="button" type="submit" value="Update Search Area Info"></p>
-			</div>
+          <p><input class="button" type="submit" value="Update Search Area Info"></p>
+		</div>
     </div>
-	</div>	
-	<div id="bdr"></div>	
+	</div>
+	<div id="bdr"></div>
 	<div class="row">
 		<div class="col-xs-4">
 			<h4 id="h4">Teams: </h4>
 		</div>
 		<div class="col-xs-4">
 			<h4 id="h4">Officials: </h4>
-		</div>		
-	</div>		
-	<div class="row">	
+		</div>
+	</div>
+	<div class="row">
 		<div class="col-xs-4">
 			<h5 id="h5">
 				  {{ $entrants := .ENSData.Data }}
 				  {{ $allvalues := .EVData.Data.EntrantAll_Id }}
-				<select name="EntrantSelected_Id" size="20" multiple>						
+				<select name="EntrantSelected_Id" size="20" multiple>
 					{{ range $allvalue := $allvalues }}
 						{{ range $entrant := $entrants }}
 							{{ if eq $entrant.Data.Team_Id $allvalue.Value }}
 								{{ if $allvalue.Selected }}<option label="{{ $entrant.Data.Last_name }}, {{ $entrant.Data.First_name }}, {{ $entrant.Data.Id_number }}" value="{{ $allvalue.Value }}" selected>{{ $allvalue.Value}}</option>{{ else }}<option label="{{ $entrant.Data.Last_name }}, {{ $entrant.Data.First_name }}, {{ $entrant.Data.Id_number }}" value="{{ $allvalue.Value }}">{{ $allvalue.Value }}</option>{{ end }}
 							{{ end }}
 						{{ end }}
-					{{ end }}					
+					{{ end }}
 					<option value=""> </option>
 				</select>
-			</h5>			
+			</h5>
 		</div>
 		<div class="col-xs-4">
 			<h5 id="h5">
-				  {{ $users := .USRSData.Data }}		
+				  {{ $users := .USRSData.Data }}
 				  {{ $allvalues := .EVData.Data.UserAll_Id }}			
 				<select name="UserSelected_Id" size="20" multiple>
 					{{ range $allvalue := $allvalues }}
-						{{ range $user := $users }}		
+						{{ range $user := $users }}
 							{{ if eq $user.Data.User_Id $allvalue.Value }}
 								{{ if $allvalue.Selected }}<option label="{{ $user.Data.Last_name }}, {{ $user.Data.First_name }}, {{ $user.Data.Role }}" value="{{ $allvalue.Value }}" selected>{{ $allvalue.Value }}</option>
 								{{ else }}<option label="{{ $user.Data.Last_name }}, {{ $user.Data.First_name }}, {{ $user.Data.Role }}" value="{{ $allvalue.Value }}">{{ $allvalue.Value }}</option>{{ end }}
@@ -167,8 +167,8 @@
 					{{ end }}
 					<option value=""> </option>
 				</select>
-			</h5>			
-		</div>			
+			</h5>
+		</div>
 		<div class="row">
 			<div class="col-xs-4">
 				<div class="actions">

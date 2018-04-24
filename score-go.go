@@ -776,12 +776,6 @@ func infoHandler(w http.ResponseWriter, r *http.Request) {
 // Event Handlers /////////////////////////////////////////////////////////////////////////////////////
 
 func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -816,12 +810,6 @@ func (c *appContext) eventsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -948,12 +936,6 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -1025,17 +1007,9 @@ func (c *appContext) newEventHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/events", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     evRepo := EventRepo{c.db.C("events")}
     events, err := evRepo.All()
     rrcount := 0
@@ -1338,12 +1312,6 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -1425,17 +1393,9 @@ func (c *appContext) editEventHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/events", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)
 
     evRepo := EventRepo{c.db.C("events")}
@@ -2128,17 +2088,9 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) deleteEventHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/events", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     evRepo := EventRepo{c.db.C("events")}
     event, err := evRepo.Find(params.ByName("id"))
@@ -2451,19 +2403,13 @@ func (c *appContext) tally_completion(id string) []string{
 // Entrant Handlers /////////////////////////////////////////////////////////////////////////////////////
 
 func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
-    repo := EntrantRepo{c.db.C("entrants")}
-    entrants, err := repo.All()
     entrants_resrc := EntrantsResource{}
     entrants_resrc.SData = current_session
+    repo := EntrantRepo{c.db.C("entrants")}
+    entrants, err := repo.All()
     for i:=0; i<len(entrants.Data); i++{
       body := EntrantResource{}
       body.Data.Id = entrants.Data[i].Id
@@ -2488,12 +2434,6 @@ func (c *appContext) entrantsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2514,36 +2454,24 @@ func (c *appContext) entrantHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) newEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
     entrantresrc := EntrantResource{}
     entrantresrc.SData = current_session
+
     if err := createnewEntrant.Execute(w, entrantresrc); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
     }
   }
+  // forwards to createEntrantHandler
 }
 
 func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/entrants", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     repo := EntrantRepo{c.db.C("entrants")}
     entrants, err := repo.All()
     rrcount := 0
@@ -2629,12 +2557,6 @@ func (c *appContext) createEntrantHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2652,17 +2574,9 @@ func (c *appContext) editEntrantHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/entrants", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -2685,17 +2599,9 @@ func (c *appContext) updateEntrantHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/entrants", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := EntrantRepo{c.db.C("entrants")}
     entrant, err := repo.Find(params.ByName("id"))
@@ -2717,12 +2623,6 @@ func (c *appContext) deleteEntrantHandler(w http.ResponseWriter, r *http.Request
 
 
 func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2753,12 +2653,6 @@ func (c *appContext) usersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2779,61 +2673,63 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) newUserHandler(w http.ResponseWriter, r *http.Request) {
-  usrresrc := UserResource{}
-  usrresrc.SData = current_session
-  if err := createnewUser.Execute(w, usrresrc); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-    return
+  if current_session.Current_status == false{
+    http.Redirect(w, r, "/login", 302)
+  }else{
+    usrresrc := UserResource{}
+    usrresrc.SData = current_session
+    if err := createnewUser.Execute(w, usrresrc); err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
   }
   // forwards to createUserHandler
 }
 
 func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
-  repo := UserRepo{c.db.C("users")}
-  users, err := repo.All()
-  rrcount := 0
-  body := context.Get(r, "body").(*UserResource)    //gorilla context, key "body" that returns val
-  body.Data.First_name = r.FormValue("First_name")
-  body.Data.Last_name = r.FormValue("Last_name")
-  body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
-  // check for duplicates
-  for r:=0; r<len(users.Data); r++{
-    if body.Data.User_Id == users.Data[r].User_Id{
-      // User_Id duplicate found - re-naming and re-checking loop 1 to loop 2
-      body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
-    }
-    for rr:=0;rr<len(users.Data); rr++{
-      if body.Data.User_Id == users.Data[rr].User_Id{
-        // User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
+  if current_session.Current_status == false{
+    http.Redirect(w, r, "/login", 302)
+  }else{
+    repo := UserRepo{c.db.C("users")}
+    users, err := repo.All()
+    rrcount := 0
+    body := context.Get(r, "body").(*UserResource)    //gorilla context, key "body" that returns val
+    body.Data.First_name = r.FormValue("First_name")
+    body.Data.Last_name = r.FormValue("Last_name")
+    body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
+    // check for duplicates
+    for r:=0; r<len(users.Data); r++{
+      if body.Data.User_Id == users.Data[r].User_Id{
+        // User_Id duplicate found - re-naming and re-checking loop 1 to loop 2
         body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
+      }
+      for rr:=0;rr<len(users.Data); rr++{
+        if body.Data.User_Id == users.Data[rr].User_Id{
+          // User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
+          body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
+          break
+        }else{
+          rrcount = rr
+        }
+      }
+      if rrcount == len(users.Data)-1{
+        // No duplicates both loops
         break
-      }else{
-        rrcount = rr
       }
     }
-    if rrcount == len(users.Data)-1{
-      // No duplicates both loops
-      break
+    body.Data.Status = r.FormValue("Status")
+    body.Data.Role = r.FormValue("Role")
+    body.Data.Email = r.FormValue("Email")
+    body.Data.Password = r.FormValue("Password")
+    err, id := repo.Create(&body.Data)
+    if err != nil {
+      panic(err)
     }
+    http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
   }
-  body.Data.Status = r.FormValue("Status")
-  body.Data.Role = r.FormValue("Role")
-  body.Data.Email = r.FormValue("Email")
-  body.Data.Password = r.FormValue("Password")
-  err, id := repo.Create(&body.Data)
-  if err != nil {
-    panic(err)
-  }
-  http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
 }
 
 func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2852,17 +2748,9 @@ func (c *appContext) editUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/users", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)
     body := context.Get(r, "body").(*UserResource)
     repo := UserRepo{c.db.C("users")}
@@ -2885,17 +2773,9 @@ func (c *appContext) updateUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/users", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := UserRepo{c.db.C("users")}
     user, err := repo.Find(params.ByName("id"))
@@ -2917,12 +2797,6 @@ func (c *appContext) deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -2958,12 +2832,6 @@ func (c *appContext) scorecardsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -3015,12 +2883,6 @@ func (c *appContext) scorecardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -3124,7 +2986,7 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
 //  const minute = time.Minute
 //  const millisecond = time.Millisecond
 //  const jqDelay = 40*millisecond
-
+  timedata = ""
   var idata int
   // gets time since an instance of time was declared
   var newTime time.Duration
@@ -3150,6 +3012,10 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
       if newTime < second{
         data = newTime.String()
         re := regexp.MustCompile("ms")
+        data = re.ReplaceAllString(data, "")
+        mu := "\u03BC"
+        mu = mu + "s"
+        re = regexp.MustCompile(mu)
         data = re.ReplaceAllString(data, "")
         fdata, err := strconv.ParseFloat(data, 64)
         fdata = fdata/10
@@ -3296,17 +3162,9 @@ func handlerPostTime(w http.ResponseWriter, r *http.Request) {
 
 
 func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/scorecards", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)
     repo := ScorecardRepo{c.db.C("scorecards")}
     scorecard, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -3405,17 +3263,9 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (c *appContext) deleteScorecardHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    count += 1
-    c.sessionHandler(w, r)
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/scorecards", 302)
-	}else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := ScorecardRepo{c.db.C("scorecards")}
     err := repo.Delete(params.ByName("id"))
@@ -3807,12 +3657,6 @@ func (c *appContext) get_points(id string) string {
 
 
 func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
 	}else{
@@ -3849,12 +3693,6 @@ func (c *appContext) talliesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -3906,12 +3744,6 @@ func (c *appContext) tallyHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
   }else{
@@ -3964,22 +3796,13 @@ func (c *appContext) editTallyHandler(w http.ResponseWriter, r *http.Request) {
     if err != nil{
       fmt.Println(err)
     }
-    http.Redirect(w, r, "/tallies/update/" + tally.Data.Id.Hex(), 302)
   }
 }
 
 func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/tallies", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)
     repo := TallyRepo{c.db.C("tallies")}
     tally, err := repo.Find(params.ByName("id")) //getting data from named param :id
@@ -4011,17 +3834,9 @@ func (c *appContext) updateTallyHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (c *appContext) deleteTallyHandler(w http.ResponseWriter, r *http.Request) {
-  if count < 1{
-    c.sessionHandler(w, r)
-    count += 1
-  }else{
-    count = 0
-  }
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
-  }else if current_session.Current_status == true && count <= 0{
-    http.Redirect(w, r, "/tallies", 302)
-  }else if current_session.Current_status == true && count > 0{
+  }else{
     params := context.Get(r, "params").(httprouter.Params)    //gorilla context, key "params"
     repo := TallyRepo{c.db.C("tallies")}
     err := repo.Delete(params.ByName("id"))
@@ -4606,5 +4421,5 @@ func main() {
 
   //  listening
   http.ListenAndServe((":" + port), router)
-  // http.ListenAndServe(":8081", router)
+  // http.ListenAndServe(":8080", router)
 }

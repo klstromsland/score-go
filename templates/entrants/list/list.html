@@ -2,65 +2,65 @@
 <div class="nav" id="header">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-6" id="left">		
+			<div class="col-xs-6" id="left">
 				<h1 id="h1"><span id="tilda">~</span><span id="whitetxt">Teams</span><span id="tilda">~</span></h1>
-			</div>				
-			<div class="col-xs-6" id="right">	
+			</div>
+			<div class="col-xs-6" id="right">
 				<h1 id="h1right"><span id="greenyellow">Demo Use Only</span></h1>
-			</div>				
-		</div>					
+			</div>
+		</div>
 	</div>
 </div>
 <div class="container-fluid" id="padbottom">
   <div class="row" id="topmargin">
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <h4 id="h4bold">First Name</h4>
-		</div>
-		<div class="col-xs-2">
-			<h4 id="h4bold">Last Name</h4>
-		</div>
-		<div class="col-xs-1">
-			<h4 id="h4boldcenter">ID#</h4>
-		</div>
-		<div class="col-xs-2">
-			<h4 id="h4bold">K9 Name</h4>
-		</div>
-		<div class="col-xs-1">
-			<h4 id="h4boldcenter">K9ID#</h4>
-		</div>
-		<div class="col-xs-2">
-			<h4 id="h4bold">Breed</h4>
-		</div>		
+	</div>
+	<div class="col-xs-2">
+		<h4 id="h4bold">Last Name</h4>
+	</div>
+	<div class="col-xs-2">
+		<h4 id="h4boldcenter">ID#</h4>
+	</div>
+	<div class="col-xs-1">
+		<h4 id="h4bold">K9 Name</h4>
+	</div>
+	<div class="col-xs-2">
+		<h4 id="h4boldcenter">K9ID#</h4>
+	</div>
+	<div class="col-xs-2">
+		<h4 id="h4bold">Breed</h4>
+	</div>
   </div>
   <div id="bdr"></div>
 	{{ range .Data }}
 	<div class="row">
-		<div class = "col-xs-2">
+		<div class = "col-xs-1">
 			<p>{{ .Data.First_name }}</p>
 		</div>
 		<div class = "col-xs-2">
 			<p>{{ .Data.Last_name }}</p>
-		</div>		
-		<div class = "col-xs-1">
-			<p>{{ .Data.Id_number }}</p>
 		</div>
 		<div class = "col-xs-2">
-			<p>{{ .Data.Dog_name }}</p>
+			<p>{{ .Data.Id_number }}</p>
 		</div>
 		<div class = "col-xs-1">
+			<p>{{ .Data.Dog_name }}</p>
+		</div>
+		<div class = "col-xs-2">
 			<p>{{ .Data.Dog_id_number }}</p>
 		</div>
 		<div class = "col-xs-2">
 			<p>{{ .Data.Breed }}</p>
-		</div>		
+		</div>
 		<div class="col-xs-2">
 			<p class="linksm" id="right"><a href="/entrants/show/{{ .Data.Id }}">Show</a>|<a href="/entrants/edit/{{ .Data.Id }}">Update</a>|<a href="/entrants/delete/{{ .Data.Id }}">Delete</a></p>
-		</div>			
+		</div>
 	</div>
 	{{ end }}
 </div>
 <div class="nav">
-	<div class="container-fluid" id="posfix">		
+	<div class="container-fluid" id="posfix">
 		<footer id="footer">
 			<ul id="nopad">
 				<li><p class = "linktopgreen"><a href="/entrants/new">New Team</a> | <a href="/events">Back to Events</a> | <a href="/info">Info</a></p></li>
