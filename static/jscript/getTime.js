@@ -19,7 +19,7 @@ $(document).ready(function () {
 //  });
 });
 function delayedPost() {
-$.post("https:/intense-gorge-68089.herokuapp.com/gettime", "", function(data, status) {
+$.post("http://www.goscorebyanose.net/gettime", "", function(data, status) {
    $("#timeread").empty();
    $("#timeread").append(data);
  });
