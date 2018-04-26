@@ -3007,7 +3007,7 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
     // otherwise we may have been stopped in some way and should respond
     // if the time since timeStart (newTime) is less than the timelimit, we should keep
     // going
-    if diff <= jqDelay{
+    // if diff <= jqDelay{
       // just milliseconds to deal with
       if newTime < second{
         data = newTime.String()
@@ -3111,7 +3111,7 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
         }
         http.Redirect(w, r, "/savetime/" + data, 302)
       }
-    }
+    // }
     // if newTime is greater than timelimit, we need to go to different logic so that output repeats
     // until user figures it out, otherwise will continue by providing lastTime for next diff check
     if newTime >= timelimit{
@@ -3139,15 +3139,15 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
     }
     lastTime = newTime
   }
-  if diff > jqDelay{
-    http.Redirect(w, r, "/savetime/" + data, 302)
-    dataStop = false
-    dataStart = false
-  }
-  if dataReset{
-    dataStop = true
-    dataReset = false
-  }
+  // if diff > jqDelay{
+  //   http.Redirect(w, r, "/savetime/" + data, 302)
+  //   dataStop = false
+  //   dataStart = false
+  // }
+  // if dataReset{
+  //   dataStop = true
+  //   dataReset = false
+  // }
 }
 
 
