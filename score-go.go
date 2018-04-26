@@ -66,7 +66,7 @@ var repeat int
 const second = time.Second
 const minute = time.Minute
 const millisecond = time.Millisecond
-const jqDelay = 1*millisecond
+const jqDelay = 25*millisecond
 
 
 //Global structs//////////////////////////////////////////////////////////////////////////////////////
