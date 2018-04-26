@@ -5,7 +5,7 @@ $(document).ready(function () {
   $("#sw_start").click(function(){
     $("#sw_status").empty();
     $("#sw_status").append("Started");
-    $start = setInterval("delayedPost()", 10);
+    $start = setInterval("delayedPost()", 40);
   });
   $("#sw_pause").click(function(){
     $("#sw_status").empty();
