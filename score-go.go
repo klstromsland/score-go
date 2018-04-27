@@ -2967,7 +2967,7 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
 
 
 // handler to cater AJAX requests
-func handlerGetTime(w http.ResponseWriter, r *http.Request) {
+func handlerGetTime(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 //  Global variables
 
@@ -3150,7 +3150,7 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
 
 
 // handler to cater AJAX requests
-func handlerPostTime(w http.ResponseWriter, r *http.Request) {
+func handlerPostTime(w http.ResponseWriter, r *http.Request,  ps httprouter.Params) {
   params := context.Get(r, "params").(httprouter.Params)
   fmt.Fprint(w, params.ByName("data"))
   timedata = params.ByName("data")
@@ -4344,7 +4344,6 @@ func main() {
   // appC := appContext{session.DB("test")}
 
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
-  timeHandlers := alice.New(context.ClearHandler, recoverHandler)
   // alice is used to chain handlers
   // context from gorrila mapping
 
@@ -4401,8 +4400,8 @@ func main() {
   router.Get("/scorecards", commonHandlers.ThenFunc(appC.scorecardsHandler))
   router.Get("/scorecards/show/:id", commonHandlers.ThenFunc(appC.scorecardHandler))
   router.Get("/scorecards/edit/:id", commonHandlers.ThenFunc(appC.editScorecardHandler))
-  router.Post("/gettime", timeHandlers.ThenFunc(handlerGetTime))
-  router.Get("/savetime/:data", timeHandlers.ThenFunc(handlerPostTime))
+  router.POST("/gettime", handlerGetTime)
+  router.GET("/savetime/:data", handlerPostTime)
   router.Post("/scorecards/update/:id/", commonHandlers.Append(bodyHandler(ScorecardResource{})).ThenFunc(appC.updateScorecardHandler))
   router.Get("/scorecards/delete/:id", commonHandlers.ThenFunc(appC.deleteScorecardHandler))
 
