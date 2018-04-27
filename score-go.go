@@ -753,7 +753,6 @@ type appContext struct {
   db *mgo.Database
 }
 
-
 func infoHandler(w http.ResponseWriter, r *http.Request) {
   sessionresrc := SessionResource{}
   sessionresrc.SData = current_session
@@ -2309,7 +2308,6 @@ func (c *appContext) place_order(id string) []string{
   return placing
 }
 
-
 func (c *appContext) scorecard_completion(id string) []string{
   evRepo := EventRepo{c.db.C("events")}
   event, err := evRepo.Find(id)
@@ -3149,7 +3147,6 @@ func handlerGetTime(w http.ResponseWriter, r *http.Request) {
   //   dataReset = false
   // }
 }
-
 
 
 // handler to cater AJAX requests
@@ -4347,6 +4344,7 @@ func main() {
   // appC := appContext{session.DB("test")}
 
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
+  timeHandlers := alice.New(context.ClearHandler, recoverHandler)
   // alice is used to chain handlers
   // context from gorrila mapping
 
@@ -4403,8 +4401,8 @@ func main() {
   router.Get("/scorecards", commonHandlers.ThenFunc(appC.scorecardsHandler))
   router.Get("/scorecards/show/:id", commonHandlers.ThenFunc(appC.scorecardHandler))
   router.Get("/scorecards/edit/:id", commonHandlers.ThenFunc(appC.editScorecardHandler))
-  router.Post("/gettime", commonHandlers.ThenFunc(handlerGetTime))
-  router.Get("/savetime/:data", commonHandlers.ThenFunc(handlerPostTime))
+  router.Post("/gettime", timeHandlers.ThenFunc(handlerGetTime))
+  router.Get("/savetime/:data", timeHandlers.ThenFunc(handlerPostTime))
   router.Post("/scorecards/update/:id/", commonHandlers.Append(bodyHandler(ScorecardResource{})).ThenFunc(appC.updateScorecardHandler))
   router.Get("/scorecards/delete/:id", commonHandlers.ThenFunc(appC.deleteScorecardHandler))
 
