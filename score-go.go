@@ -8,7 +8,7 @@ import (
   "math"
   "math/rand"
   "net/http"
-  "os"
+  // "os"
   "reflect"
   "regexp"
   "strconv"
@@ -725,23 +725,23 @@ func contentTypeHandler(next http.Handler) http.Handler {
 func bodyHandler(v interface{}) func(next http.Handler) http.Handler {
 	t := reflect.TypeOf(v)                        //type interface{} which may be empty
 	m := func(next http.Handler) http.Handler {
-    fn := func(w http.ResponseWriter, r *http.Request) {
-       val := reflect.New(t).Interface()   //val is type interface{}
-//      err := json.NewDecoder(r.Body).Decode(val)  //r.Body is the request body and is type interface io.ReadCloser
-//      err := json.NewDecoder(strings.NewReader(evj)).Decode(val)
-//      val = evj
-//      if err != nil {
-//				WriteError(w, ErrBadRequest)
-//				return
-//			}
-		if next != nil {
-			context.Set(r, "body", val)     //gorilla context, key "body": val, val is type interface{}  "body" will now retrieve val
-            next.ServeHTTP(w, r)
-		}
-	}
-    return http.HandlerFunc(fn)
-  }
-  return m
+          fn := func(w http.ResponseWriter, r *http.Request) {
+               val := reflect.New(t).Interface()   //val is type interface{}
+               // err := json.NewDecoder(r.Body).Decode(val)  //r.Body is the request body and is type interface io.ReadCloser
+               // // err := json.NewDecoder(strings.NewReader(evj)).Decode(val)
+               // // val = evj
+               // if err != nil {
+			// 	WriteError(w, ErrBadRequest)
+			// 	return
+			// }
+          	if next != nil {
+          		context.Set(r, "body", val)     //gorilla context, key "body": val, val is type interface{}  "body" will now retrieve val
+                 next.ServeHTTP(w, r)
+          	}
+         }
+         return http.HandlerFunc(fn)
+    }
+    return m
 }
 
 // Main handlers /////////////////////////////////////////////////////////////////////////////////////
@@ -1221,6 +1221,7 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     scbody.Data.Hides_found = "0"
                     scbody.Data.Hides_missed = "0"
                     scbody.Data.Maxpoint = "0"
+                    scbody.Data.Total_time = "00:00:00"
                     scbody.Data.False_alert_fringe = "0"
                     scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                     scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
@@ -1587,6 +1588,7 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             scbody.Data.Hides_missed = "0"
                             scbody.Data.Maxpoint = "0"
                             scbody.Data.False_alert_fringe = "0"
+                            scbody.Data.Total_time = "00:00:00"
                             scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                             scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
                             scbody.Data.Dismissed = Selected{Value: "no", Selected: false}
@@ -2965,199 +2967,6 @@ func (c *appContext) editScorecardHandler(w http.ResponseWriter, r *http.Request
   }
 }
 
-
-// handler to cater AJAX requests
-func handlerGetTime(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
-//  Global variables
-
-//  var dataStart bool = false
-//  var dataReset bool = false
-//  var dataStop bool = false
-//  var timeStart time.Time
-//  var lastTime  time.Duration = 0
-//  var timelimit  time.Duration
-//  var timedata string = ""
-//  var data string = ""
-//  var count int = 0
-//  const second = time.Second
-//  const minute = time.Minute
-//  const millisecond = time.Millisecond
-//  const jqDelay = 40*millisecond
-  timedata = ""
-  var idata int
-  // gets time since an instance of time was declared
-  var newTime time.Duration
-  // gives the difference between the "last" newTime and the current newTime
-  var diff time.Duration
-  // if we just started to get time go for it
-  // do this unless JQuery shuts us down through a click on stop or the timelimit
-  // has been superceded
-  if dataStart && !dataStop{
-    newTime = time.Since(timeStart)
-    // the elapsed time since last call from JQuery
-    diff = newTime - lastTime
-    if diff < 0{
-      diff = -diff
-    }
-    // if elapsed time (diff) is less than the approximate delay from JQuery, then continue
-    // and send processed data to handlerPostTime
-    // otherwise we may have been stopped in some way and should respond
-    // if the time since timeStart (newTime) is less than the timelimit, we should keep
-    // going
-    // if diff <= jqDelay{
-      // just milliseconds to deal with
-      if newTime < second{
-        data = newTime.String()
-        re := regexp.MustCompile("ms")
-        data = re.ReplaceAllString(data, "")
-        mu := "\u03BC"
-        mu = mu + "s"
-        re = regexp.MustCompile(mu)
-        data = re.ReplaceAllString(data, "")
-        fdata, err := strconv.ParseFloat(data, 64)
-        fdata = fdata/10
-        fldata := math.Floor(fdata)
-        idata = int(fldata)
-        if idata < 10{
-          data = "00:00:" + "0" + strconv.Itoa(idata)
-        }else{
-          data = "00:00:" + strconv.Itoa(idata)
-        }
-        if err != nil{
-          fmt.Println(err)
-        }
-        http.Redirect(w, r, "/savetime/" + data, 302)
-      }
-      // process seconds
-      if newTime >= second && newTime < minute{
-        data = newTime.String()
-        re := regexp.MustCompile("s")
-        data = re.ReplaceAllString(data, "")
-        sdata := strings.SplitN(data, ".", 2)
-        sdata1 := sdata[0]
-        sdata2 := sdata[1][0:3]
-        fdata2, err := strconv.ParseFloat(sdata2, 64)
-        fdata2 = fdata2/10
-        fldata := math.Floor(fdata2)
-        idata = int(fldata)
-        isdata, err := strconv.Atoi(sdata1)
-        if isdata < 10{
-          if idata < 10{
-            data = "00:" + "0" + sdata1 + ":0" + strconv.Itoa(idata)
-          }else{
-            data = "00:" + "0" + sdata1 + ":" + strconv.Itoa(idata)
-          }
-        }else{
-          if idata < 10{
-            data = "00:" + sdata1 + ":0" + strconv.Itoa(idata)
-          }else{
-            data = "00:" + sdata1 + ":" + strconv.Itoa(idata)
-          }
-        }
-        if err != nil{
-          fmt.Println(err)
-        }
-        http.Redirect(w, r, "/savetime/" + data, 302)
-      }
-      // process minutes and seconds
-      if newTime >= minute{
-        data = newTime.String()
-        sre := regexp.MustCompile("s")
-        data = sre.ReplaceAllString(data, "")
-        mdata := strings.SplitN(data, "m", 2)
-        sdata := strings.SplitN(mdata[1], ".", 2)
-        sdata1 := sdata[0]
-        sdata2 := sdata[1][0:3]
-        fdata2, err := strconv.ParseFloat(sdata2, 64)
-        fdata2 = fdata2/10
-        fldata := math.Floor(fdata2)
-        idata = int(fldata)
-        imdata, err := strconv.Atoi(mdata[0])
-        isdata, err := strconv.Atoi(sdata1)
-        if imdata < 10{
-          if isdata < 10{
-            if idata < 10{
-              data = "0" + mdata[0] + ":" + "0" + sdata1 + ":0" + strconv.Itoa(idata)
-            }else{
-              data = "0" + mdata[0] + ":" + "0" + sdata1 + ":" + strconv.Itoa(idata)
-            }
-          }else{
-            if idata < 10{
-              data = "0" + mdata[0] + ":" + sdata1 + ":0" + strconv.Itoa(idata)
-            }else{
-              data = "0" + mdata[0] + ":" + sdata1 + ":" + strconv.Itoa(idata)
-            }
-          }
-        }else{
-          if isdata < 10{
-            if idata < 10{
-              data = mdata[0] + ":" + "0" + sdata1 + ":0" + strconv.Itoa(idata)
-            }else{
-              data = mdata[0] + ":" + "0" + sdata1 + ":" + strconv.Itoa(idata)
-            }
-          }else{
-            if idata < 10{
-              data = mdata[0] + ":" + sdata1 + ":0" + strconv.Itoa(idata)
-            }else{
-              data = mdata[0] + ":" + sdata1 + ":" + strconv.Itoa(idata)
-            }
-          }
-        }
-        if err != nil{
-          fmt.Println(err)
-        }
-        http.Redirect(w, r, "/savetime/" + data, 302)
-      }
-    // }
-    // if newTime is greater than timelimit, we need to go to different logic so that output repeats
-    // until user figures it out, otherwise will continue by providing lastTime for next diff check
-    if newTime >= timelimit{
-      dataReset = true
-    }
-    lastTime = newTime
-  }
-  // if we just started to get time go for it, unless a stop was called
-  // a new instant of time.Now is instantiated to serve as a reference for elapsed time
-  // in order to process duration data
-  if !dataStart && !dataStop{
-    timeStart = time.Now()
-    dataStart = true
-    lastTime = 0
-  }
-  // we have been stopped by JQuery or (diff is too large) or have received a timelimit signal
-  // dataStop is true
-  if dataStop{
-    http.Redirect(w, r, "/savetime/" + data, 302)
-    newTime = time.Since(timeStart)
-    // the elapsed time since last call from JQuery
-    diff = newTime - lastTime
-    if diff < 0{
-      diff = -diff
-    }
-    lastTime = newTime
-  }
-  // if diff > jqDelay{
-  //   http.Redirect(w, r, "/savetime/" + data, 302)
-  //   dataStop = false
-  //   dataStart = false
-  // }
-  // if dataReset{
-  //   dataStop = true
-  //   dataReset = false
-  // }
-}
-
-
-// handler to cater AJAX requests
-func handlerPostTime(w http.ResponseWriter, r *http.Request,  ps httprouter.Params) {
-  params := context.Get(r, "params").(httprouter.Params)
-  fmt.Fprint(w, params.ByName("data"))
-  timedata = params.ByName("data")
-}
-
-
-
 func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Request) {
   if current_session.Current_status == false{
     http.Redirect(w, r, "/login", 302)
@@ -3180,11 +2989,15 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     body.Data.Other_faults_descr = r.FormValue("Other_faults_descr")
     body.Data.Other_faults_count = r.FormValue("Other_faults_count")
     body.Data.Comments = r.FormValue("Comments")
-    body.Data.Total_time = timedata  //timedata global variable
-    elapsed_time := c.get_time(body.Data.Id.Hex())
-    if elapsed_time != ""{
-      body.Data.Total_time = elapsed_time
+
+    if scorecard.Data.Total_time != "00:00:00"{
+         body.Data.Total_time = r.FormValue("Total_time")
+    }else if scorecard.Data.Total_time == "" {
+         body.Data.Total_time = "00:00:00"
+    }else{
+         body.Data.Total_time = scorecard.Data.Total_time
     }
+
     body.Data.Pronounced.Value = r.FormValue("Pronounced")
     body.Data.Judge_signature.Value = r.FormValue("Judge_signature")
     body.Data.Event_Id = scorecard.Data.Event_Id
@@ -4325,13 +4138,13 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 
 func main() {
 
-  port := os.Getenv("PORT")
-  if port == ""{
-     log.Fatal("$PORT must be set")
-  }
+  // port := os.Getenv("PORT")
+  // if port == ""{
+  //    log.Fatal("$PORT must be set")
+  // }
 
-  session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
-  // session, err := mgo.Dial("localhost:27017")
+  // session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+  session, err := mgo.Dial("localhost:27017")
 
   if err != nil {
 	panic(err)
@@ -4340,8 +4153,8 @@ func main() {
 
   session.SetMode(mgo.Monotonic, true)
 
-  appC := appContext{session.DB("heroku_g884mk05")}
-  // appC := appContext{session.DB("test")}
+  // appC := appContext{session.DB("heroku_g884mk05")}
+  appC := appContext{session.DB("test")}
 
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
   // alice is used to chain handlers
@@ -4400,8 +4213,6 @@ func main() {
   router.Get("/scorecards", commonHandlers.ThenFunc(appC.scorecardsHandler))
   router.Get("/scorecards/show/:id", commonHandlers.ThenFunc(appC.scorecardHandler))
   router.Get("/scorecards/edit/:id", commonHandlers.ThenFunc(appC.editScorecardHandler))
-  router.POST("/gettime", handlerGetTime)
-  router.GET("/savetime/:data", handlerPostTime)
   router.Post("/scorecards/update/:id/", commonHandlers.Append(bodyHandler(ScorecardResource{})).ThenFunc(appC.updateScorecardHandler))
   router.Get("/scorecards/delete/:id", commonHandlers.ThenFunc(appC.deleteScorecardHandler))
 
@@ -4417,6 +4228,6 @@ func main() {
 
 
   //  listening
-  http.ListenAndServe((":" + port), router)
-  // http.ListenAndServe(":8080", router)
+  // http.ListenAndServe((":" + port), router)
+  http.ListenAndServe(":8080", router)
 }
