@@ -4138,13 +4138,13 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 
 func main() {
 
-  // port := os.Getenv("PORT")
-  // if port == ""{
-  //    log.Fatal("$PORT must be set")
-  // }
+  port := os.Getenv("PORT")
+  if port == ""{
+     log.Fatal("$PORT must be set")
+  }
 
-  // session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
-  session, err := mgo.Dial("localhost:27017")
+  session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+  // session, err := mgo.Dial("localhost:27017")
 
   if err != nil {
 	panic(err)
@@ -4153,8 +4153,8 @@ func main() {
 
   session.SetMode(mgo.Monotonic, true)
 
-  // appC := appContext{session.DB("heroku_g884mk05")}
-  appC := appContext{session.DB("test")}
+  appC := appContext{session.DB("heroku_g884mk05")}
+  // appC := appContext{session.DB("test")}
 
   commonHandlers := alice.New(context.ClearHandler, loggingHandler, recoverHandler)
   // alice is used to chain handlers
@@ -4228,6 +4228,6 @@ func main() {
 
 
   //  listening
-  // http.ListenAndServe((":" + port), router)
-  http.ListenAndServe(":8080", router)
+  http.ListenAndServe((":" + port), router)
+  // http.ListenAndServe(":8080", router)
 }
