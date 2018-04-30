@@ -1222,6 +1222,9 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     scbody.Data.Hides_missed = "0"
                     scbody.Data.Maxpoint = "0"
                     scbody.Data.Total_time = "00:00:00"
+                    scbody.Data.Total_points = "0"
+                    scbody.Data.Total_faults = "0"
+                    scbody.Data.Other_faults_count = "0"
                     scbody.Data.False_alert_fringe = "0"
                     scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                     scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
@@ -3305,8 +3308,6 @@ func (c *appContext) get_max_point(id string) string {
   return pointStr
 }
 
-
-
 func (c *appContext) get_fault_total(id string) string {
   scRepo := ScorecardRepo{c.db.C("scorecards")}
   scorecard, err := scRepo.Find(id)
@@ -3352,7 +3353,6 @@ func (c *appContext) get_fault_total(id string) string {
   return totalFaultsStr
 }
 
-
 func (c *appContext) get_time(id string) string {
   scRepo := ScorecardRepo{c.db.C("scorecards")}
   scorecard, err := scRepo.Find(id)
@@ -3378,7 +3378,6 @@ func (c *appContext) get_time(id string) string {
   }
   return elapsed_time
 }
-
 
 func (c *appContext) get_points(id string) string {
   scRepo := ScorecardRepo{c.db.C("scorecards")}
@@ -3892,7 +3891,6 @@ func (c *appContext) get_tally(id string){
   return
 }
 
-
 func str_to_time (time string) int{
   var time_int int
   if (time == "") || (time == "0"){
@@ -3952,7 +3950,6 @@ func str_to_time (time string) int{
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
     http.Redirect(w, r, "/login", 302)
 }
-
 
 func newSessionHandler(w http.ResponseWriter, r *http.Request) {
   // go to login page
