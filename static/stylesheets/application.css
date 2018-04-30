@@ -55,7 +55,7 @@ li {
   font-size:12px;
   letter-spacing: 0px;
   white-space:nowrap;
-} 
+}
 
 ul {
   list-style:none;
@@ -106,7 +106,7 @@ ul {
 
 .nav li{
   color:#fff;
-  list-style:none; 
+  list-style:none;
   margin:0;
   padding:0;
 }
@@ -121,7 +121,6 @@ ul {
   font-size:16px;
   font-weight:bold;
   padding:5px;
-  margin:5px auto 15px auto;
 }
 
 .row{
@@ -186,8 +185,8 @@ ul {
 
 .linktop a{
   font-size:18px;
-  font-weight:bold;  
-  background-color:#c5cbdb;	
+  font-weight:bold;
+  background-color:#c5cbdb;
   color:#00217f;
   margin:0;
   padding:4px 4px 4px 4px;
@@ -201,7 +200,7 @@ ul {
 .link a{
   font-size:18px;
   font-weight:bold;
-  background-color:#c5cbdb;	
+  background-color:#c5cbdb;
   color:#00217f;
   padding:4px 4px 4px 4px;
 }
@@ -213,8 +212,8 @@ ul {
 
 .linktopsm a{
   font-size:14px;
-  font-weight:bold;  
-  background-color:#c5cbdb;	
+  font-weight:bold;
+  background-color:#c5cbdb;
   color:#00217f;
   margin:0;
   padding:4px 4px 4px 4px;
@@ -227,7 +226,7 @@ ul {
 
 .linksm a{
   font-size:12px;
-  background-color:#c5cbdb;	
+  background-color:#c5cbdb;
   color:#00217f;
   padding:4px 4px 4px 4px;
 }
@@ -238,14 +237,14 @@ ul {
 }
 
 .linktopgreen a{
-  background-color:greenyellow;	
+  background-color:greenyellow;
   color:#00217f;
   margin:0;
   padding:4px 4px 4px 4px;
 }
 
 .linktopgreen a:hover{
-  background-color:greenyellow;	
+  background-color:greenyellow;
   color:#4b5cf4;
   margin:0;
   padding:4px 4px 4px 4px;
@@ -257,13 +256,13 @@ ul {
 }
 
 .linkgreen a{
-  background-color:greenyellow;	
+  background-color:greenyellow;
   color:#00217f;
   padding:4px 4px 4px 4px;
 }
 
 .linkgreen a:hover{
-  background-color:greenyellow;	
+  background-color:greenyellow;
   color:#4b5cf4;
   padding:4px 4px 4px 4px;
 }
@@ -283,18 +282,18 @@ ul {
 .flabel{
   margin:0;
   padding:2px 0 0 0;
-}  
+}
 
 .flabelsc{
   margin:0;
   padding:14px 0 0 0;
   font-weight:bold;
-}  
+}
 
 .slabelsc{
   margin:0;
   padding:10px 0 0 0;
-}  
+}
 
 .ftime input[type="text"] {
   width:40px;
@@ -357,7 +356,7 @@ ul {
 }
 
 .ftext input[type="text"]:hover {
-  background-color:#eefcd1; 
+  background-color:#eefcd1;
 }
 
 .ftextsm input[type="text"] {
@@ -429,7 +428,7 @@ ul {
 
 #footer{
   font-size:18px;
-  font-weight:bold;  
+  font-weight:bold;
   text-align:left;
   padding:20px 0 20px 0;
   margin:0;
@@ -459,13 +458,13 @@ ul {
   font-weight:bold;
   text-align:right;
   margin-top:14px;
-  
+
 }
 
 #h1sw {
   font-size:36px;
   font-weight:bold;
-  margin:0;
+  margin:0 0 15px 0;
   padding:8px 0 0 0;
 }
 
@@ -513,7 +512,7 @@ ul {
 #h4right {
   font-size:18px;
   font-weight:semi-bold;
-  text-align:right;  
+  text-align:right;
   margin:0;
   padding:0;
 }
@@ -653,38 +652,23 @@ ul {
 }
 
 #sw_start{
-  margin:5px 15px 0 0;
   font-size:16px;
   font-weight:bold;
-  padding:5px;
-}
-
-#sw_pause{
-  margin:5px 15px 0 0;
-  font-size:16px;
-  font-weight:bold;
-  padding:5px;  
+  margin:15px 0 0 5px;
 }
 
 #sw_save{
-  margin:5px 15px 0 0;
   font-size:16px;
   font-weight:bold;
   color:#bf3d5b;
-  padding:5px;  
+  margin:20px 0 0 0;
+  padding:5px;
 }
 
 #sw_reset{
-  margin:5px 0 0 0;
   font-size:16px;
   font-weight:bold;
-  padding:5px;  
-}
-
-#sw_status{
-  color:greenyellow;
-  font-size:16px;
-  margin:0 15px 0 0;
+  margin:15px 0 0 5px;
 }
 
 #tilda {
@@ -694,14 +678,20 @@ ul {
   padding-left:0;
 }
 
-#timeread{
+textarea {
+  resize:none;
+}
+
+#timeread {
+  width:180px;
+  text-align:center;
+  border:2px solid white;
+  background-color:#eefcd1;
   font-size:16px;
   color:#00217f;
   font-weight:bold;
-  background-color:#eefcd1;
-  padding:5px 0 3px 0;
-  margin:10px 20px 0px 0px;
-  border:2px solid white;
+  padding:0;
+  margin:15px 0 0 0;
 }
 
 #topmargin {
@@ -766,7 +756,7 @@ ul {
     font-size:30px;
     font-weight:bold;
     white-space:normal;
-    margin:0;
+    margin:0 0 15px 0;
     padding:0;
   }
 
@@ -806,7 +796,7 @@ ul {
     margin-top:24px;
     white-space:normal;
   }
-  
+
   #h4{
     font-size:14px;
   }
@@ -821,7 +811,7 @@ ul {
   #h4right {
     font-size:14px;
     font-weight:semi-bold;
-    text-align:right;  
+    text-align:right;
     margin:0;
     padding:0;
   }
@@ -854,23 +844,21 @@ ul {
     font-weight:bold;
     margin-top:16px;
   }
-  
+
   #h5{
     font-size:12px;
   }
 
   #sw_pause{
-    margin:5px 15px 0 0;
     font-size:12px;
     font-weight:bold;
-    padding:5px;  
+    padding:5px;
   }
 
   #sw_reset{
-    margin:5px 0 0 0;
     font-size:12px;
     font-weight:bold;
-    padding:5px;  
+    padding:5px;
   }
 
   #sw_status{
@@ -878,7 +866,7 @@ ul {
     font-size:12px;
     padding-left:10px
   }
-  
+
   #greenyellow{
     color:greenyellow;
     font-weight:bold;
@@ -888,5 +876,5 @@ ul {
   #whitetxt {
     color:white;
     white-space:normal;
-  }  
+  }
 }

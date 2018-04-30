@@ -1,20 +1,20 @@
 {{ define "form" }}
-	<h1 id="h1">{{ .EVData.Data.Name }} Scorecard</h1>	
+	<h1 id="h1">{{ .EVData.Data.Name }} Scorecard</h1>
   <div id="bdr"></div>
 	<div class="row">
 		<div class="col-xs-3">
 			<h4 id="h4bold">{{ .EVData.Data.Name }}</h4>
 		</div>
-	  <div class="col-xs-3">		
-			<h4 id="h4bold">{{ .EVData.Data.Location }}</h4>	
+	  <div class="col-xs-3">
+			<h4 id="h4bold">{{ .EVData.Data.Location }}</h4>
 		</div>
 		<div class="col-xs-3">
 			<h4 id="h4bold">{{ .EVData.Data.Date }}</h4>
 		</div>
 		<div class="col-xs-3">
 			<h4 id="h4bold">Division:  {{ .EVData.Data.Division }}</h4>
-		</div>			
-  </div>		
+		</div>
+  	</div>
 	<div class="row">
 		<div class="col-xs-4">
 			{{ if eq .SCData.Data.Element "Container"}}
@@ -26,7 +26,7 @@
 			{{ if eq .SCData.Data.Element "Vehicle"}}
 			<h4 id="h4bold">Element Search Areas:	{{ .EVData.Data.Veh_search_areas }}</h4>{{ end }}
 			{{ if eq .SCData.Data.Element "Elite"}}
-			<h4 id="h4bold">Element Search Areas:	{{ .EVData.Data.Elite_search_areas }}</h4>{{ end }}			
+			<h4 id="h4bold">Element Search Areas:	{{ .EVData.Data.Elite_search_areas }}</h4>{{ end }}
 		</div>
 		<div class="col-xs-4">
 			{{ if eq .SCData.Data.Element "Container"}}
@@ -38,153 +38,149 @@
 			{{ if eq .SCData.Data.Element "Vehicle"}}
 			<h4 id="h4boldright">Element Hides: {{ .EVData.Data.Veh_hides }}</h4>{{ end }}
 			{{ if eq .SCData.Data.Element "Elite"}}
-			<h4 id="h4boldright">Element Hides: {{ .EVData.Data.Elite_hides }}</h4>{{ end }}			
-		</div>		
+			<h4 id="h4boldright">Element Hides: {{ .EVData.Data.Elite_hides }}</h4>{{ end }}
+		</div>
 	</div>
 	<div id="bdr"></div>
 	<div class="row">
 		<div class="col-xs-4">
-			<h4 class="flabelsc" id="h4bold">Element: {{ .SCData.Data.Element }} {{ .SCData.Data.Search_area }}</h4> 
+			<h4 class="flabelsc" id="h4bold">Element: {{ .SCData.Data.Element }} {{ .SCData.Data.Search_area }}</h4>
 		</div>
 		<div class="col-xs-4">
 			<h4 class="fnumhighlight" id="h4bold">Hides/Calls: <input type="number" name="Hides_max" min="0" max="10" value="{{ .SCData.Data.Hides_max }}"></h4>
-		</div>		
+		</div>
 		<div class="col-xs-4">
 			<div class="actions" id="nomargin">
 				<p id="right" class="button"><input type="submit" value="Save Hide Count"></p>
 				<h4 id="h4bold"><span style="color:#bf3d5b">{{ .CheckCount }}</span></h4>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<div class="row">
 		<div class="col-xs-4">
 			<h4 class="fnumhighlight" id="h4bold">Point Value: <input type="number" name="Maxpoint" value="{{ .SCData.Data.Maxpoint }}"></h4>
 		</div>
 		<div class="col-xs-4">
-			<h4 class="ftimehighlight" id="h4bold">Time Limit(m:s): <input id="cd_minutes" type="text" name="Maxtime_m" value="{{ .SCData.Data.Maxtime_m }}">:<input id="cd_seconds" type="text" name="Maxtime_s" value="{{ .SCData.Data.Maxtime_s }}"></h4> 
+			<h4 class="ftimehighlight" id="h4bold">Time Limit(m:s): <input type="text" name="Maxtime_m" value="{{ .SCData.Data.Maxtime_m }}">:<input type="text" name="Maxtime_s" value="{{ .SCData.Data.Maxtime_s }}"></h4>
 		</div>
 		<div class="col-xs-4">
 			<div class="actions" id="nomargin">
 				<p id="right" class="button"><input type="submit" value="Tabulate Pnt Val, Save Time"></p>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<div id="bdr"></div>
 	<div class="row">
 		<div class="col-xs-8">
-			<h4 id="h4bold">Handler: <span style=font-size:20px; id="fontcolor">{{ .ENData.Data.First_name }} {{ .ENData.Data.Last_name }}</span></h4> 
+			<h4 id="h4bold">Handler: <span style=font-size:20px; id="fontcolor">{{ .ENData.Data.First_name }} {{ .ENData.Data.Last_name }}</span></h4>
 		</div>
 		<div class="col-xs-4">
-			<h4 id="h4boldright">ID:  <strong id="fontcolor">{{ .ENData.Data.Id_number }}</strong></h4> 
+			<h4 id="h4boldright">ID:  <strong id="fontcolor">{{ .ENData.Data.Id_number }}</strong></h4>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-4">
-			<h4 id="h4bold">K9:  <span style=font-size:20px; id="fontcolor">{{ .ENData.Data.Dog_name }}</span></h4> 
+			<h4 id="h4bold">K9:  <span style=font-size:20px; id="fontcolor">{{ .ENData.Data.Dog_name }}</span></h4>
 		</div>
 		<div class="col-xs-5">
-			<h4 id="h4bold">Breed:  <strong id="fontcolor">{{ .ENData.Data.Breed }}</strong></h4> 
+			<h4 id="h4bold">Breed:  <strong id="fontcolor">{{ .ENData.Data.Breed }}</strong></h4>
 		</div>
 		<div class="col-xs-3">
-			<h4 id="h4boldright">K9ID:  <strong id="fontcolor">{{ .ENData.Data.Dog_id_number }}</strong></h4> 
+			<h4 id="h4boldright">K9ID:  <strong id="fontcolor">{{ .ENData.Data.Dog_id_number }}</strong></h4>
 		</div>
-	</div>	
+	</div>
 	<div class="row" id="stopwatch">
 		<div class="col-xs-4" id="nomargin">
 			<h1 id="h1sw"><span id="tilda">~</span><span id="whitetxt">Stopwatch<span id="tilda">~</span></span></h1>
 		</div>
 		<div class="col-xs-4" id="nomargin">
-			<div id="timeread">00:00:00</div>
+				<textarea rows="1" cols="30" id="timeread" name="Total_time" value="{{ .SCData.Data.Total_time }}">{{ .SCData.Data.Total_time }}</textarea>
 		</div>
 		<div class="col-xs-4" id="nomargin">
-			<p><button type="button" id="sw_start">Start</button>
-			<button type="button" id="sw_pause">Stop</button>
-			<!--  <input type="button" value="Stop"  id="sw_stop" />  -->
-			<!-- <button type="button" id="sw_reset">Reset</button> -->
-			<input class="button" id="sw_save" type="submit" value="Save Time">
-			</p>
-			<p id="sw_status">Idle</p>
+				<button id="sw_start" type="button" onclick="startPause()">Start</button>
+				<button id="sw_reset" type="reset" onclick="resetWatch()">Reset</button>
+				<span class="actions" id="sw_save"><input type="submit" value="Save"></span>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4">  
+		<div class="col-xs-4">
 			<h4 class="fnumhighlight">Hides Found: <input type="number" name="Hides_found" min="0" max="10" value="{{ .SCData.Data.Hides_found }}"></h4>
-		</div>		
-		<div class="col-xs-4"> 
+		</div>
+		<div class="col-xs-4">
 			<h4 class="fnum">Hides Missed: <input type="number" name="Hides_missed" min="0" max="10" value="{{ .SCData.Data.Hides_missed }}"></h4>
 		</div>
 		<div class="col-xs-4">
-			<h4 class="fyn" id="right">Finish call: 
+			<h4 class="fyn" id="right">Finish call:
 			<span style="border:5px solid #bf3d5b"><select name="Finish_call">
 				{{if .SCData.Data.Finish_call.Selected }}<option value="yes" selected>yes</option>
 				{{else}}<option value="yes">yes</option>{{ end }}
 				{{if not .SCData.Data.Finish_call.Selected }}<option value="no" selected>no</option>
-				{{else}}<option value="no">no</option>{{ end }}				
+				{{else}}<option value="no">no</option>{{ end }}
 			</select></span></h4>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-4">    
-			<h4 class="fyn">Timed out: 
+		<div class="col-xs-4">
+			<h4 class="fyn">Timed out:
 			<span style="border:5px solid #bf3d5b"><select name="Timed_out">
 				{{if not .SCData.Data.Timed_out.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Timed_out.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></span></h4>
 		</div>
 		<div class="col-xs-4">
 			<h4 class="fnum">False alert/fringe: <input type="number" name="False_alert_fringe" min="0" max="10" value="{{ .SCData.Data.False_alert_fringe }}"></h4>
 		</div>
 		<div class="col-xs-4">
-			<h4 class="fyn" id="right">Dismissed: 
+			<h4 class="fyn" id="right">Dismissed:
 			<select name="Dismissed">
 				{{if not .SCData.Data.Dismissed.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Dismissed.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></h4>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-4">
-			<h4 class="fyn">Excused: 
+			<h4 class="fyn">Excused:
 			<select name="Excused">
 				{{if not .SCData.Data.Excused.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Excused.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></h4>
 		</div>
 		<div class="col-xs-4">
 			<h4 class="fyn">Absent:
-			<select name="Absent">			
+			<select name="Absent">
 				{{if not .SCData.Data.Absent.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Absent.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></h4>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-6">
 			<h4 class="fnum">Other faults count: <input type="number" name="Other_faults_count" min="0" max="10" value="{{ .SCData.Data.Other_faults_count }}"></h4>
-		</div>			
+		</div>
 		<div class="col-xs-6">
 			<h4 class="fyn" id="right">Eliminated during search:
 			<select name="Eliminated_during_search">
 				{{if not .SCData.Data.Eliminated_during_search.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Eliminated_during_search.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></h4>
-		</div>	
+		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-12">	
+		<div class="col-xs-12">
 			<div class="field">
 				<h4>Other faults (describe):  </h4>
-				<textarea rows="4" cols="80" placeholder="Describe faults...">{{ .SCData.Data.Other_faults_descr }}</textarea>
+				<textarea rows="4" cols="80" placeholder="Describe faults..." name="Other_faults_descr"  value="{{ .SCData.Data.Other_faults_descr }}"></textarea>
 			</div>
 		</div>
 	</div>
@@ -192,7 +188,7 @@
 		<div class="col-xs-12">
 			<div class="field">
 				<h4>Comments: </h4>
-				<textarea rows="4" cols="80" placeholder="Enter comments...">{{ .SCData.Data.Comments }}</textarea>
+				<textarea rows="4" cols="80" placeholder="Enter comments..." name="Comments" value="{{ .SCData.Data.Comments }}"></textarea>
 			</div>
 		</div>
 	</div>
@@ -211,12 +207,12 @@
 				<p class="button" id="center"><input type="submit" value="Tabulate Score"></p>
 			</div>
 		</div>
-	</div>	
-	<div id="bdr_heavy"></div>	
-	<div class="row">		
-		<div class="col-xs-4">			
+	</div>
+	<div id="bdr_heavy"></div>
+	<div class="row">
+		<div class="col-xs-4">
 			<h4 class="fnumhighlight" id="h4">Total Faults:  <input type="number" name="Total_faults" min="0" max="10" value="{{ .SCData.Data.Total_faults }}"></h4>
-		</div>		
+		</div>
 		<div class="col-xs-4">
 			<h4 class="fnumhighlight" id="h4">Total points:  <input type="number" name="Total_points" value="{{ .SCData.Data.Total_points }}"></h4>
 		</div>
@@ -226,21 +222,21 @@
 				{{if not .SCData.Data.Pronounced.Selected }}<option value="no" selected>no</option>
 				{{else}}<option value="no">no</option>{{ end }}
 				{{if .SCData.Data.Pronounced.Selected }}<option value="yes" selected>yes</option>
-				{{else}}<option value="yes">yes</option>{{ end }}				
+				{{else}}<option value="yes">yes</option>{{ end }}
 			</select></h4>
-		</div>		
+		</div>
 	</div>
-	<div class="row">	
-		<div class="col-xs-4">			
-			<h4 class="ftimehighlight" id="h4">Time: <span id="elapsed_time_m_field" style="color:#bf3d5b">{{ .SCData.Data.Total_time }}</span> (m:s:s/100)</h4>
-		</div>			
+	<div class="row">
+		<div class="col-xs-4">
+			<h4 class="ftimehighlight" id="h4">Time: <span style="color:#bf3d5b">{{ .SCData.Data.Total_time }}</span> (m:s:s/100)</h4>
+		</div>
 		<div class="col-xs-4">
 			<h4 id="h4">Judge Signature:
 			<span style="border:5px solid #bf3d5b"><select name="Judge_signature">
 			{{if not .SCData.Data.Judge_signature.Selected }}<option value="no" selected>no</option>
 			{{else}}<option value="no">no</option>{{ end }}
 			{{if .SCData.Data.Judge_signature.Selected }}<option value="yes" selected>yes</option>
-			{{else}}<option value="yes">yes</option>{{ end }}				
+			{{else}}<option value="yes">yes</option>{{ end }}
 			</select></span></h4>
 		</div>
 	</div>
@@ -249,7 +245,7 @@
 			<div class="actions">
 				<p id="center" class="button"><input type="submit" value="Final Submit"></p>
 			</div>
-		</div>			
+		</div>
 	</div>
 </form>
 {{ end }}
