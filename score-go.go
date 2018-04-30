@@ -1220,11 +1220,11 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     scbody.Data.Hides_max = "0"
                     scbody.Data.Hides_found = "0"
                     scbody.Data.Hides_missed = "0"
-                    scbody.Data.Maxpoint = "0"
+                    scbody.Data.Maxpoint = "0.0"
                     scbody.Data.Total_time = "00:00:00"
-                    scbody.Data.Total_points = "0"
-                    scbody.Data.Total_faults = "0"
-                    scbody.Data.Other_faults_count = "0"
+                    scbody.Data.Total_points = "0.0"
+                    scbody.Data.Total_faults = "0.0"
+                    scbody.Data.Other_faults_count = "0.0"
                     scbody.Data.False_alert_fringe = "0"
                     scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                     scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
@@ -1266,10 +1266,10 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                   break
                 }
               }
-              tabody.Data.Total_time = "0"
-              tabody.Data.Total_faults = "0"
+              tabody.Data.Total_time = "0.0"
+              tabody.Data.Total_faults = "0.0"
               tabody.Data.Title = "not this time"
-              tabody.Data.Total_points = "0"
+              tabody.Data.Total_points = "0.0"
               tabody.Data.Qualifying_score = "0"
               tabody.Data.Qualifying_scores = "0"
               err, id := taRepo.Create(&tabody.Data)
@@ -1589,9 +1589,12 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             scbody.Data.Hides_max = "0"
                             scbody.Data.Hides_found = "0"
                             scbody.Data.Hides_missed = "0"
-                            scbody.Data.Maxpoint = "0"
+                            scbody.Data.Maxpoint = "0.0"
                             scbody.Data.False_alert_fringe = "0"
                             scbody.Data.Total_time = "00:00:00"
+                            scbody.Data.Total_faults = "0.0"
+                            scbody.Data.Other_faults_count = "0.0"
+                            scbody.Data.Total_points = "0.0"
                             scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                             scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
                             scbody.Data.Dismissed = Selected{Value: "no", Selected: false}
@@ -1850,10 +1853,10 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     break
                   }
                 }
-                tabody.Data.Total_time = "0"
-                tabody.Data.Total_faults = "0"
+                tabody.Data.Total_time = "0.0"
+                tabody.Data.Total_faults = "0.0"
                 tabody.Data.Title = "not this time"
-                tabody.Data.Total_points = "0"
+                tabody.Data.Total_points = "0.0"
                 tabody.Data.Qualifying_score = "0"
                 tabody.Data.Qualifying_scores = "0"
                 err, id := taRepo.Create(&tabody.Data)
