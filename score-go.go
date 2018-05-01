@@ -904,10 +904,6 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
         }
       }
     }
-
-    if err != nil {
-      panic(err)
-    }
     eventshow := EventShowResource{}
     eventshow.EVData = event
     eventshow.SData = current_session
@@ -925,7 +921,9 @@ func (c *appContext) eventHandler(w http.ResponseWriter, r *http.Request) {
     //      http.Error(w, err.Error(), http.StatusInternalServerError)
     //      return
     //  }
-
+    if err != nil {
+      panic(err)
+    }
     // read JSON into BSON
     if err = showEvent.Execute(w, eventshow); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1220,11 +1218,11 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                     scbody.Data.Hides_max = "0"
                     scbody.Data.Hides_found = "0"
                     scbody.Data.Hides_missed = "0"
-                    scbody.Data.Maxpoint = "0.0"
+                    scbody.Data.Maxpoint = "0.00"
                     scbody.Data.Total_time = "00:00:00"
-                    scbody.Data.Total_points = "0.0"
-                    scbody.Data.Total_faults = "0.0"
-                    scbody.Data.Other_faults_count = "0.0"
+                    scbody.Data.Total_points = "0.00"
+                    scbody.Data.Total_faults = "0.00"
+                    scbody.Data.Other_faults_count = "0.00"
                     scbody.Data.False_alert_fringe = "0"
                     scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                     scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
@@ -1266,10 +1264,10 @@ func (c *appContext) createEventHandler(w http.ResponseWriter, r *http.Request) 
                   break
                 }
               }
-              tabody.Data.Total_time = "0.0"
-              tabody.Data.Total_faults = "0.0"
-              tabody.Data.Title = "not this time"
-              tabody.Data.Total_points = "0.0"
+              tabody.Data.Total_time = "00:00:00"
+              tabody.Data.Total_faults = "0.00"
+              tabody.Data.Title = ""
+              tabody.Data.Total_points = "0.00"
               tabody.Data.Qualifying_score = "0"
               tabody.Data.Qualifying_scores = "0"
               err, id := taRepo.Create(&tabody.Data)
@@ -1589,12 +1587,12 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                             scbody.Data.Hides_max = "0"
                             scbody.Data.Hides_found = "0"
                             scbody.Data.Hides_missed = "0"
-                            scbody.Data.Maxpoint = "0.0"
+                            scbody.Data.Maxpoint = "0.00"
                             scbody.Data.False_alert_fringe = "0"
                             scbody.Data.Total_time = "00:00:00"
-                            scbody.Data.Total_faults = "0.0"
-                            scbody.Data.Other_faults_count = "0.0"
-                            scbody.Data.Total_points = "0.0"
+                            scbody.Data.Total_faults = "0.00"
+                            scbody.Data.Other_faults_count = "0.00"
+                            scbody.Data.Total_points = "0.00"
                             scbody.Data.Finish_call = Selected{Value: "yes", Selected: true}
                             scbody.Data.Timed_out = Selected{Value: "no", Selected: false}
                             scbody.Data.Dismissed = Selected{Value: "no", Selected: false}
@@ -1714,10 +1712,10 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                         break
                       }
                     }
-                    tabody.Data.Total_time = "0"
-                    tabody.Data.Total_faults = "0"
+                    tabody.Data.Total_time = "0.00"
+                    tabody.Data.Total_faults = "0.00"
                     tabody.Data.Title = "not this time"
-                    tabody.Data.Total_points = "0"
+                    tabody.Data.Total_points = "0.00"
                     tabody.Data.Qualifying_score = "0"
                     tabody.Data.Qualifying_scores = "0"
                     err, id := taRepo.Create(&tabody.Data)
@@ -1853,10 +1851,10 @@ func (c *appContext) updateEventHandler(w http.ResponseWriter, r *http.Request) 
                     break
                   }
                 }
-                tabody.Data.Total_time = "0.0"
-                tabody.Data.Total_faults = "0.0"
+                tabody.Data.Total_time = "0.00"
+                tabody.Data.Total_faults = "0.00"
                 tabody.Data.Title = "not this time"
-                tabody.Data.Total_points = "0.0"
+                tabody.Data.Total_points = "0.00"
                 tabody.Data.Qualifying_score = "0"
                 tabody.Data.Qualifying_scores = "0"
                 err, id := taRepo.Create(&tabody.Data)
@@ -2222,8 +2220,8 @@ func (c *appContext) place_order(id string) []string{
   event, err := evRepo.Find(id)
   tlyRepo := TallyRepo{c.db.C("tallies")}
   tallies, err := tlyRepo.All()
-  place_points := 0
-  place_faults := 0
+  place_points := 0.00
+  place_faults := 0.00
   place_time := 0
   fcount := 0
   tcount := 0
@@ -2234,17 +2232,14 @@ func (c *appContext) place_order(id string) []string{
     }
   }
   placing := make([]string, fcount)
+  fmt.Println("fcount ", fcount)
 
   for i:=0; i<len(placing); i++{
     found = false
-    place_points = 0
-    place_faults = 0
+    place_points = 0.00
     place_time = 0
-    total_points := 0
-    total_points_flt := 0.0
-    total_faults := 0
-    total_faults_flt := 0.0
-    tmp_time := 0
+    total_points := 0.00
+    total_faults := 0.00
     for j:=0; j<len(tallies.Data); j++{
       if tallies.Data[j].Event_Id == event.Data.Event_Id{
         for k:=0; k<len(placing); k++{
@@ -2255,32 +2250,23 @@ func (c *appContext) place_order(id string) []string{
         if found{
           found = false
           continue
-        }
-        tmp_time = str_to_time(tallies.Data[j].Total_time)
-        if tmp_time != 0{
-          total_points_flt, err = strconv.ParseFloat(tallies.Data[j].Total_points, 64)
-          total_points = int(total_points_flt)
         }else{
-          total_points = 0
-        }
-        if tmp_time != 0{
-          total_faults_flt, err = strconv.ParseFloat(tallies.Data[j].Total_faults, 64)
-          total_faults = int(total_faults_flt)
-        }else{
-          total_faults = 0
-        }
-        if place_points < total_points{
-          place_time = str_to_time(tallies.Data[j].Total_time)
-          place_points = total_points
-          place_faults = total_faults
-        }
-        if place_points <= total_points && place_time >= str_to_time(tallies.Data[j].Total_time) && place_faults >= total_faults{
-          place_time = str_to_time(tallies.Data[j].Total_time)
-          place_points = total_points
-          place_faults = total_faults
+          total_points, err = strconv.ParseFloat(tallies.Data[j].Total_points, 64)
+          total_faults, err = strconv.ParseFloat(tallies.Data[j].Total_faults, 64)
+          if place_points < total_points{
+            place_time = str_to_time(tallies.Data[j].Total_time)
+            place_points = total_points
+            place_faults = total_faults
+          }
+          if place_points <= total_points && place_time >= str_to_time(tallies.Data[j].Total_time) && place_faults >= total_faults{
+            place_time = str_to_time(tallies.Data[j].Total_time)
+            place_points = total_points
+            place_faults = total_faults
+          }
         }
       }
     }
+    fmt.Println("placing 1", placing)
     for j:=0; j<len(tallies.Data); j++{
       if tallies.Data[j].Event_Id == event.Data.Event_Id{
         for k:=0; k<len(placing); k++{
@@ -2291,28 +2277,21 @@ func (c *appContext) place_order(id string) []string{
         if found{
           found = false
           continue
-        }
-        if tmp_time != 0{
-          total_points_flt, err = strconv.ParseFloat(tallies.Data[j].Total_points, 64)
-          total_points = int(total_points_flt)
         }else{
-          total_points = 0
-        }
-        if tmp_time != 0{
-          total_faults_flt, err = strconv.ParseFloat(tallies.Data[j].Total_faults, 64)
-          total_faults = int(total_faults_flt)
-        }else{
-          total_faults = 0
-        }
-        if (total_points == place_points) && (str_to_time(tallies.Data[j].Total_time) == place_time) && (total_faults == place_faults){
-          placing[tcount] = tallies.Data[j].Tally_Id
-          tcount += 1
-          break
+          total_points, err = strconv.ParseFloat(tallies.Data[j].Total_points, 64)
+          total_faults, err = strconv.ParseFloat(tallies.Data[j].Total_faults, 64)
+          if (total_points == place_points) && (str_to_time(tallies.Data[j].Total_time) == place_time) && (total_faults == place_faults){
+            placing[tcount] = tallies.Data[j].Tally_Id
+            tcount += 1
+            break
+          }
         }
         fmt.Println(err)
       }
     }
+    fmt.Println("placing 2", placing)
   }
+  fmt.Println("placing 3", placing)
   return placing
 }
 
@@ -3054,13 +3033,16 @@ func (c *appContext) updateScorecardHandler(w http.ResponseWriter, r *http.Reque
     }else{
       scorecard.Data.Judge_signature.Selected = false
     }
-    tmp_time_m, err := strconv.Atoi(body.Data.Maxtime_m)
-    tmp_time_m = tmp_time_m*60
-    tmp_time_s, err := strconv.Atoi(body.Data.Maxtime_s)
-    tmp_time := tmp_time_s + tmp_time_m
-    tmp_timeD := time.Duration(tmp_time)*time.Second
-    // global variable time limit
-    timelimit = tmp_timeD
+    if body.Data.Maxtime_m != "" && body.Data.Maxtime_s != ""{
+      tmp_time_m, err := strconv.Atoi(body.Data.Maxtime_m)
+      tmp_time_m = tmp_time_m*60
+      tmp_time_s, err := strconv.Atoi(body.Data.Maxtime_s)
+      tmp_time := tmp_time_s + tmp_time_m
+      tmp_timeD := time.Duration(tmp_time)*time.Second
+      // global variable time limit
+      timelimit = tmp_timeD
+      fmt.Println(err)
+    }
 
     err = repo.Update(&body.Data)
 
@@ -3317,42 +3299,32 @@ func (c *appContext) get_fault_total(id string) string {
   evRepo := EventRepo{c.db.C("events")}
   events, err := evRepo.All()
   event := EventResource{}
-  totalfaults := 0
-  falseAlertFringe := 0
   for i:=0; i<len(events.Data); i++{
     if scorecard.Data.Event_Id == events.Data[i].Event_Id{
       event.Data = events.Data[i]
     }
   }
-  if scorecard.Data.Other_faults_count == ""{
-    totalfaults = 0
-  }else{
-    totalfaults, err = strconv.Atoi(scorecard.Data.Other_faults_count)
-  }
-  if scorecard.Data.False_alert_fringe == ""{
-    falseAlertFringe = 0
-  }else{
-    falseAlertFringe, err = strconv.Atoi(scorecard.Data.False_alert_fringe)
-  }
-  if falseAlertFringe > 0{
+  totalfaults, err := strconv.ParseFloat(scorecard.Data.Other_faults_count, 64)
+  falseAlertFringe, err := strconv.ParseFloat(scorecard.Data.False_alert_fringe, 64)
+  if falseAlertFringe > 0.00{
     if event.Data.Division != "Elite"{
-      totalfaults += 2
+      totalfaults += 2.00
     }
   }
   if scorecard.Data.Eliminated_during_search.Value == "yes" || scorecard.Data.Excused.Value == "yes"{
     if event.Data.Division != "Elite"{
-      totalfaults += 3
+      totalfaults += 3.00
     }else{
-      totalfaults += 1
+      totalfaults += 1.00
     }
   }
   if (scorecard.Data.Absent.Value == "yes")&&(event.Data.Division != "Elite"){
-    totalfaults += 4
+    totalfaults += 4.00
   }
   if err != nil {
     panic(err)
   }
-  totalFaultsStr := strconv.Itoa(totalfaults)
+  totalFaultsStr := strconv.FormatFloat(totalfaults, 'f', 2, 64)
   return totalFaultsStr
 }
 
