@@ -2658,59 +2658,51 @@ func (c *appContext) userHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *appContext) newUserHandler(w http.ResponseWriter, r *http.Request) {
-  if current_session.Current_status == false{
-    http.Redirect(w, r, "/login", 302)
-  }else{
-    usrresrc := UserResource{}
-    usrresrc.SData = current_session
-    if err := createnewUser.Execute(w, usrresrc); err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
+  usrresrc := UserResource{}
+  usrresrc.SData = current_session
+  if err := createnewUser.Execute(w, usrresrc); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
   }
   // forwards to createUserHandler
 }
 
 func (c *appContext) createUserHandler(w http.ResponseWriter, r *http.Request) {
-  if current_session.Current_status == false{
-    http.Redirect(w, r, "/login", 302)
-  }else{
-    repo := UserRepo{c.db.C("users")}
-    users, err := repo.All()
-    rrcount := 0
-    body := context.Get(r, "body").(*UserResource)    //gorilla context, key "body" that returns val
-    body.Data.First_name = r.FormValue("First_name")
-    body.Data.Last_name = r.FormValue("Last_name")
-    body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
-    // check for duplicates
-    for r:=0; r<len(users.Data); r++{
-      if body.Data.User_Id == users.Data[r].User_Id{
-        // User_Id duplicate found - re-naming and re-checking loop 1 to loop 2
+  repo := UserRepo{c.db.C("users")}
+  users, err := repo.All()
+  rrcount := 0
+  body := context.Get(r, "body").(*UserResource)    //gorilla context, key "body" that returns val
+  body.Data.First_name = r.FormValue("First_name")
+  body.Data.Last_name = r.FormValue("Last_name")
+  body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
+  // check for duplicates
+  for r:=0; r<len(users.Data); r++{
+    if body.Data.User_Id == users.Data[r].User_Id{
+      // User_Id duplicate found - re-naming and re-checking loop 1 to loop 2
+      body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
+    }
+    for rr:=0;rr<len(users.Data); rr++{
+      if body.Data.User_Id == users.Data[rr].User_Id{
+        // User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
         body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
-      }
-      for rr:=0;rr<len(users.Data); rr++{
-        if body.Data.User_Id == users.Data[rr].User_Id{
-          // User_Id duplicate found - re-naming and re-checking loop 2 to outer loop 1
-          body.Data.User_Id = "US_" + strconv.Itoa(rand.Int())
-          break
-        }else{
-          rrcount = rr
-        }
-      }
-      if rrcount == len(users.Data)-1{
-        // No duplicates both loops
         break
+      }else{
+        rrcount = rr
       }
     }
-    body.Data.Status = r.FormValue("Status")
-    body.Data.Role = r.FormValue("Role")
-    body.Data.Email = r.FormValue("Email")
-    body.Data.Password = r.FormValue("Password")
-    err, id := repo.Create(&body.Data)
-    if err != nil {
-      panic(err)
+    if rrcount == len(users.Data)-1{
+      // No duplicates both loops
+      break
     }
-    http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
+  }
+  body.Data.Status = r.FormValue("Status")
+  body.Data.Role = r.FormValue("Role")
+  body.Data.Email = r.FormValue("Email")
+  body.Data.Password = r.FormValue("Password")
+  err, id := repo.Create(&body.Data)
+  http.Redirect(w, r, "/users/show/" + id.Hex(), 302)
+  if err != nil {
+    panic(err)
   }
 }
 
@@ -3936,7 +3928,7 @@ func newSessionHandler(w http.ResponseWriter, r *http.Request) {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-  // submit forwards to openSessionHandler
+  // submit forwards to open SessionHandler
 }
 
 func (c *appContext) sessionHandler(w http.ResponseWriter, r *http.Request){
