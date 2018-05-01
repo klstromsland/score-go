@@ -13,10 +13,10 @@
 </div>
 <div class="container-fluid" id="padbottom">
   <div class="row" id="topmargin">
-    <div class="col-xs-1">
+    <div class="col-xs-2">
       <h4 id="h4bold">Name</h4>
 		</div>
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <h4 id="h4bold">Location</h4>
 		</div>
     <div class="col-xs-1">
@@ -38,10 +38,10 @@
   <div id="bdr"></div>
 	{{ range .Data }}
 	<div class="row">
-		<div class = "col-xs-1">
+		<div class = "col-xs-2">
 			<p>{{ .Data.Name }}</p>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-xs-1">
 			<p>{{ .Data.Location }}</p>
 		</div>
 		<div class="col-xs-1">
@@ -50,7 +50,7 @@
 		<div class="col-xs-2" id="center">
 			<p>{{ .Data.Division }}</p>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-xs-2" id="center">
 			<p>{{ .Data.Host }}</p>
 		</div>
 		<div class="col-xs-1" id="center">

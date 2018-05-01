@@ -3651,7 +3651,7 @@ func (c *appContext) get_tally(id string){
   }
   specialty := ""
   q_scores := 0
-  point_tally := 0.0
+  point_tally := 0.00
   if event.Data.Division == "Element Specialty"{
     if event.Data.Cont_search_areas != "0" || event.Data.Cont_search_areas != ""{
       specialty = "Container"
@@ -3727,7 +3727,7 @@ func (c *appContext) get_tally(id string){
   sc_faults := 0.0
   point_tally_round := 0
   time_tally := 0
-  fault_tally := 0.0
+  fault_tally := 0.00
   q_score := 0
   titled := ""
   for i:=0; i<len(entrants.Data); i++{
