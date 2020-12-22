@@ -4105,7 +4105,8 @@ func main() {
      log.Fatal("$PORT must be set")
   }
 
-  session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+  // session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
+  session, err := mgo.Dial("mongodb+srv://heroku_g884mk05:<password>@cluster-g884mk05.kjvos.mongodb.net/heroku_g884mk05?retryWrites=true&w=majority")	
   // session, err := mgo.Dial("localhost:27017")
 
   if err != nil {
