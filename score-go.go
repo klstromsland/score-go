@@ -19,6 +19,10 @@ import (
   "github.com/justinas/alice" //used to chain handlers
   "gopkg.in/mgo.v2"  //driver for mongodb
   "gopkg.in/mgo.v2/bson"  //implementation of the BSON specification for Go
+  "context"
+  "go.mongodb.org/mongo-driver/mongo"
+  "go.mongodb.org/mongo-driver/mongo/options"
+  "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 // Based on blog by Nicolas Merouze
 // Repo BSON spec, mongodb driver
@@ -4106,8 +4110,8 @@ func main() {
   }
 
   // session, err := mgo.Dial("mongodb://heroku_g884mk05:souabj4nqoh1r5ok1v0uss74ju@ds251889.mlab.com:51889/heroku_g884mk05")
-  // session, err := mgo.Dial("mongodb://heroku_g884mk05:UuLEKRT2zmMAXV1kgseE@cluster-g884mk05.kjvos.mongodb.net/heroku_g884mk05?retryWrites=true&w=majority")
-  session, err := mgo.Dial("mongodb://heroku_g884mk05:UuLEKRT2zmMAXV1kgseE@cluster-g884mk05.kjvos.mongodb.net/heroku_g884mk05")
+  session, err := mgo.Dial("mongodb-srv://heroku_g884mk05:UuLEKRT2zmMAXV1kgseE@cluster-g884mk05.kjvos.mongodb.net/heroku_g884mk05?retryWrites=true&w=majority")
+  // session, err := mgo.Dial("mongodb://heroku_g884mk05:UuLEKRT2zmMAXV1kgseE@cluster-g884mk05.kjvos.mongodb.net/heroku_g884mk05")
   // session, err := mgo.Dial("localhost:27017")
 
   if err != nil {
